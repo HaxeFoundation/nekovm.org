@@ -1,18 +1,18 @@
-====== Neko Documentation ======
+# Neko Documentation
 
 The following documents are available :
 
-  * A Neko [[doc:begin|Starter's Guide]]
-  * The Neko Programming Language [[specs|Specifications]]
-  * The Neko [[doc:ffi|C FFI]] (Foreign Function Interface)
-  * The Neko Virtual Machine [[doc:vm|Documentation]]
-  * An Introduction to [[doc:mod_neko|Mod_neko]]
-  * The Documention of [[doc:libs|Neko Libraries]]
-  * Some thoughts about [[doc:misc:multilang|Languages Interoperability]]
-  * A Quick Guide to [[doc:nekoml|NekoML]]
-  * Documentation of [[doc:nxml|NXML]], a regular XML syntax for Neko
-  * Neko and [[doc:mt|Multithreading]] documentation
+- A Neko [Starter's Guide](doc/begin)
+- The Neko Programming Language [Specifications](specs)
+- The Neko [C FFI](doc/ffi) (Foreign Function Interface)
+- The Neko Virtual Machine [Documentation](doc/vm)
+- An Introduction to [Mod_neko](doc/mod_neko)
+- The Documention of [Neko Libraries](doc/libs)
+- Some thoughts about [Languages Interoperability](doc/misc:multilang)
+- A Quick Guide to [NekoML](doc/nekoml)
+- Documentation of [NXML](doc/nxml), a regular XML syntax for Neko
+- Neko and [Multithreading](doc/mt) documentation
 
-====== API ======
+# API
 
-A quick link to the Neko [[doc:libs|Libraries API]]
+A quick link to the Neko [Libraries API](doc/libs)
