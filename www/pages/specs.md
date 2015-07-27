@@ -1,5 +1,5 @@
-Neko Language Specification
-=============================
+# Neko Language Specification
+
 
 ## Syntax
 
@@ -76,13 +76,14 @@ switch-case :=
 	| expr => expr
 ```
 
-
+*Random notes:*
 
 - `_` signifies an empty expression
 
 - `continue` and `break` are not allowed outside of a `while` loop.
 
-- There are a few ambiguous cases when two expressions follow each other (as in `while` and `if`). If the second expression is inside parenthesis, it will be parsed as a call of first expression, while such a representation e1 (e2) exists in the AST (the semicolons are optional).
+- There are a few ambiguous cases when two expressions follow each other (as in `while` and `if`). If the second expression is inside parenthesis, it will be parsed as a call of first expression, while
+such a representation e1 (e2) exists in the AST (the semicolons are optional).
 
 - Arithmetic operations have the following precedences (from least to greatest ):
 
@@ -100,21 +101,21 @@ switch-case :=
 
 A value in Neko can be one of the following :
 
-- **Null :** the special value `null` is used for uninitialized variables as well as programmer/language specific coding techniques.
-- **Integer :** integers can be represented in either decimal form (such as `12345` or `-12`), or hexadecimal (`0x1A2B3C4D`).
-- **Floats :** floating-point numbers are represented using a period (such as `12.345` or `-0.123`)
-- **Boolean :** the two booleans are represented by the following lowercase identifiers `true` and `false`.
-- [Strings](specs#strings) : strings are surrounded by double quotes (for example: `"foo"`, or `"hello,\nworld !"`, or `"My name is \"Bond\\James Bond\"."`). Neko strings are mutable, which means that you can modify them.
-- [Arrays](specs#arrays) : arrays are an integer-indexed table of values, with the index starting at 0. They provide fast random access to their elements.
-- [Objects](specs#objects) : an object is a table, which associates an identifier or a string to a value. How objects are created and managed is explained later.
-- [Functions](specs#function_function_calls) : a function is also a value in Neko, and thus can be stored in any variable.
-- **Abstract :** an abstract value is some C data that cannot be accessed from a Neko program.
+- **Null:** the special value `null` is used for uninitialized variables as well as programmer/language specific coding techniques.
+- **Integer:** integers can be represented in either decimal form (such as `12345` or `-12`), or hexadecimal (`0x1A2B3C4D`).
+- **Floats:** floating-point numbers are represented using a period (such as `12.345` or `-0.123`)
+- **Boolean:** the two booleans are represented by the following lowercase identifiers `true` and `false`.
+- [Strings](specs#strings): strings are surrounded by double quotes (for example: `"foo"`, or `"hello,\nworld !"`, or `"My name is \"Bond\\James Bond\"."`). Neko strings are mutable, which means that you can modify them.
+- [Arrays](specs#arrays): arrays are an integer-indexed table of values, with the index starting at 0. They provide fast random access to their elements.
+- [Objects](specs#objects): an object is a table, which associates an identifier or a string to a value. How objects are created and managed is explained later.
+- [Functions](specs#methods): a function is also a value in Neko, and thus can be stored in any variable.
+- **Abstract:** an abstract value is some C data that cannot be accessed from a Neko program.
 
 Some Notes :
 
 - Integers have 31 bits for virtual-machine performance reasons. An API for full [32-bit integers](doc/view/int32) is available through a standard library.
 - Floating-point numbers are 64-bit double-precision floating points values.
-- Strings are sequences of 8-bit bytes. A string can contain \0 characters. The length of a string is determined by the number of bytes in it, and not by the number of characters before the first \0.
+- Strings are sequences of 8-bit bytes. A string can contain `\0` characters. The length of a string is determined by the number of bytes in it, and not by the number of characters before the first \0.
 
 ## Execution Flow
 
@@ -122,40 +123,40 @@ Here's some explanation on how each expression is evaluated :
 
 ### Values :
 
-- `[0-9]+ | 0x[0-9A-Fa-f]+` : evaluates to the corresponding integer value
-- `[0-9]+ **DOT** [0-9]* | **DOT** [0-9]+` : evaluates to the corresponding floating-point number.
-- `**DOUBLEQUOTE**  **DOUBLEQUOTE**` : evaluates to the corresponding string. Escaped characters are similar to the C programming language.
-- `**DOLLAR** ` : identifiers prefixed with a dollar sign are builtins. They enable you to call some compiler constructors or do optimized function calls.
-- `**true** | **false**` : evaluate to the corresponding boolean.
-- `**null**` : evaluates to the null value.
-- `**this**` : evaluates to the local object value (See below for more details on objects).
-- `` : evaluates to the value currently bound to this variable name.
+- `[0-9]+` | `0x[0-9A-Fa-f]+` : evaluates to the corresponding integer value
+- `[0-9]+` **`DOT`** `[0-9]*` | **`DOT`** `[0-9]+` : evaluates to the corresponding floating-point number.
+- **`DOUBLEQUOTE`** *`characters`* **`DOUBLEQUOTE`** : evaluates to the corresponding string. Escaped characters are similar to the C programming language.
+- **`DOLLAR`** *`ident`* : identifiers prefixed with a dollar sign are builtins. They enable you to call some compiler constructors or do optimized function calls.
+- **`true`** | **`false`** : evaluate to the corresponding boolean.
+- **`null`** : evaluates to the null value.
+- **`this`** : evaluates to the local object value (See below for more details on objects).
+- *`ident`* : evaluates to the value currently bound to this variable name.
 
 ### Expressions
 
 Before evaluating any expression, all sub-expressions are evaluated in an unspecified order. "v"s here represent the values obtained from evaluation of sub-expressions.
 
-- **{**  **}** : The evaluation order follows the order of the expressions declarations. The last value `vk` is returned as the result, unless `program` does not contain any expressions, in which case it returns `null`.
-- **{**  **=>**  **,**  **=>**  **...** **}** : This will create an object with fields  set to values . It might be more optimized than setting the fields one-by-one on an empty object.
--  **DOT**  : `v` is accessed as an object using `ident` as a key (see Objects).
--  **(**  **)** : The function `v` is called with the parameters `v1, v2... vk` (see Function Calls)
--  **[**  **]** : `v` is accessed as an array using `v1` as the index (see Arrays).
--    : Calculates v1 op v2 (see Operations).
--  **=**  : This is a special case when the operation is an assignment (see Operations).
-- **(**  **)** : Evaluates to `v`.
-- **var**  : Each variable `i` is set to the corresponding value `v`, or to `null` if no initialization expression is provided.
-- **while** ....  | **do** ... **while** ... : Implements the classic while-loop. Its value is that returned by a `break` inside the while, or unspecified if the loop ends without using `break`.
-- **if**   : If v1 is the boolean `true`, then `e1` is evaluated and its value returned. Otherwise, its value is unspecified.
-- **if**   **else**  : If v1 is the boolean `true`, then `e1` is evaluated and its value returned. Otherwise, `e2` is evaluated and its value returned.
-- **try**  **catch**   : Evaluates `e1` and returns its value. If an exception is raised during the evaluation of `e1`, then `e2` is evaluated, with the local variable `i`  being set to the raised exception value (see Exceptions). The value of the `try...catch` will be `e2`.
-- **function (**  **)**  : Evaluates to the corresponding function.
-- **return**; : Exits the current function with an unspecified return value.
-- **return** v : Exits the current function and returns `v`.
-- **break**; : Exits the current while loop with an unspecified return value.
-- **break** v : Exits the current while-loop and returns value `v`.
-- **continue** : Skips the rest of the loop body and jumps to the start of the loop, reevaluating the loop condition.
-- **ident** : A label (See the corresponding section).
-- **switch e { e1a ⇒ e1b e2a ⇒ e2b .... default ⇒ edef }** : Evaluates `e` and tests it with each `ea` sequentially until it is found to be equal, then returns value of the corresponding expression `eb`. If no value is found to be equal to `e`, the value of the `edef` expression is returned. `null` is returned if `default` is not specified.
+- `{ v1; v2; .... vk }` : The evaluation order follows the order of the expressions declarations. The last value `vk` is returned as the result, unless `program` does not contain any expressions, in which case it returns `null`.
+- `{ i1 => v1, i2 => v2 ... }` : This will create an object with fields _i1...ik_ set to values _v1...vk_. It might be more optimized than setting the fields one-by-one on an empty object.
+- `v DOT ident` : `v` is accessed as an object using `ident` as a key (see Objects).
+- `v ( v1, v2, ... vk )` : The function `v` is called with the parameters `v1, v2... vk` (see Function Calls)
+- `v [ v1 ]` : `v` is accessed as an array using `v1` as the index (see Arrays).
+- `v1 binop v2` : Calculates v1 op v2 (see Operations).
+- `expr = v` : This is a special case when the operation is an assignment (see Operations).
+- `( v )` : Evaluates to `v`.
+- `var i1 = v1, i2 = v2, .... ik = vk` : Each variable `i` is set to the corresponding value `v`, or to `null` if no initialization expression is provided.
+- `while ....`  | `do ... while ...` : Implements the classic while-loop. Its value is that returned by a `break` inside the while, or unspecified if the loop ends without using `break`.
+- `if v1 e1` : If v1 is the boolean `true`, then `e1` is evaluated and its value returned. Otherwise, its value is unspecified.
+- `if v1 e1 else e2` : If v1 is the boolean `true`, then `e1` is evaluated and its value returned. Otherwise, `e2` is evaluated and its value returned.
+- `try e1 catch i e2` : Evaluates `e1` and returns its value. If an exception is raised during the evaluation of `e1`, then `e2` is evaluated, with the local variable `i`  being set to the raised exception value (see Exceptions). The value of the `try...catch` will be `e2`.
+- `function ( parameters-names ) expr` : Evaluates to the corresponding function.
+- `return;` : Exits the current function with an unspecified return value.
+- `return v` : Exits the current function and returns `v`.
+- `break;` : Exits the current while loop with an unspecified return value.
+- `break v` : Exits the current while-loop and returns value `v`.
+- `continue` : Skips the rest of the loop body and jumps to the start of the loop, reevaluating the loop condition.
+- `_ident_:` : A label (See the corresponding section).
+- `switch e { _e1a_ => e1b e2a => _e2b_ .... default => edef }` : Evaluates `e` and tests it with each `eia` sequentially until it is found to be equal, then returns value of the corresponding expression `eib`. If no value is found to be equal to `e`, the value of the `edef` expression is returned. `null` is returned if `default` is not specified.
 
 Please note that the conditions of `if` and `while` only consider the boolean `true` to be true. You might need to add a `$istrue` code before each expression in order to convert the expression result into a boolean.
 
@@ -286,24 +287,26 @@ Basic types are numbers (int and float), booleans (bool), the null value, string
 
 Operation add ( + ) :
 
-^ `+` ^ null ^ int ^ float ^ string ^ bool ^ object ^ array ^ function ^
-| **null** | X         | X   | X     | concat | X | %%__radd%% | X | X |
-| **int**  | X         | int | float | concat | X | %%__radd%% | X | X |
-| **float**    | X         | float | float | concat | X | %%__radd%% | X | X |
-| **string**   | concat    | concat | concat  | concat | concat | %%__radd%% | concat | concat |
-| **bool**     | X         | X | X | concat | X | %%__radd%% | X | X |
-| **object**   | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%% |
-| **array**    | X         | X | X | concat | X | %%__radd%% | X | X |
-| **function** | X         | X | X | concat | X | %%__radd%% | X | X |
+| +            | null      | int       | float     | string    | bool      | object     | array     | function  |
+| ------------ | --------- | --------- | --------- | --------- | --------- | ---------- | --------- | --------- |
+| **null**     | X         | X         | X         | concat    | X         | %%__radd%% | X         | X         |
+| **int**      | X         | int       | float     | concat    | X         | %%__radd%% | X         | X         |
+| **float**    | X         | float     | float     | concat    | X         | %%__radd%% | X         | X         |
+| **string**   | concat    | concat    | concat    | concat    | concat    | %%__radd%% | concat    | concat    |
+| **bool**     | X         | X         | X         | concat    | X         | %%__radd%% | X         | X         |
+| **object**   | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%% | %%__add%%  | %%__add%% | %%__add%% |
+| **array**    | X         | X         | X         | concat    | X         | %%__radd%% | X         | X         |
+| **function** | X         | X         | X         | concat    | X         | %%__radd%% | X         | X         |
 
 
 Addition can be overridden for objects : `a + b` will call `a.%%__add%%(b)` if `a` is an object, or `b.%%__radd%%(a)` if `b` is an object.
 
 Operations substract ( - ) divide ( / ) multiply ( * ) and modulo ( % ) :
 
-^ `-` `/` `*` `%`  ^ int ^ float ^
-| int | int (float for /) | float |
-| float | float | float |
+|  - / * %  | int               | float |
+| --------- | ----------------- | ----- |
+| int       | int (float for /) | float |
+| float     | float             | float |
 
 Please note that unlike some languages, the divide operation between two integers return a float. You can use the `$idiv` builtin to perform integer division.
 
@@ -363,15 +366,16 @@ Comparison occurs when the following operations are performed : equality `==`, i
 
 Comparison method :
 
-^  $compare  ^ null ^ int ^ float ^ string ^ bool ^ object ^ array ^ function ^
-| null | 0 | - | - | - | - | - | - | - |
-| int | - | icmp | fcmp | strcmp | - | - | - | - |
-| float | - | fcmp | fcmp | strcmp | - | - | - | - |
-| string | - | strcmp | strcmp | strcmp | strcmp | - | - | - |
-| bool | - | - | - | strcmp | bcmp | - | - | - |
-| object | - | - | - | - | - | ocmp | - | - |
-| array | - | - | - | - | - | - | acmp | - |
-| function | - | - | - | - | - | - | - | acmp |
+| $compare  | null | int    | float  | string | bool   | object | array | function |
+| --------- | ---- | ---    | -----  | ------ | ----   | ------ | ----- | -------- |
+| null      | 0    | -      | -      | -      | -      | -      | -     | -        |
+| int       | -    | icmp   | fcmp   | strcmp | -      | -      | -     | -        |
+| float     | -    | fcmp   | fcmp   | strcmp | -      | -      | -     | -        |
+| string    | -    | strcmp | strcmp | strcmp | strcmp | -      | -     | -        |
+| bool      | -    | -      | -      | strcmp | bcmp   | -      | -     | -        |
+| object    | -    | -      | -      | -      | -      | ocmp   | -     | -        |
+| array     | -    | -      | -      | -      | -      | -      | acmp  | -        |
+| function  | -    | -      | -      | -      | -      | -      | -     | acmp     |
 
 Here are the details of each comparison function :
 
@@ -381,17 +385,18 @@ Here are the details of each comparison function :
 - acmp compares the addresses of a and b. It returns 0 if they're the same, -1 if b>a, and 1 if a>b
 - bcmp returns 0 if a and b are both true or both false, 1 if a is true and b and false, -1 if a is false and b is true.
 - ocmp does "object comparison". If the two objects' addresses are same, then it returns 0. Otherwise, it calls the method `%%__compare%%` on the first object, with the second object as argument. If the returned value is an integer, the integer is returned by `$compare`, else null is returned.
-- `-` means that the comparison is invalid, the returned value is null when using `$compare` and false when using an operator.
+-  - means that the comparison is invalid, the returned value is null when using `$compare` and false when using an operator.
 
 The following table show how each operation is performing depending on the result of `$compare` :
 
-^  op  ^ null ^ -1 ^ 0 ^ 1 ^
-|  ==  | false | false | true| false |
-|  !=  | true | true | false | true |
-|  %%<=%%  | false | true | true | false |
-|  <  | false | true | false | false |
-|  >=  | false | false | true | true |
-|  >  | false | false | true | true |
+|  op      | null  | -1    | 0     | 1     |
+| -------- | ----- | ----- | ----- | ----- |
+|  ==      | false | false | true  | false |
+|  !=      | true  | true  | false | true  |
+|  %%<=%%  | false | true  | true  | false |
+|  <       | false | true  | false | false |
+|  >=      | false | false | true  | true  |
+|  >       | false | false | true  | true  |
 
 Physical comparison :
 
@@ -472,16 +477,17 @@ No matter if your language is statically or dynamically typed, you can always ac
 
 The builtin `$typeof` returns an integer specifying the type of a value according to the following table :
 
-^ Type ^ Constant ^ Value ^
-| null | `$tnull` | 0 |
-| int | `$tint` | 1 |
-| float | `$tfloat` | 2 |
-| bool | `$tbool` | 3 |
-| string | `$tstring` | 4 |
-| object | `$tobject` | 5 |
-| array | `$tarray` | 6 |
-| function | `$tfunction` | 7 |
-| abstract | `$tabstract` | 8 |
+| Type     | Constant     | Value |
+| -------- | ------------ | ----- |
+| null     | `$tnull`     | 0     |
+| int      | `$tint`      | 1     |
+| float    | `$tfloat`    | 2     |
+| bool     | `$tbool`     | 3     |
+| string   | `$tstring`   | 4     |
+| object   | `$tobject`   | 5     |
+| array    | `$tarray`    | 6     |
+| function | `$tfunction` | 7     |
+| abstract | `$tabstract` | 8     |
 
 Example :
 
@@ -491,7 +497,7 @@ $typeof($array(1,2)); // 6
 $typeof(null) == $tnull; // true
 ```
 
-You can use the builtins for [Arrays](specs#objects|Objects]], [Strings](specs#strings), [Functions](specs#function_function_calls) and [Arrays](specs#arrays) to manipulate them at runtime.
+You can use the builtins for [Objects](specs#objects), [Strings](specs#strings), [Functions](specs#function_function_calls) and [Arrays](specs#arrays) to manipulate them at runtime.
 
 ## Function & Function Calls
 
@@ -676,7 +682,7 @@ If the overloaded field is not defined when an operation occured, an exception i
 
 ### Prototypes
 
-Each object can have a  which is also an object. When a field is accessed for reading and is not found in an object, it is searched in its prototype, and like this recursively.
+Each object can have a //prototype// which is also an object. When a field is accessed for reading and is not found in an object, it is searched in its prototype, and like this recursively.
 
 Prototypes can be accessed using `$objgetproto` and `$objsetproto` :
 
@@ -811,7 +817,7 @@ catch e {
 }
 ```
 
-Every time an exception is catched, the  is stored and can be retrieved using the builtin `$excstack()`. It contains the filenames and positions of the different calls between the `try` and the place the exception was raised.
+Every time an exception is catched, the //exception stack// is stored and can be retrieved using the builtin `$excstack()`. It contains the filenames and positions of the different calls between the `try` and the place the exception was raised.
 
 ```neko
 try
@@ -841,7 +847,7 @@ It is also possible to get the current call stack at any point of a Neko program
 
 ## Hashtables
 
-There is a set of builtins that are useful for using Hashtables. An hashtable is not a basic type but an  type. It can then only be manipulated using the following builtins :
+There is a set of builtins that are useful for using Hashtables. An hashtable is not a basic type but an //abstract// type. It can then only be manipulated using the following builtins :
 
 - `$hnew(size)` : create a new hashtable having initialy `size` slots.
 - `$hadd(h,k,v)` : add the value `v` with key `k` to the hashtable. Please note that `k` can be any Neko value, even recursive.
@@ -860,7 +866,7 @@ You can of course write your own hashtable implementation using Neko data struct
 
 ## Labels and Gotos
 
-It is sometimes useful to be able to jump directly at some code location. Labels are providing a way to  a location in the code and the builtin `$goto` can jump to a label :
+It is sometimes useful to be able to jump directly at some code location. Labels are providing a way to //mark// a location in the code and the builtin `$goto` can jump to a label :
 
 ```neko
 $print("enter");
@@ -884,7 +890,7 @@ In all cases, gotos to labels are preserving the stack. For example in the follo
 next:
 ```
 
-If the goto is done  a block having defined local variables, these variables are also accessible but their values are unspecified :
+If the goto is done //inside// a block having defined local variables, these variables are also accessible but their values are unspecified :
 
 ```neko
 $goto(next);
@@ -922,4 +928,4 @@ try {
 
 # End
 
-Hope you didn't fell asleep while reading this long document.  Use the [Mailing List](ml).
+Hope you didn't fell asleep while reading this long document. *Questions?* Use the [ml](Mailing List).

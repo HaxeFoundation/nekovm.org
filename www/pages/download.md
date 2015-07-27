@@ -10,6 +10,6 @@ The following downloads are currently available :
 
 To compile from sources you need to install [libgc-dev](http://www.hpl.hp.com/personal/Hans_Boehm/gc).
 
-You can access Neko sources from the [GitHub  Repository](https://github.com/HaxeFoundation/neko)
+You can access Neko sources from the [GitHub Repository](https://github.com/HaxeFoundation/neko)
 
 Enjoy !

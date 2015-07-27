@@ -58,7 +58,7 @@ Here's the notation of types that should be used when documenting libraries :
 
 - the type `number` if both `int` and `float` are accepted.
 
-- the type `function:` if a function with  parameters is accepted.
+- the type `function:` if a function with *n* parameters is accepted.
 
 - for abstracts, you need to give them a name (corresponding to their kind) and write it with a single quote as prefix (for example `'file` is an abstract of kind ).
 

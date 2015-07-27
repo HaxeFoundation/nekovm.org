@@ -6,7 +6,7 @@ Before reading this part of the documentation, it is recommend to have already r
 
 The Neko Virtual Machine is one binary called `neko` included in the Neko distribution. You can call it anytime using `neko (file)` in order to execute the specified bytecode file.
 
-Bytecode files are precompiled Neko sources and have the `.n` extension. They are searched in local directories but also using the `NEKOPATH` environment variable which can list several search paths separated by `:`. Each bytecode `.n` file is also called a .
+Bytecode files are precompiled Neko sources and have the `.n` extension. They are searched in local directories but also using the `NEKOPATH` environment variable which can list several search paths separated by `:`. Each bytecode `.n` file is also called a *Module*.
 
 ## Libraries
 
@@ -22,7 +22,7 @@ $exports.log = function() { $print("log test") };
 
 ## Loaders
 
-Each Neko module have a  which is an object that can be used to load other Neko modules and C primitives. The loader is accessible using the `$loader` builtin.
+Each Neko module have a *loader* which is an object that can be used to load other Neko modules and C primitives. The loader is accessible using the `$loader` builtin.
 
 In order to load a Module, you can simply call the `loadmodule` method, which takes two parameters. The first parameter is the name of the module and the second parameter is the loader that this module will used. If found, the module is loaded, executed, and then its `$exports` table is returned. If not found, an exception is thrown.
 
@@ -31,7 +31,7 @@ var m = $loader.loadmodule("log",$loader);
 m.log();
 ```
 
-You can also load C  using the loader. See the [C FFI](doc/ffi) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an arrowbase, as well as the number of arguments. If success, a Neko function is returned that is used to call the primitive. If not found, an exception is thrown.
+You can also load C *primitives* using the loader. See the [C FFI](doc/ffi) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an arrowbase, as well as the number of arguments. If success, a Neko function is returned that is used to call the primitive. If not found, an exception is thrown.
 
 ```neko
 var p = $loader.loadprim("std@test",0);
@@ -76,7 +76,7 @@ void execute( value module ) {
     value f = val_field(module,val_id("f"));
     value ret;
     if( !val_is_int(x) )
-         return; 
+         return;
     printf("x = %d\n",val_int(x));
     if( !val_is_function(f) || val_fun_nargs(f) != 1 )
          return;
@@ -101,7 +101,7 @@ int main( int argc, char *argv[] ) {
     }
     execute(module);
 
-    neko_global_free();    
+    neko_global_free();
     return 0;
 }
 

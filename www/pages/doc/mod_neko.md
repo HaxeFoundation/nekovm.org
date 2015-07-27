@@ -1,6 +1,6 @@
 # An Introduction to Mod_neko
 
-Mod_neko is an Apache  for Neko. It means it is possible to run Neko programs on the server side in order to serve webpages using Apache. Here's a step-by-step tutorial on how to configure and use Mod_neko.
+Mod_neko is an Apache *module* for Neko. It means it is possible to run Neko programs on the server side in order to serve webpages using Apache. Here's a step-by-step tutorial on how to configure and use Mod_neko.
 
 ## Quick configuration
 
@@ -8,8 +8,8 @@ If you don't have `mod_neko` compiled or you don't want to setup Apache, you can
 
 In order to start the server, simply run the following command :
 
-```
-   nekotools server
+```bash
+nekotools server
 ```
 
 This should start the local server, by default on the `localhost` on port `2000` so you can browse the configuration page by visiting <http://localhost:2000/server:config>. Change the server base path to your website directory and you can start browsing it. If it contains `.n` neko bytecode files, they will be loaded and executed just like Apache `mod_neko` is doing.
@@ -56,16 +56,18 @@ Don't forget to compile in order to update the `.n` file before browsing your sc
 
 ## Script versus Application
 
-Since right now Neko is separated into two different phases :  and  you cannot directly see the modifications you're making to your script since you need to compile first. This have several advantages :
+Since right now Neko is separated into two different phases: *compile* and *run* you cannot directly see the modifications you're making to your script since you need to compile first. This have several advantages :
 
 - it runs faster
+
 - syntax is checked at compile-time, before you browse the page
-  *	you don't need to have  on the server, only binaries is ok
-  *	you can run your module in  (see below).
+
+	- you don't need to have *sources* on the server, only binaries is ok
+	- you can run your module in *application mode* (see below).
 
 Right now however everytime a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).
 
-The idea of running in  is to have first an initialization phase for your script that will create objects, load libraries, initialize global datas, and then setup an  which will be the function called for every request. Here's a small sample :
+The idea of running in *Application Mode* is to have first an initialization phase for your script that will create objects, load libraries, initialize global datas, and then setup an *entry point* which will be the function called for every request. Here's a small sample :
 
 ```neko
 $print("Initializing...");

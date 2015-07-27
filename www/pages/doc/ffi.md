@@ -26,7 +26,7 @@ var p = $loader.loadprim("hello@test",0);
 $print( p() );
 ```
 
-The format of primitive name is @. You can then define several primitives in the same library.
+The format of primitive name is *name_of_library*@*name_of_the_function*. You can then define several primitives in the same library.
 
 ## Manipulating Values
 
@@ -288,11 +288,11 @@ You can reverse a hashed object field value by calling `val_field_name(f)`. This
 
 Often when you're writing primitives, you're expecting the value arguments to be of one given type. So the first thing done in primitives is to check that the types are correct and have an exception raised if not. The Neko API provides several functions for that :
 
-- `val_is_(v)` functions can test if a single value is of the given type.
-- `val_check(v,)` will check `val_is_` and call `neko_error()` if it fails.
-- `val_check_kind(v,)` will check that the value is an abstract of the given kind and call `neko_error()` if not.
-- `val_check_function(v,)` will check that the value is a function that can be called with the specified number of arguments and call `neko_error()` if not.
-- `neko_error()` will simply return the C `NULL` value. This special value will be catched  by the virtual machine that will raise an exception. Please use the macro instead of `return NULL` so your library will stay compatible if the implementation change.
+- `val_is_type(v)` functions can test if a single value is of the given type.
+- `val_check(v,type)` will check `val_is_type` and call `neko_error()` if it fails.
+- `val_check_kind(v,kind)` will check that the value is an abstract of the given kind and call `neko_error()` if not.
+- `val_check_function(v,nargs)` will check that the value is a function that can be called with the specified number of arguments and call `neko_error()` if not.
+- `neko_error()` will simply return the C `NULL` value. This special value will be caught by the virtual machine that will raise an exception. Please use the macro instead of `return NULL` so your library will stay compatible if the implementation change.
 
 Type checking is actualy very easy to use, simple add the `val_check*` statements at the beginning of your primitive :
 
@@ -351,11 +351,11 @@ First we define a primitive so that we can register our callback :
 value *function_storage = NULL;
 
 static value set_handler( value f ) {
-   val_check_function(f,1); // checks that f has 1 argument
-   if( function_storage == NULL )
-       function_storage = alloc_root(1);
-   *function_storage = f;
-   return val_null;
+	val_check_function(f,1); // checks that f has 1 argument
+	if( function_storage == NULL )
+		function_storage = alloc_root(1);
+	*function_storage = f;
+	return val_null;
 }
 
 DEFINE_PRIM(set_handler,1);
@@ -380,18 +380,18 @@ Most of the time, when you have to write an interface from Neko to a C library, 
 - even it if was a value, it would have to be free explicitly.
 - you cannot distinguish the types between two C pointers.
 
-For all of these reasons, you need to be able to store a C pointer into an abstract Neko `value` and mark it with some type information called . The  of an abstract value is its type, and the  of an abstract value is the corresponding C pointer.
+For all of these reasons, you need to be able to store a C pointer into an abstract Neko `value` and mark it with some type information called *kind*. The *kind* of an abstract value is its type, and the *data* of an abstract value is the corresponding C pointer.
 
 Please note that the VM itself cannot access either the kind or the data of an abstract value. For the VM, an abstract is an opaque value without any structure. It's up to your C primitives to manipulate the abstract. This ensure also that if you don't make any mistake in your C primitives, the whole program will be kept memory-safe.
 
-First, you need to define a  somewhere in your C file, using the macro `DEFINE_KIND` from the Neko API. By convention, we often prefix the kind with `k_` but it's not mandatory :
+First, you need to define a *kind* somewhere in your C file, using the macro `DEFINE_KIND` from the Neko API. By convention, we often prefix the kind with `k_` but it's not mandatory :
 
 ```c
 #include <neko.h>
 DEFINE_KIND(k_mykind);
 ```
 
-Now that you have a , you can create an abstract value of this kind using the `alloc_abstract` Neko API function :
+Now that you have a *kind*, you can create an abstract value of this kind using the `alloc_abstract` Neko API function :
 
 ```c
 value create() {
@@ -434,7 +434,7 @@ value destroy( value v ) {
 }
 ```
 
-In other cases, you might want the pointer data to be free when the abstract value becomes garbage-collected. In that case you have to bind a  function on it. Please note that it might take some time between the value becomes unreachable and the finalizer is called.
+In other cases, you might want the pointer data to be free when the abstract value becomes garbage-collected. In that case you have to bind a *finalizer* function on it. Please note that it might take some time between the value becomes unreachable and the finalizer is called.
 
 ```c
 void finalize( value v ) {
@@ -468,7 +468,7 @@ then, pass -1 as the number of arguments to $loadprim.
 
 As explained before, Neko integers are only signed 31 bits. While this is enough for most of the cases, there is some times where you want to use the full 32 bits. It was then added a common int32 abstract type.
 
-You can use `val_is_int32(i)` to check that the value `i` is either an integer or an int32. And `val_int32(i)` will return the corresponding integer. If you want to check that the value is  an int32, then you can use `val_is_kind(i,k_in32)`.
+You can use `val_is_int32(i)` to check that the value `i` is either an integer or an int32. And `val_int32(i)` will return the corresponding integer. If you want to check that the value is *exactly* an int32, then you can use `val_is_kind(i,k_in32)`.
 
 To create an int32 value, you can use `alloc_int32(i)`. Please note that unlike `alloc_int` which is a fast macro, `alloc_int32` allocate some memory to store the integer so it is slower.
 
@@ -478,15 +478,15 @@ In the case most of your integers are using only 31 bits but you still want to b
 
 When you're working with abstracts, you might want to allocate garbage-collected memory so you don't have to add finalizers for your datas (finalizers are more expensive than garbage-collected memory). The Neko VM API is providing several allocation functions :
 
-Calling `alloc()` will return a pointer capable of storing up to `n` . So it's equivalent of `malloc(n)` but the memory will be automaticaly collected when unreachable from the VM. Please note that C  values are not reachable by the VM.
+Calling `alloc(n)` will return a pointer capable of storing up to `n` *bytes*. So it's equivalent of `malloc(n)` but the memory will be automaticaly collected when unreachable from the VM. Please note that C *static* values are not reachable by the VM.
 
 The memory allocated with `alloc` will be scanned by the garbage collector so you can store values and other `alloc`'ated pointers into it. As long as your pointer is reachable these values will also be reachable so they will not be collected.
 
-If you want to allocate big chuncks of memory and you're sure they will not contain any value (strings for example) you can use `alloc_private()` that will return also `n`  of memory but that will not be scanned by the garbage collector. Please remember not to store any value in it.
+If you want to allocate big chuncks of memory and you're sure they will not contain any value (strings for example) you can use `alloc_private(n)` that will return also `n` *bytes* of memory but that will not be scanned by the garbage collector. Please remember not to store any value in it.
 
-In some cases, you might need to store some value into a  variable. First, you have to be sure of what you're doing, since the Neko VM can run in several threads, you need to protect the accesses to this value to ensure that your library will work when used simultaneously by multiple threads. Second, since the statics are not reachable by the garbage collector, you have to allocate a  value.
+In some cases, you might need to store some value into a *static* variable. First, you have to be sure of what you're doing, since the Neko VM can run in several threads, you need to protect the accesses to this value to ensure that your library will work when used simultaneously by multiple threads. Second, since the statics are not reachable by the garbage collector, you have to allocate a *root* value.
 
-A  value is a pointer that can store several values and that will always be scanned by the GC. Since it will never be garbage-collected you can store it anywhere. However you'll have to free it explicitly. To allocate a root you can use the `alloc_root()` function that will return you a value pointer capable of storing up to `v` values. Once you don't need it anymore you have to free the root using the `free_root` function. Try to avoid the use of roots and static values as much as possible. Always store your datas into abstract values if you can.
+A *root* value is a pointer that can store several values and that will always be scanned by the GC. Since it will never be garbage-collected you can store it anywhere. However you'll have to free it explicitly. To allocate a root you can use the `alloc_root(v)` function that will return you a value pointer capable of storing up to `v` values. Once you don't need it anymore you have to free the root using the `free_root` function. Try to avoid the use of roots and static values as much as possible. Always store your datas into abstract values if you can.
 
 ## Misc API Functions
 
@@ -500,9 +500,9 @@ Before ending this document here are several functions that does not belong to a
 
 - `val_throw(v)` and `val_rethrow(v)` : throw the value v as an exception.
 
-- `failure(msg)` : throw a  exception using a constant C string as error message. This is a convenient way of handling errors in your primitives, since the exception will contain your error message as well as the C filename and the line where the error occured.
+- `failure(msg)` : throw a *failure* exception using a constant C string as error message. This is a convenient way of handling errors in your primitives, since the exception will contain your error message as well as the C filename and the line where the error occured.
 
-- `bfailure(buf)` : same as `failure` but use a  instead of a constant string.
+- `bfailure(buf)` : same as `failure` but use a *buffer* instead of a constant string.
 
 ## More Samples
 
