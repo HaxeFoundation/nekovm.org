@@ -75,7 +75,7 @@ ul {
 }
 
 li {
-	background-image	: url(img/tick.gif);
+	background-image	: url(/img/tick.gif);
 	background-repeat	: no-repeat;
 	background-position	: 15px 10px;
 	padding-left		: 30px;

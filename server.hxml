@@ -1,4 +1,6 @@
 -lib ufront
+-lib markdown
+-lib detox
 -cp src
 -main NekoSite
 

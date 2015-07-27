@@ -2,41 +2,44 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 	<head>
-		<title>::title::</title>
+		<title>::title:: - NekoVM</title>
 		<meta name="date" content="2014-12-03T13:04:37+0100" />
 		<meta name="robots" content="index,follow" />
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
 	</head>
 	<body>
+		<div class="center">
 
-	<div class="center">
-
-		<div class="siteHeader">
-			<div class="siteBanner">
-				<div class="bannerContent">
-					<ul class="siteMenu">
-						<li><a href="/index">home</a></li>
-						<li><a href="/news">news</a></li>
-						<li><a href="/download">downloads</a></li>
-						<li><a href="/doc">documentation</a></li>
-						<li><a href="/faq">FAQ</a></li>
-					</ul>
+			<div class="siteHeader">
+				<div class="siteBanner">
+					<div class="bannerContent">
+						<ul class="siteMenu">
+							<li><a href="/index">home</a></li>
+							<li><a href="/news">news</a></li>
+							<li><a href="/download">downloads</a></li>
+							<li><a href="/doc">documentation</a></li>
+							<li><a href="/faq">FAQ</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="siteBox">
-			<div class="siteContent">
-				::viewContent::
+			<div class="siteBox">
+				<div class="siteContent">
+					::viewContent::
+				</div>
 			</div>
+
+			<div class="corpo">
+				&copy;::currentYear:: <a href="http://haxe.org/foundation/">Haxe Foundation</a>
+			</div>
+
 		</div>
 
-		<div class="corpo">
-			&copy;::currentYear:: <a href="http://haxe.org/foundation/">Haxe Foundation</a>
-		</div>
-
-	</div>
-
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
 	</body>
 </html>
