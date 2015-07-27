@@ -30,7 +30,7 @@ class NekoSite extends Controller {
 
 	@:route("/*")
 	public function page( rest:Array<String> ) {
-		var pageName = rest.join("/");
+		var pageName = (rest.length>0) ? rest.join("/") : "index";
 		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
 			var view = new ViewResult( page );
 			view.setVar( "currentYear", Date.now().getFullYear() );
