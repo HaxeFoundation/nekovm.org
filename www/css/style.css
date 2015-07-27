@@ -1,0 +1,453 @@
+/*** BASE ***/
+
+body {
+	margin				: 0px;
+	padding				: 0px;
+	background-color	: white;
+	font-family			: Trebuchet MS, sans-serif;
+	font-size			:
+}
+
+a {
+	color			: #ffa157;
+	font-weight		: bold;
+	text-decoration	: underline;
+}
+
+a:hover {
+	color			: #aaa;
+	text-decoration	: none;
+}
+
+a img {
+	border	: 0px;
+}
+
+.center {
+	text-align: center;
+}
+
+p {
+	margin-left	: 30px;
+}
+
+p:first-letter {
+	color		: #c0c0c0;
+	font-weight	: bold;
+}
+
+.plink  {
+	margin-left : 30px;
+}
+
+h1 {
+	color			: black;
+	text-transform	: capitalize;
+	text-align		: left;
+	margin-bottom	: 0px;
+}
+
+h2 {
+	border-bottom	: 3px solid #e4e4e4;
+	padding			: 0px;
+	margin-top		: 50px;
+	margin-bottom	: 10px;
+
+	color			: #d0d0d0;
+	text-transform	: lowercase;
+}
+
+h3 {
+	color		: #888;
+	font-size	: 14pt;
+	margin-left	: 30px;
+	margin-top		: 30px;
+	text-transform	: lowercase;
+	border-bottom	: 2px dotted #ddd;
+}
+
+ul {
+	list-style	: none;
+
+	margin		: 0px;
+	padding		: 0px;
+	margin-left	: 50px;
+}
+
+li {
+	background-image	: url(img/tick.gif);
+	background-repeat	: no-repeat;
+	background-position	: 15px 10px;
+	padding-left		: 30px;
+}
+
+ul ul {
+	margin-left		: 10px;
+}
+
+ul.large li {
+	margin-bottom	: 15px;
+}
+
+ul ul li  {
+	font-size : 85%;
+	text-transform : lowercase;
+}
+
+pre {
+	color			: #888;
+	background		: #f9f9f9;
+	margin-left		: 30px;
+	padding-left	: 10px;
+	padding-right   : 10px;
+	padding-top		: 10px;
+	padding-bottom	: 10px;
+	border			: 1px solid #ddd;
+}
+
+
+code {
+	font-weight			: bold;
+	color				: #888;
+	padding-left		: 2px;
+	padding-right		: 2px;
+}
+
+/*** MISC ***/
+
+.corpo {
+	border-top		: 1px dotted #ccc;
+	color			: #999;
+	font-size		: 8pt;
+	text-align		: center;
+	margin-bottom	: 20px;
+}
+
+
+/*** SITE LAYOUT ***/
+
+.siteHeader {
+	background-image	: url(/img/header_bg.gif);
+	background-repeat	: repeat-x;
+	background-position	: top center;
+}
+
+.siteBanner {
+	background-image	: url(/img/header.jpg);
+	background-repeat	: no-repeat;
+	background-position	: top center;
+	height : 123px;
+}
+
+.siteBox {
+	text-align	: justify;
+	width		: 800px;
+	margin		: auto;
+}
+
+.bannerContent {
+	text-align	: left;
+	width		: 800px;
+	margin		: auto;
+}
+
+.siteContent {
+	padding		: 10px;
+	padding-top	: 20px;
+}
+
+
+/*** MENU ***/
+
+ul.siteMenu {
+	list-style	: none;
+	margin		: 0px;
+	padding		: 0px;
+	margin-left	: 140px;
+	padding-top	: 92px;
+}
+
+ul.siteMenu li {
+	background	: none;
+	float		: left;
+	position	: relative;
+	margin		: 0px;
+	padding		: 0px;
+	margin-right: 10px;
+
+	font-size	: 9pt;
+	color		: #777;
+	text-transform: lowercase;
+}
+
+
+/*** TABLES ***/
+
+table {
+	border-collapse	: separate;
+	border-spacing	: 3px;
+	margin-left		: 60px;
+	border			: 1px dotted #f0f0f0;
+}
+
+table td {
+	background-color	: #fafafa;
+	padding-left		: 5px;
+	padding-right		: 5px;
+}
+
+
+table th {
+	color				: #999;
+	background-color	: #eee;
+	padding-left		: 5px;
+	padding-right		: 5px;
+}
+
+
+/*** HACKS ***/
+
+#scroll {
+	position : absolute;
+	top : 0;
+	bottom : -0.1px;
+	width : 1em;
+	z-index : -1;
+}
+
+/*** DOCUMENTATION ***/
+
+doc_blk {
+	display : block;
+	margin-bottom : 20px;
+}
+
+doc_code {
+	font-family : fixed;
+}
+
+doc_doc {
+	display : block;
+}
+
+doc_type, doc_name {
+	font-family : fixed;
+	color			: #888;
+	background-color	: #f9f9f9;
+}
+
+/**** WIKI ****/
+
+div.breadcrumbs {
+	margin-top : 20px;
+	font-size : 9pt;
+	text-decoration : none;
+}
+
+div.secedit input.button {
+	margin-top : -15px;
+	height : 15px !important;
+	min-height : 15px !important;
+	max-height : 15px !important;
+	float : right;
+	display : inline;
+}
+
+input.button {
+	font-size : 9pt;
+	border : 1px solid #888;
+	background-color : #eee;
+}
+
+div.adminlinks {
+	text-align : right;
+	margin-bottom : 5px;
+}
+
+.adminlinks form {
+	display : inline;
+	margin-right : 5px;
+	margin-left : 0px;
+}
+
+form.search {
+	margin-left : 2em;
+	margin-top : -20px;
+	margin-bottom: 0;
+	float:right;
+	width : 230px;
+}
+
+.search input.edit  {
+	width : 120px;
+	font-size : 9pt;
+	border : 1px solid #888;
+	margin-right : 5px;
+	display : inline;
+}
+
+.search input.button {
+	width : 65px;
+}
+
+/* ---------- wiki links ----------- */
+
+/* external link */
+a.urlextern{
+	background: transparent url(images/link_icon.gif) 0px 1px no-repeat;
+	padding: 1px 0px 1px 16px;
+}
+
+/* windows share */
+a.windows{
+	background: transparent url(images/windows.gif) 0px 1px no-repeat;
+	padding: 1px 0px 1px 16px;
+}
+
+/* interwiki link */
+a.interwiki{
+  	background: transparent url(images/interwiki.png) 0px 1px no-repeat;
+	padding-left: 16px;
+	color:#436976;
+	text-decoration:none;
+}
+
+a.interwiki:hover {
+	text-decoration:underline;
+}
+
+/* link to some embedded media */
+a.media {
+	color:#436976;
+	text-decoration:none;
+}
+
+a.media:hover {
+	color:#436976;
+	text-decoration:underline
+}
+										/* email link */
+a.mail {
+	background: transparent url(images/mail_icon.gif) 0px 1px no-repeat;
+	padding: 1px 0px 1px 16px;
+	color:#436976;
+	text-decoration:none;
+}
+
+a.mail:hover {
+	text-decoration:underline;
+}
+
+/* not existing wikipage */
+
+a.wikilink2:link    { color:#FF3300; text-decoration:none }
+a.wikilink2:visited { color:#FF3300; text-decoration:none }
+a.wikilink2:hover   { color:#FF3300; text-decoration:underline }
+
+/* ---------- table of contents ------------------- */
+
+div.toc
+{
+	margin-left: 2em;
+	margin-top: 0px;
+	margin-bottom: 0;
+	float:right;
+	width: 230px;
+	font-size: 80%;
+	clear:both;
+}
+
+div.tocheader {
+	display : none;
+	border : none;
+	background-color: #fb0;
+	text-align: center;
+	margin-bottom: 2px;
+	font-weight:bold;
+	color : White;
+}
+
+div.toctoggle {
+	float:right;
+	margin-top:0.3em;
+	margin-right:3px;
+}
+
+div.toctoggle img {
+	width:0.8em;
+	height:0.8em;
+}
+
+#tocinside {
+	border: 1px dashed #666;
+	background-color: #ffffff;
+	text-align: left;
+	padding-top: 0.5em;
+	padding-bottom: 0.7em;
+}
+
+ul.toc {
+	list-style-type: none;
+	list-style-image: none;
+	line-height: 1.2em;
+	margin: 0;
+	padding: 0;
+	padding-left: 1em;
+}
+
+ul.toc li {
+	background: transparent url(images/tocdot2.gif) 0 0.6em no-repeat;
+	padding-left:0.4em;
+}
+
+ul.toc li.clear {
+	background-image: none;
+	padding-left:0.4em;
+}
+
+
+
+div.clearer {clear: both; line-height: 0; height: 0;}
+
+div.error{
+  background: #ff6666 url(../images/error.png) 0.5em 0px no-repeat;
+  font-size: 90%;
+  margin: 0px;
+  padding-left: 3em;
+}
+
+div.info{
+  background: #ffff66 url(../images/info.png) 0.5em 0px no-repeat;
+  font-size: 90%;
+  margin: 0;
+  padding-left: 3em;
+}
+
+div.success{
+  background: #66ff66 url(../images/thumbup.gif) 0.5em 0px no-repeat;
+  font-size: 90%;
+  margin: 0;
+  padding-left: 3em;
+}
+
+/* syntax highlighting code */
+.code .br0	{ color: #66cc66; }
+.code .co1	{ color: #808080; font-style: italic; }
+.code .co2	{ color: #808080; font-style: italic; }
+.code .coMULTI	{ color: #808080; font-style: italic; }
+.code .es0	{ color: #000099; font-weight: bold; }
+.code .kw1	{ color: #b1b100; }
+.code .kw2	{ color: #000000; font-weight: bold; }
+.code .kw3	{ color: #000066; }
+.code .kw4	{ color: #993333; }
+.code .kw5	{ color: #0000ff; }
+.code .me0	{ color: #006600; }
+.code .nu0	{ color: #cc66cc; }
+.code .re0	{ color: #0000ff; }
+.code .re1	{ color: #0000ff; }
+.code .re2	{ color: #0000ff; }
+.code .re4	{ color: #009999; }
+.code .sc0	{ color: #00bbdd; }
+.code .sc1	{ color: #ddbb00; }
+.code .sc2	{ color: #009900; }
+.code .st0	{ color: #ff0000; }
