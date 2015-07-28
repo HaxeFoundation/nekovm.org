@@ -28,6 +28,7 @@ class NekoSite extends Controller {
 		return nekoApi.getApi( name ) >> function( page:Page ):ViewResult {
 			var view = new ViewResult( page, "page.html" );
 			view.setVar( "currentYear", Date.now().getFullYear() );
+			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
 			return view;
 		};
 	}
@@ -38,6 +39,7 @@ class NekoSite extends Controller {
 		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
 			var view = new ViewResult( page );
 			view.setVar( "currentYear", Date.now().getFullYear() );
+			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
 			return view;
 		};
 	}
