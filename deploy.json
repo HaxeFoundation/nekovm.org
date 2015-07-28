@@ -1,0 +1,39 @@
+{
+	"files": [
+		".htaccess",
+		"favicon.ico",
+		"index.n",
+		"js/",
+		"css/",
+		"img/",
+		"view/",
+		"pages/"
+	],
+	"targets": [
+		{
+			"name": "nekovm.org",
+			"gitRepo": "ssh://www-haxe@haxe.org/data/nekovm.org/repo.git",
+			"defines": [],
+			"hxmls": ["server"],
+			"debug": false,
+			"servers": [{
+				"name": "haxe.org",
+				"user": "www-haxe",
+				"host": "haxe.org",
+				"port": 22,
+				"remoteDir": "/data/nekovm.org/www/"
+			}]
+		}
+	],
+	"hooks": {
+		"beforeBuild": [],
+		"afterBuild": [],
+		"beforeCopy": [],
+		"afterCopy": [],
+		"beforePush": [],
+		"afterPush": [],
+		"beforePull": [],
+		"afterPull": [],
+		"afterComplete": []
+	}
+}
