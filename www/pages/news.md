@@ -23,13 +23,13 @@ News
 
 **October 9th 2006** Neko 1.4.5 is a bugfix release. See [CHANGES](media/CHANGES.txt) and [download](download).
 
-**August 1st 2006** Neko 1.4 is there : it now includes Fast `x86` JIT. See [CHANGES](doc/changes:v1.4) and [download](download).
+**August 1st 2006** Neko 1.4 is there : it now includes Fast `x86` JIT. See [CHANGES](doc/changes/v1.4) and [download](download).
 
-**May 11th 2006** Neko 1.3 has been released ! See [CHANGES](doc/changes:v1.3) and get the [distribution](download).
+**May 11th 2006** Neko 1.3 has been released ! See [CHANGES](doc/changes/v1.3) and get the [distribution](download).
 
 **January 10th 2006** The website is now a Wiki. You can ask edit permissions on the neko [list](ml)
 
-**January 9th 2006** Neko 1.2 has been released ! See [CHANGES](doc/changes:v1.2) and get the [distribution](download).
+**January 9th 2006** Neko 1.2 has been released ! See [CHANGES](doc/changes/v1.2) and get the [distribution](download).
 
 **November 10th 2005** Neko 1.1 has been released ! [Download](download) it now and watch the [Changes](http://ncannasse.free.fr/?p=52).
 

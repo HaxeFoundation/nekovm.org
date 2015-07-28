@@ -8,7 +8,7 @@ The following documents are available :
 - The Neko Virtual Machine [Documentation](doc/vm)
 - An Introduction to [Mod_neko](doc/mod_neko)
 - The Documention of [Neko Libraries](doc/libs)
-- Some thoughts about [Languages Interoperability](doc/misc:multilang)
+- Some thoughts about [Languages Interoperability](doc/misc/multilang)
 - A Quick Guide to [NekoML](doc/nekoml)
 - Documentation of [NXML](doc/nxml), a regular XML syntax for Neko
 - Neko and [Multithreading](doc/mt) documentation
