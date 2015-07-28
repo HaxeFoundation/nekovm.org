@@ -4,6 +4,10 @@ using StringTools;
 class PageProcessor {
 	public static function processMarkdown( markdown:String ) {
 		var html = Markdown.markdownToHtml( markdown );
+		return processHtml( html );
+	}
+
+	public static function processHtml( html:String ) {
 		var dom = html.parse();
 		return new PageProcessor( dom ).process();
 	}
@@ -34,6 +38,10 @@ class PageProcessor {
 				case "h4": addLink( child, 4 );
 			}
 		}
+
+		if ( mainTOC.children(true).length==0 )
+			mainTOC = null;
+
 		return {
 			title: title,
 			content: dom,

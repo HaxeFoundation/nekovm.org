@@ -1,10 +1,12 @@
 <div class="level1">
 
-	<div class="toc">
-		<div id="tocinside">
-			::toc::
+	::if (toc.length>0)::
+		<div class="toc">
+			<div id="tocinside">
+				::toc::
+			</div>
 		</div>
-	</div>
+	::end::
 
 	::content::
 
