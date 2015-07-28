@@ -68,7 +68,7 @@ Here's the notation of types that should be used when documenting libraries :
 
 - if the `null` value is accepted as well as some other ype, you can write, for example `int?`, which means `int` or `null`.
 
-- if several types are accepted you can separate them with pipes. `number` is actually a shortcut for `int | float`.
+- if several types are accepted you can separate them with pipes. `number` is actually a shortcut for `int|float`.
 
 - you can introduce your own names, prefixed with a sharp, that can be defined in your documentation using for example `#point = { x => int, y => int }`. In the case you don't define your type, the user of the library should not rely on its actual implementation since you can change it in the future.
 
