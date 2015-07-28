@@ -682,7 +682,7 @@ If the overloaded field is not defined when an operation occured, an exception i
 
 ### Prototypes
 
-Each object can have a //prototype// which is also an object. When a field is accessed for reading and is not found in an object, it is searched in its prototype, and like this recursively.
+Each object can have a *prototype* which is also an object. When a field is accessed for reading and is not found in an object, it is searched in its prototype, and like this recursively.
 
 Prototypes can be accessed using `$objgetproto` and `$objsetproto` :
 
@@ -817,7 +817,7 @@ catch e {
 }
 ```
 
-Every time an exception is catched, the //exception stack// is stored and can be retrieved using the builtin `$excstack()`. It contains the filenames and positions of the different calls between the `try` and the place the exception was raised.
+Every time an exception is catched, the *exception stack* is stored and can be retrieved using the builtin `$excstack()`. It contains the filenames and positions of the different calls between the `try` and the place the exception was raised.
 
 ```neko
 try
@@ -847,7 +847,7 @@ It is also possible to get the current call stack at any point of a Neko program
 
 ## Hashtables
 
-There is a set of builtins that are useful for using Hashtables. An hashtable is not a basic type but an //abstract// type. It can then only be manipulated using the following builtins :
+There is a set of builtins that are useful for using Hashtables. An hashtable is not a basic type but an *abstract* type. It can then only be manipulated using the following builtins :
 
 - `$hnew(size)` : create a new hashtable having initialy `size` slots.
 - `$hadd(h,k,v)` : add the value `v` with key `k` to the hashtable. Please note that `k` can be any Neko value, even recursive.
@@ -866,7 +866,7 @@ You can of course write your own hashtable implementation using Neko data struct
 
 ## Labels and Gotos
 
-It is sometimes useful to be able to jump directly at some code location. Labels are providing a way to //mark// a location in the code and the builtin `$goto` can jump to a label :
+It is sometimes useful to be able to jump directly at some code location. Labels are providing a way to *mark* a location in the code and the builtin `$goto` can jump to a label :
 
 ```neko
 $print("enter");
@@ -890,7 +890,7 @@ In all cases, gotos to labels are preserving the stack. For example in the follo
 next:
 ```
 
-If the goto is done //inside// a block having defined local variables, these variables are also accessible but their values are unspecified :
+If the goto is done *inside* a block having defined local variables, these variables are also accessible but their values are unspecified :
 
 ```neko
 $goto(next);

@@ -5,15 +5,15 @@ Frequently Asked Questions about Neko :
 
 ## How is Neko different from .Net's CLR or the Java's JVM?
 
-The .Net's CLR and the Java Virtual Machine are both defined by a *bytecode* language with a *static type system* based on *classes//. As a result, you can easily run languages that have a type system compatible with Java or C# on these virtual machines. But if you have a dynamically typed language or no class system, you'll have to trick the virtual machine and find a *type mapping* from your type system to the JVM or the .NET one.
+The .Net's CLR and the Java Virtual Machine are both defined by a *bytecode* language with a *static type system* based on *classes*. As a result, you can easily run languages that have a type system compatible with Java or C# on these virtual machines. But if you have a dynamically typed language or no class system, you'll have to trick the virtual machine and find a *type mapping* from your type system to the JVM or the .NET one.
 
 Neko is a lot more simple. First it is not a *bytecode* language but a high-level *programming* language. You don't have then to write a *compiler* for it, a simple *generator* that translates your program into the corresponding Neko program is enough. You still have to find a mapping from your values to Neko *data structures* but Neko gives you a dynamically typed language with no fixed class system. You have then to find a *runtime mapping* so that your program *executes* correctly on Neko, and not a *type mapping* so that your program *types* correctly like with .NET / JVM.
 
-As a result, it is easier to write a new or existing language on the NekoVM than it is for the CLR / JVM, since you don't have to deal with a highlevel type system. Also, this means that languages can interoperate more easily since they only need to share the same *data structures* and not always the same *types//.
+As a result, it is easier to write a new or existing language on the NekoVM than it is for the CLR / JVM, since you don't have to deal with a highlevel type system. Also, this means that languages can interoperate more easily since they only need to share the same *data structures* and not always the same *types*.
 
 ## How is Neko different from LLVM or C--?
 
-These are compiler frameworks with low-level *abstract processor instructions* and a static type system with low-level *memory manipulation functions//. For example, it would be possible to use these frameworks to compile Neko, which stands as a higher-level language, although Neko is powered by its own runtime.
+These are compiler frameworks with low-level *abstract processor instructions* and a static type system with low-level *memory manipulation functions*. For example, it would be possible to use these frameworks to compile Neko, which stands as a higher-level language, although Neko is powered by its own runtime.
 
 As a result, Neko is perhaps less suitable to optimizations than these *abstract processors* but is a lot easier to target for language designers that want to reuse a runtime. Since Neko is not a *framework*, it is very lightweight. For example, you only need `libneko.so`, which is only 68 KB, in order to embed and run Neko programs in your application.
 
@@ -25,7 +25,7 @@ Actually, it is one of the goals of Neko to be able to run these languages on th
 
 ## How is Neko different from Lua?
 
-A complete [lua](comparison) is available. Neko has better OO support and a more easy-to-use C FFI. Neko is faster for data structures manipulation but slower for floating-point arithmetics.
+A complete [comparison](lua) is available. Neko has better OO support and a more easy-to-use C FFI. Neko is faster for data structures manipulation but slower for floating-point arithmetics.
 
 
 ## How is Neko different from Parrot?

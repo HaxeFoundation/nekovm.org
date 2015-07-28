@@ -1,6 +1,6 @@
 # Neko Virtual Machine
 
-Before reading this part of the documentation, it is recommend to have already read the [C FFI](doc/ffi) Documentation or to have a good knowledge of it.
+Before reading this part of the documentation, it is recommend to have already read the [C FFI](/doc/ffi) Documentation or to have a good knowledge of it.
 
 ## Running the VM
 
