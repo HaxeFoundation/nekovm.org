@@ -15,6 +15,7 @@ class PageProcessor {
 	var dom:DOMCollection = null;
 	var mainTOC:DOMCollection = null;
 	var currentIndentLevel:Int = 1;
+	var numberOfLinks:Int = 0;
 	var currentMenu:DOMCollection = null;
 	var currentLink:DOMCollection = null;
 
@@ -39,7 +40,7 @@ class PageProcessor {
 			}
 		}
 
-		if ( mainTOC.children(true).length<2 )
+		if ( numberOfLinks<2 )
 			mainTOC = null;
 
 		return {
@@ -51,6 +52,7 @@ class PageProcessor {
 
 	function addLink( headerNode:DOMNode, indent:Int ) {
 		var title = headerNode.text();
+		numberOfLinks++;
 
 		// Figure out a href for this header.
 		var url = title.trim().toLowerCase().replace( " ", "_" );
