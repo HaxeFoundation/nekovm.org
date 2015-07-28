@@ -6,41 +6,41 @@ Several libraries are already available with the standard Neko distribution. Thi
 
 ## Libraries
 
-- [Builtins](view/builtins)
+- [Builtins](/doc/view/builtins)
 
 - The Standard Library comprises several modules :
 
-	- [Buffer](view/buffer)
-	- [Date](view/date)
-	- [File](view/file)
-	- [Int32](view/int32)
-	- [Math](view/math)
-	- [MD5](view/md5)
-	- [Memory](view/memory)
-	- [Module](view/module)
-	- [Random](view/random)
-	- [Serialize](view/serialize)
-	- [Socket](view/socket)
-	- [String](view/string)
-	- [System](view/sys)
-	- [UTF8](view/utf8)
-	- [Xml](view/xml)
-	- [Thread](view/thread)
-	- [Ui](view/ui)
-	- [Process](view/process)
-	- [Misc](view/misc)
+	- [Buffer](/doc/view/buffer)
+	- [Date](/doc/view/date)
+	- [File](/doc/view/file)
+	- [Int32](/doc/view/int32)
+	- [Math](/doc/view/math)
+	- [MD5](/doc/view/md5)
+	- [Memory](/doc/view/memory)
+	- [Module](/doc/view/module)
+	- [Random](/doc/view/random)
+	- [Serialize](/doc/view/serialize)
+	- [Socket](/doc/view/socket)
+	- [String](/doc/view/string)
+	- [System](/doc/view/sys)
+	- [UTF8](/doc/view/utf8)
+	- [Xml](/doc/view/xml)
+	- [Thread](/doc/view/thread)
+	- [Ui](/doc/view/ui)
+	- [Process](/doc/view/process)
+	- [Misc](/doc/view/misc)
 
-- [Regexp](view/regexp)
+- [Regexp](/doc/view/regexp)
 
-- [Mysql](view/mysql)
+- [Mysql](/doc/view/mysql)
 
-- [Mod_neko](view/cgi)
+- [Mod_neko](/doc/view/cgi)
 
-- [Sqlite](view/sqlite)
+- [Sqlite](/doc/view/sqlite)
 
-- [ZLib](view/zlib)
+- [ZLib](/doc/view/zlib)
 
-If you want to write your own libraries, have a look at the [C FFI](ffi) Documentation.
+If you want to write your own libraries, have a look at the [C FFI](/ffi) Documentation.
 
 
 

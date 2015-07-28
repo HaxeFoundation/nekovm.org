@@ -25,7 +25,7 @@ Actually, it is one of the goals of Neko to be able to run these languages on th
 
 ## How is Neko different from Lua?
 
-A complete [comparison](lua) is available. Neko has better OO support and a more easy-to-use C FFI. Neko is faster for data structures manipulation but slower for floating-point arithmetics.
+A complete [comparison](/lua) is available. Neko has better OO support and a more easy-to-use C FFI. Neko is faster for data structures manipulation but slower for floating-point arithmetics.
 
 
 ## How is Neko different from Parrot?

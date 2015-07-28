@@ -4,7 +4,7 @@ Mod_neko is an Apache *module* for Neko. It means it is possible to run Neko pro
 
 ## Quick configuration
 
-If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running localy for development purposes only. It mimics the same [API](doc/view:cgi) as `mod_neko` so you can use it instead.
+If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running localy for development purposes only. It mimics the same [API](/doc/view:cgi) as `mod_neko` so you can use it instead.
 
 In order to start the server, simply run the following command :
 
