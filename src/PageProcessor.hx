@@ -39,7 +39,7 @@ class PageProcessor {
 			}
 		}
 
-		if ( mainTOC.children(true).length==0 )
+		if ( mainTOC.children(true).length<2 )
 			mainTOC = null;
 
 		return {
