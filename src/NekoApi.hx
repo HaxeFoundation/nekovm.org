@@ -1,4 +1,6 @@
-import ufront.MVC;
+import ufront.*;
+import ufront.web.*;
+import ufront.api.*;
 import sys.FileSystem;
 import sys.io.File;
 using Detox;
