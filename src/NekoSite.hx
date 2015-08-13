@@ -9,12 +9,24 @@ class NekoSite extends Controller {
 	static var ufApp:UfrontApplication;
 
 	static function main() {
-		ufApp = new UfrontApplication({
-			indexController: NekoSite,
-			defaultLayout: "layout.html",
-		});
-		ufApp.useModNekoCache();
-		ufApp.executeRequest();
+
+		#if server
+			// Initialise the app on the server and execute the request.
+			var ufApp = new UfrontApplication({
+				indexController: NekoSite,
+				remotingApi: NekoRemotingContext,
+				defaultLayout: "layout.html"
+			});
+			ufApp.executeRequest();
+			ufApp.useModNekoCache();
+		#elseif client
+			// Initialise the app on the client and respond to "pushstate" requests as a single-page-app.
+			var clientApp = new ClientJsApplication({
+				indexController: NekoSite,
+				defaultLayout: "layout.html"
+			});
+			clientApp.listen();
+		#end
 	}
 
 	// Main controller
@@ -23,9 +35,9 @@ class NekoSite extends Controller {
 
 	@:route("/sitemap/")
 	public function sitemap() {
-		return nekoApi.getSitemap() >> function( sitemap:Sitemap ) {
+		return nekoApi.getSitemap() >> function( sitemap:Sitemap ):PartialViewResult {
 			var ul = sitemapToList( sitemap );
-			return new ViewResult({
+			return new PartialViewResult({
 				title: "Sitemap",
 				content: '<h1>Sitemap</h1>'+ul,
 				currentYear: Date.now().getFullYear(),
@@ -39,7 +51,7 @@ class NekoSite extends Controller {
 		buf.add( '<ul class="sitemap">' );
 		for ( link in sitemap ) {
 			buf.add( '<li>' );
-			var label = (link.link!=null) ? '<a href="${link.link}">${link.name}</a>' : '${link.name}';
+			var label = (link.link!=null) ? '<a href="${link.link}" rel="pushstate">${link.name}</a>' : '${link.name}';
 			buf.add( label );
 			if ( link.children!=null ) {
 				buf.add( sitemapToList(link.children) );
@@ -51,8 +63,8 @@ class NekoSite extends Controller {
 
 	@:route("/doc/view/$name")
 	public function api( name:String ) {
-		return nekoApi.getApi( name ) >> function( page:Page ):ViewResult {
-			var view = new ViewResult( page, "page.html" );
+		return nekoApi.getApi( name ) >> function( page:Page ):PartialViewResult {
+			var view = new PartialViewResult( page, "page.html" );
 			view.setVar( "currentYear", Date.now().getFullYear() );
 			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
 			return view;
@@ -62,8 +74,8 @@ class NekoSite extends Controller {
 	@:route("/*")
 	public function page( rest:Array<String> ) {
 		var pageName = (rest.length>0) ? rest.join("/") : "index";
-		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
-			var view = new ViewResult( page );
+		return nekoApi.getPage( pageName ) >> function( page:Page ):PartialViewResult {
+			var view = new PartialViewResult( page );
 			view.setVar( "currentYear", Date.now().getFullYear() );
 			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
 			return view;

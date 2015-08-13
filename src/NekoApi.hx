@@ -1,10 +1,12 @@
 import ufront.MVC;
-import sys.FileSystem;
-import sys.io.File;
-using Detox;
-using StringTools;
-using haxe.io.Path;
-using Lambda;
+#if server
+	import sys.FileSystem;
+	import sys.io.File;
+	using Detox;
+	using StringTools;
+	using haxe.io.Path;
+	using Lambda;
+#end
 
 class NekoApi extends UFApi {
 	@inject("scriptDirectory") public var scriptDir:String;
@@ -71,13 +73,17 @@ class NekoApi extends UFApi {
 }
 class AsyncNekoApi extends UFAsyncApi<NekoApi> {}
 
+class NekoRemotingContext extends UFApiContext {
+	var nekoApi:NekoApi;
+}
+
 typedef Page = {
 	title:String,
 	content:String,
 	toc:String
 }
 typedef Sitemap = Array<{
-    name:String,
-    link:Null<String>,
-    children:Null<Sitemap>
+	name:String,
+	link:Null<String>,
+	children:Null<Sitemap>
 }>

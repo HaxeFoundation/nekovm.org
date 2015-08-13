@@ -40,6 +40,12 @@ class PageProcessor {
 			}
 		}
 
+		for ( link in dom.find("a[href]") ) {
+			if ( link.attr("href").startsWith("/") ) {
+				link.addClass( "pushstate" );
+			}
+		}
+
 		if ( numberOfLinks<2 )
 			mainTOC = null;
 
@@ -51,6 +57,8 @@ class PageProcessor {
 	}
 
 	function addLink( headerNode:DOMNode, indent:Int ) {
+		// Note: headerNode.text() is currently not working on PHP.
+		// Until the Detox unit tests run on PHP (and pass) I won't investigate further.
 		var title = headerNode.text();
 		numberOfLinks++;
 

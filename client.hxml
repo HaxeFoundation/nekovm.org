@@ -1,0 +1,5 @@
+-lib ufront-client
+-cp src
+-main NekoSite
+
+-js www/js/client.js

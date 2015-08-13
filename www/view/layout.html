@@ -9,32 +9,32 @@
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.css"/>
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
 	</head>
-	<body>
+	<body data-layout="neko">
 		<div class="center">
 
 			<div class="siteHeader">
 				<div class="siteBanner">
 					<div class="bannerContent">
-						<ul class="siteMenu">
-							<li><a href="/index">home</a></li>
-							<li><a href="/news">news</a></li>
-							<li><a href="/download">downloads</a></li>
-							<li><a href="/doc">documentation</a></li>
-							<li><a href="/faq">FAQ</a></li>
+						<ul class="siteMenu" data-partial="menu">
+							<li><a href="/" rel="pushstate">home</a></li>
+							<li><a href="/news" rel="pushstate">news</a></li>
+							<li><a href="/download" rel="pushstate">downloads</a></li>
+							<li><a href="/doc" rel="pushstate">documentation</a></li>
+							<li><a href="/faq" rel="pushstate">FAQ</a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 
 			<div class="siteBox">
-				<div class="siteContent">
+				<div class="siteContent" data-partial="content">
 					::viewContent::
 				</div>
 			</div>
 
 			<div class="corpo">
 				<a href="::editLink::">Contribute to this page using Github</a>.
-				| <a href="/sitemap/">View Sitemap</a>.
+				| <a href="/sitemap/" rel="pushstate">View Sitemap</a>.
 				| &copy;::currentYear:: <a href="http://haxe.org/foundation/">Haxe Foundation</a>.
 			</div>
 
@@ -43,5 +43,6 @@
 		<script src="/js/code-highlight.js"></script>
 		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
 		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="/js/client.js"></script>
 	</body>
 </html>

@@ -4,4 +4,11 @@
 -cp src
 -main NekoSite
 
+--each
+
 -neko www/index.n
+
+--next
+
+-php www/
+--php-lib php

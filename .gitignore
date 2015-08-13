@@ -1,3 +1,7 @@
 www/index.n
+www/index.php
+www/php/
+www/js/client.js
+www/js/client.js.map
 www/media/
 deploy/
