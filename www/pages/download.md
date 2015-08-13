@@ -7,6 +7,7 @@ The following downloads are currently available :
 - Neko 2.0.0 [Linux binaries](media/neko-2.0.0-linux.tar.gz)
 - Neko 2.0.0 [Linux 64 bits binaries](media/neko-2.0.0-linux64.tar.gz)
 - Neko 2.0.0 [OS X binaries](media/neko-2.0.0-osx.tar.gz)
+- Neko 2.0.0 [OS X binaries](media/neko-2.0.0-osx64.tar.gz)
 
 To compile from sources you need to install [libgc-dev](http://www.hpl.hp.com/personal/Hans_Boehm/gc).
 
