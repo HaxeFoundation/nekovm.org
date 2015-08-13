@@ -4,7 +4,7 @@
 	<p>
 	An API for starting and communication with sub processes.
 	</p>
-	
+
 <doc_blk>
   <doc_type>'process</doc_type> <doc_name>process_run</doc_name><doc_type>(cmd : string, args : string array)</doc_type> <doc_doc>
 	Start a process using a command and the specified arguments.
@@ -46,7 +46,8 @@
 	Returns the process id.
 	</doc_doc>
 </doc_blk>
-<doc_type>void</doc_type> <doc_name>process_close</doc_name><doc_type>('process)</doc_type> <doc_doc>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>process_close</doc_name><doc_type>('process)</doc_type> <doc_doc>
 	Close the process I/O.
 	</doc_doc>
 </doc_blk>

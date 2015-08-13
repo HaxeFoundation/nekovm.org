@@ -30,7 +30,7 @@ Once Neko is installed on your system you have to setup a few things :
 
 - **On Linux** : Setup your system so it will look for shared libraries in the install path (using `export LD_LIBRARY_PATH=/usr/lib/neko` for example). Put `neko`, `nekoc` and `nekotools` in `/usr/bin` or other directory that you are using. Install the `libgc1` package on your system.
 
-- **On Windows** : Add the `c:\neko` directory to your `PATH` environment variable. Here are instructions for [Windows 2000](http://support.microsoft.com/default.aspx?scid=kb;en-us;310519&sd=tech|Windows XP]] and [[http://support.microsoft.com/default.aspx?scid=kb;en-us;311843&sd=tech).
+- **On Windows** : Add the `c:\neko` directory to your `PATH` environment variable. Here are instructions for [Windows 2000](https://support.microsoft.com/en-us/kb/311843) and [Windows XP](https://support.microsoft.com/en-us/kb/310519).
 
 - **On Mac OS X(10.5 "leopard")** : make a new folder, for example `/opt/neko/`. Unpack the contents from the download ("OS X Universal binaries") to `/opt/neko/`. Add NEKOPATH to your `.bash_profile`(`NEKOPATH=$NEKOPATH:/opt/neko/:/opt/neko/neko; PATH=$PATH:/usr/bin/:$NEKOPATH; export PATH; export NEKOPATH`)
 
