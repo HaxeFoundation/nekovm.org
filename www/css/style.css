@@ -408,3 +408,11 @@ ul.toc li.clear {
 
 
 div.clearer {clear: both; line-height: 0; height: 0;}
+
+.siteContent {
+	transition: opacity 0.5s ease;
+	opacity: 1;
+}
+.siteContent.partial-loading {
+	opacity: 0.3;
+}

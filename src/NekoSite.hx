@@ -35,14 +35,15 @@ class NekoSite extends Controller {
 
 	@:route("/sitemap/")
 	public function sitemap() {
-		return nekoApi.getSitemap() >> function( sitemap:Sitemap ):PartialViewResult {
+		var pvr = new PartialViewResult({}, "page.html");
+		return nekoApi.getSitemap() >> function( sitemap:Sitemap ):ViewResult {
 			var ul = sitemapToList( sitemap );
-			return new PartialViewResult({
+			return pvr.setVars({
 				title: "Sitemap",
 				content: '<h1>Sitemap</h1>'+ul,
 				currentYear: Date.now().getFullYear(),
 				editLink: 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/',
-			}, "page.html");
+			});
 		}
 	}
 
@@ -63,22 +64,24 @@ class NekoSite extends Controller {
 
 	@:route("/doc/view/$name")
 	public function api( name:String ) {
-		return nekoApi.getApi( name ) >> function( page:Page ):PartialViewResult {
-			var view = new PartialViewResult( page, "page.html" );
-			view.setVar( "currentYear", Date.now().getFullYear() );
-			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
-			return view;
+		var pvr = new PartialViewResult( {}, "page.html" );
+		return nekoApi.getApi( name ) >> function( page:Page ):ViewResult {
+			pvr.setVars( page );
+			pvr.setVar( "currentYear", Date.now().getFullYear() );
+			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
+			return pvr;
 		};
 	}
 
 	@:route("/*")
 	public function page( rest:Array<String> ) {
 		var pageName = (rest.length>0) ? rest.join("/") : "index";
-		return nekoApi.getPage( pageName ) >> function( page:Page ):PartialViewResult {
-			var view = new PartialViewResult( page );
-			view.setVar( "currentYear", Date.now().getFullYear() );
-			view.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
-			return view;
+		var pvr = new PartialViewResult({});
+		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
+			pvr.setVars( page );
+			pvr.setVar( "currentYear", Date.now().getFullYear() );
+			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
+			return pvr;
 		};
 	}
 }
