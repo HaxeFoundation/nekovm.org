@@ -3,7 +3,7 @@
 
 ## Syntax
 
-The syntax of the Neko language was designed to be easy to parse and easy to generate. It is not specifically designed to be written by a programmer, but rather to be generated from a higher level language. For example, one could write easily a PHP-to-Neko or a Java-to-Neko converter that would generate equivalent code but with Neko syntax and semantics rather than those of PHP or Java.
+The syntax of the Neko language was designed to both be easy to parse and easy to generate. It is not specifically designed to be written by a programmer, but rather to be generated from a higher level language. For example, one could easily write a PHP-to-Neko, or a Java-to-Neko converter, that would generate the equivalent Neko code.
 
 In particular, there are not multiple levels of expression, as in C. Every statement is also an expression, thus enabling some constructs that are not possible in other languages (for example : `return if(x) { ... } else { ... }`). This makes the generation of Neko from functional languages easier.
 
@@ -82,10 +82,10 @@ switch-case :=
 
 - `continue` and `break` are not allowed outside of a `while` loop.
 
-- There are a few ambiguous cases when two expressions follow each other (as in `while` and `if`). If the second expression is inside parenthesis, it will be parsed as a call of first expression, while
+- There are a few ambiguous cases when two expressions follow each other (as in `while` and `if`). If the second expression is inside parenthesis, it will be parsed as a call of the first expression, while
 such a representation e1 (e2) exists in the AST (the semicolons are optional).
 
-- Arithmetic operations have the following precedences (from least to greatest ):
+- Arithmetic operations have the following precedences (from least to greatest):
 
 	- assignments
 	- `++=` and `%%--=%%`
