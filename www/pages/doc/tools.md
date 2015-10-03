@@ -2,7 +2,7 @@
 
 ## neko
 
-The `neko` command will run a file which contains compiled Neko bytecode. If the file has a '.n', you can omit it.
+The `neko` command will run a file which contains compiled Neko bytecode. If the file has the '.n' extension, you can omit it.
 
 	neko [bytecode_file]
 
@@ -38,7 +38,7 @@ It can also dump the bytecode from a compiled file. It will output a file with '
 
 ### stripping bytecode
 
-Debugging information and global names can be stripped from compiled bytecode. This is done in place, it does not create a new file.
+Debug information and global names can be stripped from compiled bytecode. This is done in-place and doesn't create a new file.
 
 	nekoc -z [bytecode_file]
 
@@ -78,7 +78,7 @@ URLs will be matched to '.n' files in the server directory. For example, http://
 
 ### standalone executable
 
-It is possible to create standalone executables from Neko bytecode. Note, however, that you will probably still need 'libneko.so' or 'libneko.dll' unless they are statically linked to `neko`.
+It's possible to create standalone executables from Neko bytecode. Note, however, that you will probably still need 'libneko.so' or 'libneko.dll' unless they are statically linked to `neko`.
 
 This will output an executable file with no extension.
 

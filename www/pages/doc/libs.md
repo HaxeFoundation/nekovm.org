@@ -60,7 +60,7 @@ Here's the notation of types that should be used when documenting libraries :
 
 - the type `function:` if a function with *n* parameters is accepted.
 
-- for abstracts, you need to give them a name (corresponding to their kind) and write it with a single quote as prefix (for example `'file` is an abstract of kind ).
+- for abstracts, you need to give them a name (corresponding to their kind) and write it with a single quote as prefix (for example `'file` is an abstract of kind file).
 
 - for arrays that contains a specified type of value, you can write the type before, then `int array` is an array containing only integers and `'file array array` is a two dimensions array that contains abstract files.
 
@@ -70,6 +70,6 @@ Here's the notation of types that should be used when documenting libraries :
 
 - if several types are accepted you can separate them with pipes. `number` is actually a shortcut for `int|float`.
 
-- you can introduce your own names, prefixed with a sharp, that can be defined in your documentation using for example `#point = { x => int, y => int }`. In the case you don't define your type, the user of the library should not rely on its actual implementation since you can change it in the future.
+- you can introduce your own names, prefixed with a sharp, that can be defined in your documentation using for example `#point = { x => int, y => int }`. In the case you don't define your type, the user of the library shouldn't rely on its actual implementation since you can change it in the future.
 
-Please respect this type notation standard when documenting your Neko programs and libraries: it will help people using them.
+Please respect this type notation standard when documenting your Neko programs and libraries: it will help the people using them.
