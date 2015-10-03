@@ -1,6 +1,6 @@
 # A Quick Guide to NekoML
 
-NekoML is a high-order functional language with type inference. It can be seen as Neko with a powerful static type system. It is very suitable for complex data structure manipulation, such as is performed by compilers. NekoML is inspired by OCaml, but walks different ways for some points.
+NekoML is a high-order functional language with type inference. It can be seen as Neko with a powerful static type system. It is very suitable for complex data structure manipulation, such as is performed by compilers. NekoML is inspired by OCaml, but walks different ways on some points.
 
 ## Types
 
@@ -186,4 +186,4 @@ function rec g() {
 
 ## More later...
 
-That's all for now since not so much time to write a complete manual. If you're interested by NekoML you can watch the Neko and NekoML compilers sources as well as the NekoML standard library which are on the Neko CVS. You can also ask on the Neko mailing list.
+That's all for now since there's not much time to write a complete manual. If you're interested in NekoML, you can watch the Neko and NekoML compiler sources as well as the NekoML standard library, which are on the Neko CVS. You can also ask on the Neko mailing list.
