@@ -35,11 +35,12 @@ class NekoSite extends Controller {
 
 	@:route("/sitemap/")
 	public function sitemap() {
-		var pvr = new PartialViewResult({}, "page.html");
+		var pvr = new PartialViewResult({});
 		return nekoApi.getSitemap() >> function( sitemap:Sitemap ):ViewResult {
 			var ul = sitemapToList( sitemap );
 			return pvr.setVars({
 				title: "Sitemap",
+				pageName: "sitemap",
 				content: '<h1>Sitemap</h1>'+ul,
 				currentYear: Date.now().getFullYear(),
 				editLink: 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/',
@@ -67,18 +68,32 @@ class NekoSite extends Controller {
 		var pvr = new PartialViewResult( {}, "page.html" );
 		return nekoApi.getApi( name ) >> function( page:Page ):ViewResult {
 			pvr.setVars( page );
+			pvr.setVar( "pageName", 'doc/libs' );
 			pvr.setVar( "currentYear", Date.now().getFullYear() );
 			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
 			return pvr;
 		};
 	}
 
+	@:route("/specs/$name")
+	public function specs( name:String ) {
+		var pvr = new PartialViewResult({}, "page.html");
+		return nekoApi.getPage( 'specs/$name' ) >> function( page:Page ):ViewResult {
+			pvr.setVars( page );
+			pvr.setVar( "pageName", "specs" );
+			pvr.setVar( "currentYear", Date.now().getFullYear() );
+			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/specs/$name.md' );
+			return pvr;
+		};
+	}
+	
 	@:route("/*")
 	public function page( rest:Array<String> ) {
 		var pageName = (rest.length>0) ? rest.join("/") : "index";
-		var pvr = new PartialViewResult({});
+		var pvr = new PartialViewResult({}, "page.html");
 		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
 			pvr.setVars( page );
+			pvr.setVar( "pageName", pageName );
 			pvr.setVar( "currentYear", Date.now().getFullYear() );
 			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
 			return pvr;

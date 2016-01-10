@@ -1,13 +1,88 @@
-<div class="level1">
 
-	::if (toc.length>0)::
-		<div class="toc">
-			<div id="tocinside">
-				::toc::
-			</div>
-		</div>
-	::end::
+::if (pageName!="index")::
+::if (pageName!="news")::
+::if (pageName!="download")::
+<div class="navigation">
+	<div id="tocinside">
+	<h3>Documentation</h3>
+	<ul class="toc">
+		<li><a href="/doc/begin" class="pushstate">Neko Starter's Guide</a></li>
+		<li><a href="/specs" class="pushstate">Programming Language Specifications</a>
+		::if (pageName=="specs")::
+		<ul>
+			<li><a href="/specs/syntax" class="pushstate">Syntax</a></li>
+			<li><a href="/specs/values" class="pushstate">Values</a></li>
+			<li><a href="/specs/execution-flow" class="pushstate">Execution Flow</a></li>
+			<li><a href="/specs/variables" class="pushstate">Variables</a></li>
+			<li><a href="/specs/operations-and-types" class="pushstate">Operations on Basic Types</a></li>
+			<li><a href="/specs/rtti" class="pushstate">Runtime Type Information (RTTI)</a></li>
+			<li><a href="/specs/functions" class="pushstate">Function &amp; Function Calls</a></li>
+			<li><a href="/specs/objects" class="pushstate">Objects</a></li>
+			<li><a href="/specs/arrays" class="pushstate">Arrays</a></li>
+			<li><a href="/specs/strings" class="pushstate">Strings</a></li>
+			<li><a href="/specs/exceptions" class="pushstate">Exceptions</a></li>
+			<li><a href="/specs/hashtables" class="pushstate">Hashtables</a></li>
+			<li><a href="/specs/labels-and-gotos" class="pushstate">Labels and Gotos</a></li>
+		</ul>
+		::end::
+		</li>
+		<li><a href="/doc/libs" class="pushstate">Neko Standard Library API</a>
+		::if (pageName == "doc/libs")::
+			<ul>
+				<li><a href="/doc/view/builtins" class="pushstate">Builtins</a></li>
+				<li><a href="/doc/view/buffer" class="pushstate">Buffer</a></li>
+				<li><a href="/doc/view/date" class="pushstate">Date</a></li>
+				<li><a href="/doc/view/file" class="pushstate">File</a></li>
+				<li><a href="/doc/view/int32" class="pushstate">Int32</a></li>
+				<li><a href="/doc/view/math" class="pushstate">Math</a></li>
+				<li><a href="/doc/view/md5" class="pushstate">MD5</a></li>
+				<li><a href="/doc/view/memory" class="pushstate">Memory</a></li>
+				<li><a href="/doc/view/module" class="pushstate">Module</a></li>
+				<li><a href="/doc/view/random" class="pushstate">Random</a></li>
+				<li><a href="/doc/view/serialize" class="pushstate">Serialize</a></li>
+				<li><a href="/doc/view/socket" class="pushstate">Socket</a></li>
+				<li><a href="/doc/view/string" class="pushstate">String</a></li>
+				<li><a href="/doc/view/sys" class="pushstate">System</a></li>
+				<li><a href="/doc/view/utf8" class="pushstate">UTF8</a></li>
+				<li><a href="/doc/view/xml" class="pushstate">Xml</a></li>
+				<li><a href="/doc/view/thread" class="pushstate">Thread</a></li>
+				<li><a href="/doc/view/ui" class="pushstate">Ui</a></li>
+				<li><a href="/doc/view/process" class="pushstate">Process</a></li>
+				<li><a href="/doc/view/misc" class="pushstate">Misc</a></li>
+				<li><a href="/doc/view/regexp" class="pushstate">Regexp</a></li>
+				<li><a href="/doc/view/mysql" class="pushstate">Mysql</a></li>
+				<li><a href="/doc/view/cgi" class="pushstate">Mod_neko</a></li>
+				<li><a href="/doc/view/sqlite" class="pushstate">Sqlite</a></li>
+				<li><a href="/doc/view/zlib" class="pushstate">ZLib</a></li>
+			</ul>
+		::end::
+		</li>
+		<li><a href="/doc/ffi" class="pushstate">C FFI</a> (Foreign Function Interface)</li>
+		<li><a href="/doc/vm" class="pushstate">Virtual Machine Documentation</a></li>
+		<li><a href="/doc/mod_neko" class="pushstate">Mod_neko</a></li>
+		<li><a href="/doc/misc/multilang" class="pushstate">Languages Interoperability</a></li>
+		<li><a href="/doc/nekoml" class="pushstate">NekoML</a></li>
+		<li><a href="/doc/nxml" class="pushstate">NXML</a></li>
+		<li><a href="/doc/mt" class="pushstate">Neko and  Multithreading</a></li>
+		<li><a href="/faq" class="pushstate">FAQ</a></li>
+	</ul>
+		::if (toc.length>0)::
+			<h3>On this page</h3>
+			::toc::
+		::end::
+	</div>
+</div>
+<div class="siteContent" data-uf-partial="content">
+::end::
+::end::
+::end::
 
 	::content::
-
+	
+::if (pageName!="index")::
+::if (pageName!="news")::
+::if (pageName!="download")::
 </div>
+::end::
+::end::
+::end::

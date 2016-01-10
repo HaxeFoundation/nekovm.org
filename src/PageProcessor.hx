@@ -30,13 +30,13 @@ class PageProcessor {
 
 		for ( child in dom ) if ( child.nodeType==Xml.Element ) {
 			switch child.nodeName {
-				case "h1":
+				/*case "h1":
 					addLink( child, 1 );
 					if ( title==null )
-						title = child.text();
-				case "h2": addLink( child, 2 );
-				case "h3": addLink( child, 3 );
-				case "h4": addLink( child, 4 );
+						title = child.text();*/
+				case "h2": addLink( child, 1 );
+				case "h3": addLink( child, 2 );
+				case "h4": addLink( child, 3 );
 			}
 		}
 

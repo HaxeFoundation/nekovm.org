@@ -1,6 +1,6 @@
 # Neko Starter's Guide
 
-So you want to learn about Neko? Here is a step-by-step guide to making and running your first neko program. Before you start, please choose a distribution, download it, and get ready to install it. But first, you should know that the pronunciation of "Neko" is `n[e]ko` and not `n[i]ko`.
+> So you want to learn about Neko? Here is a step-by-step guide to making and running your first neko program. Before you start, please choose a distribution, download it, and get ready to install it. But first, you should know that the pronunciation of "Neko" is `n[e]ko` and not `n[i]ko`.
 
 ## Installation
 

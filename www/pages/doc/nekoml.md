@@ -184,6 +184,6 @@ function rec g() {
 ```
 
 
-## More later...
+## More
 
-That's all for now since there's not much time to write a complete manual. If you're interested in NekoML, you can watch the Neko and NekoML compiler sources as well as the NekoML standard library, which are on the Neko CVS. You can also ask on the Neko mailing list.
+If you're interested in NekoML, you can watch the Neko and NekoML compiler sources as well as the NekoML standard library, which are on the Neko CVS. You can also ask on the Neko mailing list.

@@ -4,7 +4,7 @@ Neko sources syntax is easy to read, though can sometimes be difficult to genera
 
 For these reasons, an extension of the neko syntax is allowed which is called NXML. This is not a different format in the sense that you easily mix NXML and Neko sources together. You can put some NXML expressions in Neko sources and some Neko sources into an NXML document. NXML is based on XML and is representing a Neko Abstract Syntax Tree (AST).
 
-# NXML Nodes
+## NXML Nodes
 
 NXML is not a different Neko syntax, but a syntax extension. This means that you can put some NXML expressions inside of a Neko program and some Neko program inside of NXML as well.
 
@@ -64,7 +64,7 @@ fib = function(n) {
 </o>
 ```
 
-# File Position
+## File Position
 
 The additional attribute `p` can be placed on every NXML node in order to specify from which original file and line the expression is generated. For example `<i v="33" p="myfile.l:478"/>` is the integer 33 referenced in `myfile.l` at line 478.
 
@@ -72,7 +72,7 @@ When encountered, such position is stored and remains valid for all NXML nodes. 
 
 If you don't specify the filename in the `p` attribute, it's considered to be a number of lines skipped since the last `p` information. For example, `<nxml><i v="33" p="myfile.l:478"/><i v="34" p="2"/></nxml>` is listing two integers from `myfile.l`, the first `33` at line 478 and the second `34` at line 480 (478 + 2).
 
-# NXML to Neko
+## NXML to Neko
 
 There is a NXML to Neko generator which is available using the `nekoc` compiler. Simply run `nekoc myfile.neko` containing Neko/NXML syntax and it will create a `myfile2.neko` that will only contain Neko source code.
 
