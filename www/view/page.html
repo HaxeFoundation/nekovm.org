@@ -1,14 +1,13 @@
 
-::if (pageName!="index")::
-::if (pageName!="news")::
-::if (pageName!="download")::
+::if (contentGroup!="news")::
+::if (contentGroup!="download")::
 <div class="navigation">
 	<div id="tocinside">
 	<h3>Documentation</h3>
 	<ul class="toc">
 		<li><a href="/doc/begin" class="pushstate">Neko Starter's Guide</a></li>
 		<li><a href="/specs" class="pushstate">Programming Language Specifications</a>
-		::if (pageName=="specs")::
+		::if (contentGroup=="specs")::
 		<ul>
 			<li><a href="/specs/syntax" class="pushstate">Syntax</a></li>
 			<li><a href="/specs/values" class="pushstate">Values</a></li>
@@ -27,7 +26,7 @@
 		::end::
 		</li>
 		<li><a href="/doc/libs" class="pushstate">Neko Standard Library API</a>
-		::if (pageName == "doc/libs")::
+		::if (contentGroup == "doc/libs")::
 			<ul>
 				<li><a href="/doc/view/builtins" class="pushstate">Builtins</a></li>
 				<li><a href="/doc/view/buffer" class="pushstate">Buffer</a></li>
@@ -75,14 +74,11 @@
 <div class="siteContent" data-uf-partial="content">
 ::end::
 ::end::
-::end::
 
 	::content::
 	
-::if (pageName!="index")::
-::if (pageName!="news")::
-::if (pageName!="download")::
+::if (contentGroup!="news")::
+::if (contentGroup!="download")::
 </div>
-::end::
 ::end::
 ::end::

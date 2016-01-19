@@ -62,29 +62,33 @@ blockquote {
 	margin:0;
 }
 
-ul {
-	list-style	: none;
-
-	margin		: 0px;
-	padding		: 0px;
+blockquote.big {
+	font-size:130%;
 }
 
-li {
+.container ul {
+	list-style	: none;
+
+	margin		: 0;
+	padding		: 0;
+}
+
+.container li {
 	background-image	: url(/img/tick.gif);
 	background-repeat	: no-repeat;
 	background-position	: 15px 10px;
 	padding-left		: 30px;
 }
 
-ul ul {
+.container ul ul {
 	margin-left		: 10px;
 }
 
-ul ul li {
+.container ul ul li {
 	font-size:90%;
 }
 
-ul.large li {
+.container ul.large li {
 	margin-bottom	: 15px;
 }
 
@@ -113,7 +117,7 @@ code * {font-weight:normal!important;}
 
 .corpo {
 	clear: both;
-	background: #F4511E;
+	background: #141419;
 	color: rgba(255,255,255,.5);
 	font-size: 12pt;
 	text-align: center;
@@ -131,6 +135,7 @@ code * {font-weight:normal!important;}
 
 .siteHeader {
 	background:#F4511E;
+	border-bottom:3px solid #E4420C;
 	padding:30px;
 }
 
@@ -159,8 +164,27 @@ code * {font-weight:normal!important;}
 	margin-top:1em;
 }
 
+.col-2 {
+  float:left;
+  width:33%;
+  box-sizing: border-box;
+  padding:15px;
+}
+.col-3 {
+  float:left;
+  width:50%;
+  box-sizing: border-box;
+  padding:15px;
+}
+.col-4 {
+  float:left;
+  width:66%;
+  box-sizing: border-box;
+  padding:15px;
+}
+
 @media screen and (max-width: 800px) {
-	.siteContent, .navigation {  float:none; width:100%; }
+	.siteContent, .navigation, .col-2, .col-3, .col-4 {  float:none; width:100%; }
 }
 
 /*** MENU ***/
@@ -168,23 +192,24 @@ code * {font-weight:normal!important;}
 ul.siteMenu {
 	list-style	: none;
 	margin		: auto;
-	padding		: 10px;
-	background:#eee;
+	padding		: 12px;
+	background:#141419;
+  text-align:center;
 }
 
 ul.siteMenu li {
 	background	: none;
 	display:inline;
 	position	: relative;
-	margin		: 0px;
-	padding		: 0px;
-	margin-right: 10px;
+	margin		: 0;
+	padding		: 0;
+	margin-right: 20px;
 	color		: #777;
 }
 
 ul.siteMenu a {
 	font-weight:normal;
-	color:#333;
+	color:#fff;
 }
 
 
@@ -367,8 +392,8 @@ ul.toc {
 	padding-left:1em;
 }
 
-ul.toc li a { font-weight:bold;}
-ul.toc li li a  { color: #436976; font-weight:normal;}
+ul.toc li a.active { font-weight:bold;}
+ul.toc li li a  { color: #436976;}
 ul.toc li li li a { color:#F4511E; }
 
 ul.toc li {
