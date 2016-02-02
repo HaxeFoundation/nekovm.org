@@ -1,4 +1,6 @@
-import ufront.MVC;
+import ufront.web.*;
+import ufront.web.result.*;
+import ufront.app.*;
 import NekoApi;
 
 @viewFolder("/")

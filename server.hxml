@@ -1,4 +1,4 @@
--lib ufront:2.0.0-rc.1
+-lib ufront:2.0.0
 -lib markdown
 -lib detox:1.0.0
 -cp src
