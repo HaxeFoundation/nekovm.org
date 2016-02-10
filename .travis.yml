@@ -1,0 +1,14 @@
+language: haxe
+
+haxe:
+  - 3.2.1
+
+os:
+  - linux
+  - osx
+
+sudo: false
+
+hxml:
+  - client.hxml
+  - server.hxml
