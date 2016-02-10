@@ -21,7 +21,7 @@ hxml:
 script:
   - haxe client.hxml
   - haxe server.hxml
-  # Deploy to haxe.org
+  # Deploy to nekovm.org
   - if [ -n "$deploy_key_decrypt" ] && [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_HAXE_VERSION" = "3.2.1" ]; then
       openssl aes-256-cbc -k "$deploy_key_decrypt" -in deploy_key.enc -out deploy_key -d;
       chmod 600 deploy_key;
