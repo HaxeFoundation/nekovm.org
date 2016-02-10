@@ -12,14 +12,14 @@
 	"targets": [
 		{
 			"name": "nekovm.org",
-			"gitRepo": "ssh://www-haxe@haxe.org/data/nekovm.org/repo.git",
+			"gitRepo": "ssh://www-haxe@nekovm.org/data/nekovm.org/repo.git",
 			"defines": [],
 			"hxmls": ["server"],
 			"debug": false,
 			"servers": [{
-				"name": "haxe.org",
+				"name": "nekovm.org",
 				"user": "www-haxe",
-				"host": "haxe.org",
+				"host": "nekovm.org",
 				"port": 22,
 				"remoteDir": "/data/nekovm.org/www/"
 			}]
