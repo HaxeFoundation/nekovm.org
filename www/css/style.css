@@ -140,7 +140,7 @@ code * {font-weight:normal!important;}
 }
 
 .siteHeader img {
-	height: 250px;
+	height: 150px;
 }
 
 
@@ -248,6 +248,7 @@ table th {
 
 /*** DOCUMENTATION ***/
 
+
 doc_blk {
 	display : block;
 	margin-bottom : 20px;
@@ -264,7 +265,6 @@ doc_doc {
 doc_type, doc_name {
 	font-family : monospace;
 	color			: #888;
-	background-color	: #f9f9f9;
 }
 
 /**** WIKI ****/

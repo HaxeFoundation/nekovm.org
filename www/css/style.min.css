@@ -21,7 +21,7 @@ code *{font-weight:normal!important;}
 .corpo{clear:both;background:#141419;color:rgba(255,255,255,.5);font-size:12pt;text-align:center;padding:20px;border-top:30px solid #fff;}
 .corpo a{color:rgba(255,255,255,.75);text-decoration:underline;}
 .siteHeader{background:#F4511E;border-bottom:3px solid #E4420C;padding:30px;}
-.siteHeader img{height:250px;}
+.siteHeader img{height:150px;}
 .container{clear:both;text-align:left;width:95%;max-width:1250px;margin:auto;margin-bottom:4em;}
 .siteContent{width:65%;float:left;}
 .navigation{width:35%;float:left;margin-top:1em;}
@@ -39,7 +39,7 @@ table th{background-color:#eee;padding:5px;}
 doc_blk{display:block;margin-bottom:20px;}
 doc_code{font-family:monospace;}
 doc_doc{display:block;}
-doc_type,doc_name{font-family:monospace;color:#888;background-color:#f9f9f9;}
+doc_type,doc_name{font-family:monospace;color:#888;}
 div.breadcrumbs{margin-top:20px;font-size:9pt;text-decoration:none;}
 div.secedit input.button{margin-top:-15px;height:15px!important;min-height:15px!important;max-height:15px!important;float:right;display:inline;}
 input.button{font-size:9pt;border:1px solid #888;background-color:#eee;}
