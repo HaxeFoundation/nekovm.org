@@ -1,13 +1,16 @@
 import haxe.format.JsonParser;
- #if sever import ufront.MVC; 
-import NekoApi;#end
+#if server 
+import ufront.MVC; 
+import NekoApi;
+#end
 
 @viewFolder("/")
-class NekoSite #if sever extends Controller #end {
+class NekoSite #if server extends Controller #end {
 
+#if server 
 	// Site initialisation
-
-	//static var ufApp:UfrontApplication;
+	static var ufApp:UfrontApplication;
+#end 
 
 	static function main() {
 
