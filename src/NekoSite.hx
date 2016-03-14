@@ -1,13 +1,13 @@
 import haxe.format.JsonParser;
-import ufront.MVC;
-import NekoApi;
+ #if sever import ufront.MVC; 
+import NekoApi;#end
 
 @viewFolder("/")
-class NekoSite extends Controller {
+class NekoSite #if sever extends Controller #end {
 
 	// Site initialisation
 
-	static var ufApp:UfrontApplication;
+	//static var ufApp:UfrontApplication;
 
 	static function main() {
 
@@ -22,12 +22,12 @@ class NekoSite extends Controller {
 			//ufApp.useModNekoCache();
 		#elseif client
 			// Initialise the app on the client and respond to "pushstate" requests as a single-page-app.
-			var clientApp = new ClientJsApplication({
-				indexController: NekoSite,
-				defaultLayout: "layout.html"
-			});
-			clientApp.listen();
-      clientApp.executeRequest();
+			//var clientApp = new ClientJsApplication({
+			//	indexController: NekoSite,
+			//	defaultLayout: "layout.html"
+			//});
+			//clientApp.listen();
+      //clientApp.executeRequest();
       
       var linkContainer = js.Browser.document.getElementById("tocinside");
       if (linkContainer!= null) {
@@ -42,7 +42,7 @@ class NekoSite extends Controller {
 	}
 
 	// Main controller
-
+#if server
 	@inject public var nekoApi:AsyncNekoApi;
 
 	@:route("/sitemap/")
@@ -111,4 +111,5 @@ class NekoSite extends Controller {
 			return pvr;
 		};
 	}
+	#end
 }
