@@ -29,8 +29,9 @@ code *{font-weight:normal!important;}
 .col-3{float:left;width:50%;box-sizing:border-box;padding:15px;}
 .col-4{float:left;width:66%;box-sizing:border-box;padding:15px;}
 @media screen and (max-width:800px){.siteContent,.navigation,.col-2,.col-3,.col-4{float:none;width:100%;}}
-ul.siteMenu{list-style:none;margin:auto;padding:12px;background:#141419;text-align:center;}
-ul.siteMenu li{background:none;display:inline;position:relative;margin:0;padding:0;margin-right:20px;color:#777;}
+ul.siteMenu{list-style:none;margin:auto;background:#141419;text-align:center;}
+ul.siteMenu li{background:none;display:inline-block;position:relative;margin:0;padding:0;color:#777;padding:10px 20px 10px 0px;}
+ul.siteMenu li:not(:last-child){margin-right:20px;border-right:1px dotted #555;}
 ul.siteMenu a{font-weight:normal;color:#fff;}
 table{border-collapse:separate;border-spacing:1px;border:1px dotted #f0f0f0;font-size:14px;min-width:100%;}
 table td{background-color:#fafafa;padding-left:5px;}

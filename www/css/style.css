@@ -192,19 +192,22 @@ code * {font-weight:normal!important;}
 ul.siteMenu {
 	list-style	: none;
 	margin		: auto;
-	padding		: 12px;
 	background:#141419;
   text-align:center;
 }
 
 ul.siteMenu li {
 	background	: none;
-	display:inline;
+	display:inline-block;
 	position	: relative;
 	margin		: 0;
 	padding		: 0;
-	margin-right: 20px;
 	color		: #777;
+	padding: 10px 20px 10px 0px;
+}
+ul.siteMenu li:not(:last-child) {
+	margin-right: 20px;
+  border-right:1px dotted #555;
 }
 
 ul.siteMenu a {
