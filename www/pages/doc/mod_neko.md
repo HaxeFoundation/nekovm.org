@@ -4,7 +4,7 @@ Mod_neko is an Apache *module* for Neko. This means it's possible to run Neko pr
 
 ## Quick configuration
 
-If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running localy for development purposes only. It mimics the same [API](/doc/view:cgi) as `mod_neko`, so you can use that instead.
+If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running localy for development purposes only. It mimics the same [API](/doc/view/cgi) as `mod_neko`, so you can use that instead.
 
 In order to start the server, simply run the following command :
 
@@ -41,7 +41,7 @@ Now you can simply edit a Neko file and print some welcome message :
 $print("Hello Mod_neko !");
 ```
 
-Compile this file (`nekoc hello.neko`) and place the `.n` file into your web directory so it can be accessed by Apache. Browsing it using your [favorite](http://www.getfirefox.com) webbrowser should display the message.
+Compile this file (`nekoc hello.neko`) and place the `.n` file into your web directory so it can be accessed by Apache. Browsing it using your [favorite](http://browsehappy.com/) webbrowser should display the message.
 
 Now let's try to print the HTTP parameters that are passed to the script, using the `mod_neko` API :
 
