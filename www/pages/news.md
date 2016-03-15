@@ -1,4 +1,4 @@
-News
+Releases
 ====
 
 ### The Neko website updated
