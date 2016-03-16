@@ -1,5 +1,5 @@
-import haxe.format.JsonParser;
 #if server 
+import haxe.format.JsonParser;
 import ufront.web.*;
 import ufront.web.result.*;
 import ufront.MVC; 
