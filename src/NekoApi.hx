@@ -1,4 +1,5 @@
-import ufront.MVC;
+import ufront.web.*;
+import ufront.api.*;
 #if server
 	import sys.FileSystem;
 	import sys.io.File;

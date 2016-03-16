@@ -1,6 +1,9 @@
 import haxe.format.JsonParser;
 #if server 
+import ufront.web.*;
+import ufront.web.result.*;
 import ufront.MVC; 
+import ufront.app.*;
 import NekoApi;
 #end
 

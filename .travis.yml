@@ -1,0 +1,40 @@
+language: haxe
+
+haxe:
+  - 3.2.1
+
+os:
+  - linux
+  - osx
+
+sudo: false
+
+env:
+  global:
+    # deploy_key_decrypt
+    - secure: "OW2GOGdx2P8n0A0ZXvEI8ymK9B2sEu2aux6Vpw3dgJLDh9CB3KzjSL/wQJKS9VihgNsLolyv+Mof4QmjtqJgqeHYwsioWJGOWJI/5ifxGz3Yqhba5zUUtl2sbKqeoDgVfKbPJ3BONPDp9InemKMkkUCUHkLYp23c8n5CmG1JgqzdR1VTyDWZrIPsT+WoO4zF4JT2/IngE6TZ+yUsiR3Xlgh6vGd6KyYiJ3WFProeL2ltYJUEAEjyWhrafThxVEQyfgrbecowoEVkFHoI7ZlE6lK8Comb0mJsHDr/KraAwD7Xqv/3qR7q+x2QyyuYw7NP6P1+WbVkslA6lZihChZGrCnyTiTDVqfKSf9TgWbm2kbuMlSA7jFxhD8YJnmJcAbr/reFCjUy4NBBa2wh8cvNbaMd8emOWqV8O/5SmmrPdtMOKoqI20cnhP3vVEmYX2yo3fUBecrP8/3xM3iOhBRguKj56Hg6FYsQn2eQ53B/9jSDe3O1WJPIkrmPA6dECzKw/6Iv8tm95IoGI56oHC/0Ej2rWWBYx3ARbK64gaTSEMy5MooE/JY69rmnddrjVokFpc1eEXLjAeNIAo1H9jIa/0E/Y9XTfCnjnI7ytbYXZrTM6u/4xZP4iSdM8FO4p5kc9IqWkMafxZ1WBKHyNDW7JukMxNsPCkZtu6b7u9n9tLw="
+
+hxml:
+  - client.hxml
+  - server.hxml
+
+script:
+  - haxe client.hxml
+  - haxe server.hxml
+  # Deploy to nekovm.org
+  - if [ -n "$deploy_key_decrypt" ] && [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_HAXE_VERSION" = "3.2.1" ]; then
+      openssl aes-256-cbc -k "$deploy_key_decrypt" -in deploy_key.enc -out deploy_key -d;
+      chmod 600 deploy_key;
+      eval `ssh-agent -s`;
+      ssh-add deploy_key;
+      git config --global user.name "TravisCI";
+      git config --global user.email "travisci@haxe.org";
+      haxelib run ufront deploy;
+    fi
+
+cache:
+  directories:
+    - deploy
+
+addons:
+  ssh_known_hosts: nekovm.org

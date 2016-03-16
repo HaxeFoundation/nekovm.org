@@ -1,4 +1,4 @@
--lib ufront-client:2.0.0-rc.1
+-lib ufront-client:2.0.0
 -cp src
 -main NekoSite
 
