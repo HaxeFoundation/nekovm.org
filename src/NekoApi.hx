@@ -41,7 +41,7 @@ class NekoApi extends UFApi {
 		}
 		else return throw HttpError.pageNotFound();
 	}
-
+	
 	public function getSitemap():Sitemap {
 		return getSitemapForDir( scriptDir + "pages" );
 	}

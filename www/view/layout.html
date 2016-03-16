@@ -3,39 +3,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 	<head>
 		<title>::title:: - NekoVM</title>
-		<meta name="date" content="2014-12-03T13:04:37+0100" />
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
 		<meta name="robots" content="index,follow" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400' rel='stylesheet' type='text/css'>
 	</head>
 	<body data-uf-layout="neko">
+			<nav>
+				<ul class="siteMenu" data-uf-partial="menu">
+					<li><a href="/" rel="pushstate">Home</a></li>
+					<li><a href="/news" rel="pushstate">Releases</a></li>
+					<li><a href="/download" rel="pushstate">Downloads</a></li>
+					<li><a href="/doc" rel="pushstate">Documentation</a></li>
+					<li><a href="/ml" rel="pushstate">Contact</a></li>
+				</ul>
+			</nav>
 		<div class="center">
-
 			<div class="siteHeader">
-				<div class="siteBanner">
-					<div class="bannerContent">
-						<ul class="siteMenu" data-uf-partial="menu">
-							<li><a href="/" rel="pushstate">home</a></li>
-							<li><a href="/news" rel="pushstate">news</a></li>
-							<li><a href="/download" rel="pushstate">downloads</a></li>
-							<li><a href="/doc" rel="pushstate">documentation</a></li>
-							<li><a href="/faq" rel="pushstate">FAQ</a></li>
-						</ul>
-					</div>
-				</div>
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
 			</div>
-
-			<div class="siteBox">
-				<div class="siteContent" data-uf-partial="content">
-					::viewContent::
-				</div>
+			<div class="container">
+				::viewContent::
 			</div>
 
 			<div class="corpo">
-				<a href="::editLink::">Contribute to this page using Github</a>.
-				| <a href="/sitemap/" rel="pushstate">View Sitemap</a>.
-				| &copy;::currentYear:: <a href="http://haxe.org/foundation/">Haxe Foundation</a>.
+				<a href="https://github.com/haxefoundation/neko/issues">Report an issue</a> |
+				<a href="::editLink::">Contribute to this page</a> 
+				<!-- | <a href="/sitemap/" rel="pushstate">Sitemap</a-->
+				<br><br> &copy;::currentYear:: <a href="http://haxe.org/foundation/">Haxe Foundation</a>
 			</div>
 
 		</div>

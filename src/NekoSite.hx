@@ -1,14 +1,19 @@
+#if server 
+import haxe.format.JsonParser;
 import ufront.web.*;
 import ufront.web.result.*;
+import ufront.MVC; 
 import ufront.app.*;
 import NekoApi;
+#end
 
 @viewFolder("/")
-class NekoSite extends Controller {
+class NekoSite #if server extends Controller #end {
 
+#if server 
 	// Site initialisation
-
 	static var ufApp:UfrontApplication;
+#end 
 
 	static function main() {
 
@@ -20,28 +25,40 @@ class NekoSite extends Controller {
 				defaultLayout: "layout.html"
 			});
 			ufApp.executeRequest();
-			ufApp.useModNekoCache();
+			//ufApp.useModNekoCache();
 		#elseif client
 			// Initialise the app on the client and respond to "pushstate" requests as a single-page-app.
-			var clientApp = new ClientJsApplication({
-				indexController: NekoSite,
-				defaultLayout: "layout.html"
-			});
-			clientApp.listen();
+			//var clientApp = new ClientJsApplication({
+			//	indexController: NekoSite,
+			//	defaultLayout: "layout.html"
+			//});
+			//clientApp.listen();
+      //clientApp.executeRequest();
+      
+      var linkContainer = js.Browser.document.getElementById("tocinside");
+      if (linkContainer!= null) {
+        for (node in linkContainer.getElementsByTagName("a")) {
+          var link:js.html.AnchorElement = cast node;
+          if (link.getAttribute("href") == js.Browser.location.pathname) {
+            link.className += " active";
+          }
+        }
+      }
 		#end
 	}
 
 	// Main controller
-
+#if server
 	@inject public var nekoApi:AsyncNekoApi;
 
 	@:route("/sitemap/")
 	public function sitemap() {
-		var pvr = new PartialViewResult({}, "page.html");
+		var pvr = new PartialViewResult({}, "page.html" );
 		return nekoApi.getSitemap() >> function( sitemap:Sitemap ):ViewResult {
 			var ul = sitemapToList( sitemap );
 			return pvr.setVars({
 				title: "Sitemap",
+				contentGroup: "sitemap",
 				content: '<h1>Sitemap</h1>'+ul,
 				currentYear: Date.now().getFullYear(),
 				editLink: 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/',
@@ -69,21 +86,36 @@ class NekoSite extends Controller {
 		var pvr = new PartialViewResult( {}, "page.html" );
 		return nekoApi.getApi( name ) >> function( page:Page ):ViewResult {
 			pvr.setVars( page );
+			pvr.setVar( "contentGroup", 'doc/libs' );
 			pvr.setVar( "currentYear", Date.now().getFullYear() );
 			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/api/$name.xml' );
 			return pvr;
 		};
 	}
 
+	@:route("/specs/$name")
+	public function specs( name:String ) {
+		var pvr = new PartialViewResult({}, "page.html");
+		return nekoApi.getPage( 'specs/$name' ) >> function( page:Page ):ViewResult {
+			pvr.setVars( page );
+			pvr.setVar( "contentGroup", "specs" );
+			pvr.setVar( "currentYear", Date.now().getFullYear() );
+			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/specs/$name.md' );
+			return pvr;
+		};
+	}
+	
 	@:route("/*")
 	public function page( rest:Array<String> ) {
 		var pageName = (rest.length>0) ? rest.join("/") : "index";
-		var pvr = new PartialViewResult({});
+		var pvr = new PartialViewResult({}, pageName == "index" ? "index.html" : null);
 		return nekoApi.getPage( pageName ) >> function( page:Page ):ViewResult {
 			pvr.setVars( page );
+			pvr.setVar( "contentGroup", pageName );
 			pvr.setVar( "currentYear", Date.now().getFullYear() );
 			pvr.setVar( "editLink", 'https://github.com/HaxeFoundation/nekovm.org/blob/master/www/pages/$pageName.md' );
 			return pvr;
 		};
 	}
+	#end
 }
