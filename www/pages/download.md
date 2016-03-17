@@ -35,7 +35,7 @@ sudo apt-get update
 sudo apt-get install neko -y
 ```
 
-Users of other Linux/FreeBSD distributions should build Neko from source using `make`. See [Makefile](Makefile) for additional instructions.
+Users of other Linux/FreeBSD distributions should build Neko from source using `make`. See [Makefile](https://github.com/HaxeFoundation/neko/blob/master/Makefile) for additional instructions.
 
 ## Build dependencies
 
