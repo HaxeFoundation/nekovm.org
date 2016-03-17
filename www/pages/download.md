@@ -41,7 +41,7 @@ Users of other Linux/FreeBSD distributions should build Neko from source using `
 
 | library | Debian/Ubuntu package |
 | | |
-| Boehm GC | [libgc-dev](http://www.hpl.hp.com/personal/Hans_Boehm/gc) |
+| Boehm GC | libgc-dev |
 | OpenSSL | libssl-dev |
 | PCRE | libpcre3-dev |
 | zlib | zlib1g-dev |
