@@ -1,12 +1,12 @@
 # Language Interoperability
 
-A common problem when trying to run several languages on the same virtual machine is to be able to interact between languages. In a perfect world, we would like this to be seamless and transparent. Let's take .NET as an example. You can call a C# class from your VB.Net program without any problem. This is possible because they both share the same *type system* which is the one specified in .NET, so it's often said that whatever language you can run on .NET, it will *be* C# since you'll have to match this type system. That's quite true.
+A common problem when trying to run several languages on the same virtual machine is to be able to interact between languages. In a perfect world, we would like this to be seamless and transparent. Let's take .NET as an example; you can call a C# class from your VB.Net program without any problem. This is possible because they both share the same *type system* which is the one specified in .NET, so it's often said that whatever language you can run on .NET, it will *be* C# since you'll have to match this type system. That's quite true.
 
 ## The Array Problem
 
-Neko is trying to reach language interoperability by *data sharing*. One common problem you have when interacting between languages is about arrays. Every language has arrays, but with different APIs. Some languages can resize the array, some can't. Some languages can modify the array, some can't. Some languages access arrays with an Object Oriented API, some don't... So how can you pass one array from a language to another ?
+Neko is trying to reach language interoperability by *data sharing*. One common problem you have when interacting between languages is about arrays. Every language has arrays, but with different APIs. Some languages can resize the array, some can't. Some languages can modify the array, some can't. Some languages access arrays with an Object Oriented API, some don't... So how can you pass one array from a language to another?
 
-One possibility is to have a *super* array that has all of these possibilities, and is shared between all languages. That doesn't scale very well since you might have same method name with different behaviors depending on the language.
+One possibility is to have a *super* array that has all of these possibilities and is shared between all languages. That doesn't scale very well since you might have same method name with different behaviors depending on the language.
 
 One other possibility is to be able to convert between arrays, but that doesn't scale well either since you need to add more convertion functions everytime you're supporting a new language.
 

@@ -1,12 +1,12 @@
 # Neko Starter's Guide
 
-> So you want to learn about Neko? Here is a step-by-step guide to making and running your first neko program. Before you start, please choose a distribution, download it, and get ready to install it. But first, you should know that the pronunciation of "Neko" is `n[e]ko` and not `n[i]ko`.
+> So you want to learn about Neko? Here is a step-by-step guide to making and running your first Neko program. Before you start, please choose a distribution, download it, and get ready to install it. But first, you should know that the pronunciation of "Neko" is `n[e]ko` and not `n[i]ko`.
 
 ## Installation
 
 Decompress the archive and put it into the folder you want :
 
-- on Linux systems, the `/usr/lib/neko` is recommended
+- on Linux systems, `/usr/lib/neko` is recommended
 - on Windows, you can use `c:\neko`
 
 The archive contains :
@@ -28,7 +28,7 @@ The archive contains :
 
 Once Neko is installed on your system, you have to setup a few things :
 
-- **On Linux** : Setup your system so it will look for shared libraries in the install path (using `export LD_LIBRARY_PATH=/usr/lib/neko` for example). Put `neko`, `nekoc` and `nekotools` in `/usr/bin` or other directory that you are using. Install the `libgc1` package on your system.
+- **On Linux** : Setup your system so it will look for shared libraries in the install path (using `export LD_LIBRARY_PATH=/usr/lib/neko` for example). Put `neko`, `nekoc` and `nekotools` in `/usr/bin` or another directory that you are using. Install the `libgc1` package on your system.
 
 - **On Windows** : Add the `c:\neko` directory to your `PATH` environment variable. Here are instructions for [Windows 2000](https://support.microsoft.com/en-us/kb/311843) and [Windows XP](https://support.microsoft.com/en-us/kb/310519).
 
@@ -55,7 +55,7 @@ You can now start creating your first program `hello.neko` :
 $print("hello neko world !\n");
 ```
 
-Compile your `hello.neko` file into a `hello.n` file using the neko commandline compiler by calling `nekoc hello.neko`. If you didn't make any syntax errors, this will produce a `hello.n` file containing the compiled bytecode of your sources.
+Compile your `hello.neko` file into a `hello.n` file using the Neko command-line compiler by calling `nekoc hello.neko`. If you didn't make any syntax errors, this will produce a `hello.n` file containing the compiled bytecode of your sources.
 
 You can now run this bytecode "module" by calling `neko hello`. This should print the usual funny string to the standard output.
 

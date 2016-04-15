@@ -1,6 +1,6 @@
 # Arrays
 
-Array is a type. This means that Neko arrays (as well as Neko strings and booleans) are not objects. If in your language's arrays are objects, then you can write an object wrapper using an array value to store the data, and matching the API of your language.
+Array is a type. This means that Neko arrays (as well as Neko strings and booleans) are not objects. If in your language's arrays are objects, then you can write an object wrapper using an array value to store the data, and match the API of your language.
 
 Creating an array can be done using the `$array` builtin, and accessing an array can be done using the brackets syntax. You can also create an array with a specific size using the `$amake` builtin :
 
@@ -14,7 +14,7 @@ $print(a[3]); // null
 $print(a["2"]); // exception
 ```
 
-Arrays are accessed with integer key values, every other key value type will raise an exception. If the integer is in the range of the array bounds (between 0 and `$asize(a) - 1`), then the value returned is the one stored at this index, otherwise it's `null`. For writing, if a value is written outside the bounds of the array, then the array is not modified. You can get the size of an array using the `$asize` builtin. Arrays are not resizable :
+Arrays are accessed with integer key values, every other key value type will raise an exception. If the integer is in the range of the array bounds (between 0 and `$asize(a) - 1`), then the value returned is the one stored at this index, otherwise, it's `null`. For writing, if a value is written outside the bounds of the array, then the array is not modified. You can get the size of an array using the `$asize` builtin. Arrays are not resizable :
 
 ```neko
 a = $array(1,2,3);

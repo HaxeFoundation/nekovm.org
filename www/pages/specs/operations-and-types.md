@@ -1,6 +1,6 @@
 # Operations on Basic Types
 
-Basic types are: numbers (int and float), booleans (bool), the null value, strings, objects, arrays, and functions. There are several operations available to use with them (See the following tables). On the row is the type of the first operand, and on the columns is that of the second operand. The result is either the type of the returned value, or "concat" if we use string concatenation (in that case, the two values are converted to strings and then concatened together). An "X" means that the operation is invalid and will raise an exception.
+Basic types are numbers (int and float), booleans (bool), the null value, strings, objects, arrays, and functions. There are several operations available to use with them (See the following tables). On the row is the type of the first operand, and on the columns is that of the second operand. The result is either the type of the returned value or "concat" if we use string concatenation (in that case, the two values are converted to strings and then concatenated together). An "X" means that the operation is invalid and will raise an exception.
 
 ## Arithmetic operations
 
@@ -37,7 +37,7 @@ $print($isinfinite(1/0)); // prints true
 $print($isnan(0/0)); // prints true
 ```
 
-These operations are can be overriden by objects. See the Objects section.
+These operations are can be overridden by objects. See the Objects section.
 
 Please note also that overflow on integer operations does not convert them to floats, and does not throw an exception. If you want to control overflow, you can define your own functions for operations, use floats everywhere, or use an object with overridden operators.
 
@@ -99,11 +99,11 @@ Comparison method :
 Here are the details of each comparison function :
 
 - icmp compares two integers a and b. It returns 0 if they're equal, -1 if b > a, and 1 if a > b.
-- fcmp is the same as icmp, but compares floats instead of integers.
+- fcmp is the same as icmp but compares floats instead of integers.
 - strcmp compares strings. It can be seen as a icmp applied to every byte of the two strings.
 - acmp compares the addresses of a and b. It returns 0 if they're the same, -1 if b>a, and 1 if a>b
-- bcmp returns 0 if a and b are both the same value, 1 if a is true and b and false, -1 if a is false and b is true.
-- ocmp does "object comparison". If the two objects' addresses are the same, it returns 0. Otherwise, it calls the method `%%__compare%%` on the first object, with the second object as argument. If the returned value is an integer, the integer is returned by `$compare`, otherwise null is returned.
+- bcmp returns 0 if a and b are both the same value, 1 if a is true and b is false, -1 if a is false and b is true.
+- ocmp does "object comparison". If the two objects' addresses are the same, it returns 0. Otherwise, it calls the method `%%__compare%%` on the first object, with the second object as an argument. If the returned value is an integer, the integer is returned by `$compare`, otherwise, null is returned.
 -  - means that the comparison is invalid, the returned value is null when using `$compare` and false when using an operator.
 
 The following table shows how each operation is performing depending on the result of `$compare` :
@@ -143,7 +143,7 @@ $print(a); // 2
 
 ## Conversions
 
-To convert any value to a Boolean, you can use the `$istrue` builtin, as specified in [Boolean operations](/specs#boolean_operations).
+To convert any value to a Boolean, you can use the `$istrue` builtin as specified in [Boolean operations](/specs#boolean_operations).
 
 ```neko
 $istrue(null); // false
@@ -182,7 +182,7 @@ On functions, `#function:n` is returned where `n` is the number of arguments of 
 
 ## Optimized Operations
 
-There are several optimized builtins for integers : `$iadd, $isub, $imult, $idiv`. They all skip some typechecks, so they're faster. Their results will always be a valid integer, but their value is unspecified when one or more of the two values is not an integer. `$idiv` raises an exception when division by 0 is attempted :
+There are several optimized builtins for integers : `$iadd, $isub, $imult, $idiv`. They all skip some type checks, so they're faster. Their results will always be a valid integer, but their value is unspecified when one or more of the two values is not an integer. `$idiv` raises an exception when division by 0 is attempted :
 
 ```neko
 $print( $iadd(1,3) ); // 4

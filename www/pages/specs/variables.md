@@ -72,7 +72,7 @@ x = 4;
 f(); // print 3
 ```
 
-Such variables are called environment variables because they're no longer part of the local context, but of the function "environment" context. A function can still modify an environment variable, but this will not modify the original variable reference :
+Such variables are called environment variables because they're no longer part of the local context but of the function "environment" context. A function can still modify an environment variable, but this will not modify the original variable reference :
 
 ```neko
 var x = 3;
