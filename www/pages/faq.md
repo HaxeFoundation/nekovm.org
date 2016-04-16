@@ -9,13 +9,13 @@ The .NET's CLR and the Java Virtual Machine are both defined by a *bytecode* lan
 
 Neko is a lot more simple. First, it's not a *bytecode* language, but a high-level *programming* language. You then don't have to write a *compiler* for it; a simple *generator* that translates your program into the corresponding Neko program is enough. You still have to find a mapping from your values to Neko *data structures*, but Neko gives you a dynamically typed language with no fixed class system. You have then to find a *runtime mapping* so that your program *executes* correctly on Neko, and not a *type mapping* so that your program *types* correctly like with .NET / JVM.
 
-As a result, it's easier to write a new or existing language on the NekoVM than it is for the CLR / JVM, since you don't have to deal with a highlevel type system. Also, this means that languages can interoperate more easily since they only need to share the same *data structures* and not always the same *types*.
+As a result, it's easier to write a new or existing language on the NekoVM than it is for the CLR / JVM since you don't have to deal with a high-level type system. Also, this means that languages can interoperate more easily since they only need to share the same *data structures* and not always the same *types*.
 
 ## How is Neko different from LLVM or C--?
 
 These are compiler frameworks with low-level *abstract processor instructions* and a static type system with low-level *memory manipulation functions*. For example, it would be possible to use these frameworks to compile Neko, which stands as a higher-level language, although Neko is powered by its own runtime.
 
-As a result, Neko is perhaps less suitable to optimizations than these *abstract processors*, but is a lot easier to target for language designers that want to reuse a runtime. Since Neko is not a *framework*, it's very lightweight. For example, you only need `libneko.so` (which is only 68 KB) in order to embed and run Neko programs in your application.
+As a result, Neko is perhaps less suitable to optimizations than these *abstract processors* but is a lot easier to target for language designers that want to reuse a runtime. Since Neko is not a *framework*, it's very lightweight. For example, you only need `libneko.so` (which is only 68 KB) in order to embed and run Neko programs in your application.
 
 ## How is Neko different from PHP / Perl / Python / Ruby / Javascript?
 
@@ -30,11 +30,11 @@ A complete [comparison](/lua) is available. Neko has better OO support and an ea
 
 ## How is Neko different from Parrot?
 
-Targeting Parrot requires you to learn another language, which is more complex that Neko itself, with different possibilties at different levels (low level PASM, medium level PIR, high level NQP).
+Targeting Parrot requires you to learn another language, which is more complex that Neko itself, with different possibilities at different levels (low-level PASM, medium-level PIR, high-level NQP).
 
-It is also difficult to differenciate between the *language* and the *standard library* because of the numerous cores apis (PMC), whereas NekoVM has a single [builtins](/doc/view/builtins) core api which a single highlevel language with minimal syntax and core types.
+It is also difficult to differentiate between the *language* and the *standard library* because of the numerous cores apis (PMC), whereas NekoVM has a single [builtins](/doc/view/builtins) core api which a single high-level language with minimal syntax and core types.
 
-Parrot is written in C while Neko compiler is written in... Neko. The language is fully bootstrapped right now. Also, Neko is lightweight and the Virtual Machine is only 68 KB on Linux and 40 KB on Windows, while still offering a very good speed.
+Parrot is written in C while Neko compiler is written in... Neko. The language is fully bootstrapped right now. Also, Neko is lightweight and the Virtual Machine is only 68 KB on Linux and 40 KB on Windows while still offering a very good speed.
 
 ## What garbage collector is Neko using?
 

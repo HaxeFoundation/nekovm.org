@@ -5,7 +5,7 @@ Neko is a high-level dynamically typed programming language. It can be used as a
 
 If you need to add a scripting language to your application, Neko provides the best tradeoff between simplicity, extensibility, and speed.
 
-Neko is also a good way for language designers to focus on design and reuse a fast and well-designed runtime, as well as existing libraries for accessing filesystem, network, databases, xml...
+Neko is also a good way for language designers to focus on design and reuse a fast and well-designed runtime, as well as existing libraries for accessing filesystem, network, databases, XML...
 
 See <a href="/specs">Neko Specifications...</a>
 
@@ -22,7 +22,7 @@ See <a href="/doc/vm">NekoVM Documentation...</a>
 </div><div class="col-3">
 <h1>Mod_neko</h1>
 
-Neko comes with several libraries. One of these is mod_neko, which embeds the Neko Virtual Machine into an Apache web server, so you can use Neko to generate webpages. This website is actually generated using Neko.
+Neko comes with several libraries. One of these is mod_neko, which embeds the Neko Virtual Machine into an Apache web server, so you can use Neko to generate web pages. This website is actually generated using Neko.
 
 See <a href="/doc/mod_neko">Introduction to mod_neko</a>
 
