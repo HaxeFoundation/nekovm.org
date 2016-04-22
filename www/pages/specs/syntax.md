@@ -1,7 +1,7 @@
 
 ## Syntax
 
-The syntax of the Neko language was designed to both be easy to parse and easy to generate. It is not specifically designed to be written by a programmer, but rather to be generated from a higher level language. For example, one could easily write a PHP-to-Neko, or a Java-to-Neko converter, that would generate the equivalent Neko code.
+The syntax of the Neko language was designed to both be easy to parse and easy to generate. It is not specifically designed to be written by a programmer, but rather to be generated from a higher level language. For example, one could easily write a PHP-to-Neko or a Java-to-Neko converter, that would generate the equivalent Neko code.
 
 In particular, there are not multiple levels of expression, as in C. Every statement is also an expression, thus enabling some constructs that are not possible in other languages (for example : `return if(x) { ... } else { ... }`). This makes the generation of Neko from functional languages easier.
 

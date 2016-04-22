@@ -28,13 +28,13 @@ Here's the notation of types that should be used when documenting libraries :
 
 - the type `function:` if a function with *n* parameters is accepted.
 
-- for abstracts, you need to give them a name (corresponding to their kind) and write it with a single quote as prefix (for example `'file` is an abstract of kind file).
+- for abstracts, you need to give them a name (corresponding to their kind) and write it with a single quote as the prefix (for example `'file` is an abstract of kind file).
 
-- for arrays that contains a specified type of value, you can write the type before, then `int array` is an array containing only integers and `'file array array` is a two dimensions array that contains abstract files.
+- for arrays that contain a specified type of value, you can write the type before, then `int array` is an array containing only integers and `'file array array` is a two dimensions array that contains abstract files.
 
 - for objects that must contain some fields, you can write it using Neko notation with types : `{ x => int, y => int }` means an object having at least two fields `x` and `y` of type `int`.
 
-- if the `null` value is accepted as well as some other ype, you can write, for example `int?`, which means `int` or `null`.
+- if the `null` value is accepted as well as some other type, you can write, for example `int?`, which means `int` or `null`.
 
 - if several types are accepted you can separate them with pipes. `number` is actually a shortcut for `int|float`.
 

@@ -1,6 +1,6 @@
 # Exceptions
 
-Exceptions are often referred to as "non local jumps". It's a very good way for handling errors than can happen at several calls between the function that yields an error and the handler that will take care of it. Raising an exception is done using the `$throw` builtin, and catching it is done using the `try...catch` syntax. Please note that any value can be an exception, it's up to you to decide which structure you want to use :
+Exceptions are often referred to as "nonlocal jumps". It's a very good way for handling errors than can happen at several calls between the function that yield an error and the handler that will take care of it. Raising an exception is done using the `$throw` builtin, and catching it is done using the `try...catch` syntax. Please note that any value can be an exception, it's up to you to decide which structure you want to use :
 
 ```neko
 var foo = function() {

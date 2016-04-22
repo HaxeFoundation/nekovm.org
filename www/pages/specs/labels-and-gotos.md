@@ -1,6 +1,6 @@
 # Labels and Gotos
 
-It is sometimes useful to be able to jump directly at some code location. Labels provide a way to *mark* a location in the code and the builtin `$goto` can jump to a label :
+It is sometimes useful to be able to jump directly to some code location. Labels provide a way to *mark* a location in the code and the builtin `$goto` can jump to a label :
 
 ```neko
 $print("enter");
@@ -10,7 +10,7 @@ next:
 $print("done");
 ```
 
-Please note that label identifiers are global to the file, but cannot be defined in all expressions. The reason is to simplify the compiler, since labels normaly require multiple passes for stack preservation (see below). In the case a label cannot be declared, an error is printed at compilation-time. The builtin `$goto` can only be used with a valid label identifier, in that case only, the identifier is treated as a label and not as a variable.
+Please note that label identifiers are global to the file, but cannot be defined in all expressions. The reason is to simplify the compiler since labels normally require multiple passes for stack preservation (see below). In the case a label cannot be declared, an error is printed at compilation-time. The builtin `$goto` can only be used with a valid label identifier, in that case only, the identifier is treated as a label and not as a variable.
 
 ## Gotos and Stack Preservation
 

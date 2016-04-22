@@ -1,7 +1,6 @@
 # Neko C FFI
 
-
-The NekoVM itself have enough operations to compute any value. However it cannot do everything, like accessing files, connecting to a server, or display and manage a window with menus and buttons. All these features and much more are however accessible from C code that will use operating system libraries. Since the NekoVM cannot call C functions directly, it is needed to write some glue C code that will wrap the OS libraries in order to make them accessible. These glue functions are called "primitives".
+The NekoVM itself have enough operations to compute any value. However, it cannot do everything, like accessing files, connecting to a server, or display and manage a window with menus and buttons. All these features and much more are however accessible from C code that will use operating system libraries. Since the NekoVM cannot call C functions directly, it is needed to write some glue C code that will wrap the OS libraries in order to make them accessible. These glue functions are called "primitives".
 
 When you're writing primitives, you need to use the Neko C FFI (also called Neko API). To use it, you only need to include the `neko.h` file which is part of the Neko distribution, and to link with the Neko library (`libneko.so` on Unix, `libneko.dylib` on OSX, and `neko.lib` on Windows).
 
@@ -44,7 +43,7 @@ As we saw in the Language Specification, there are the following types of values
 Every value given as an argument to a primitive or returned by a primitive must be of the `value` type. The Neko API is defined in one single include file `neko.h`. There is several kind of API functions :
 
 - `val_is_*` functions work on any value and return 1 if the value is of the given type, or 0 otherwise.
-- `val_*` functions enable you to retreive the content of a value. Please note that you must first ENSURE that the value is of the given type before using such a function or the program might crash or have impredictable behavior.
+- `val_*` functions enable you to retrieve the content of a value. Please note that you must first ENSURE that the value is of the given type before using such a function or the program might crash or have unpredictable behavior.
 - `alloc_*` functions enable you to convert a C value to a Neko value.
 
 Please note that most (almost all) of these functions are actually C macros, so there is no call done. You can have a look at `neko.h` if you're performance-oriented and want to differentiate between macros and real API functions.
@@ -81,7 +80,7 @@ In order to use the following functions, you must first be sure that the type of
 - `val_string(v)` : retrieve the string stored in a value.
 - `val_strlen(v)` : retrieve the length of the string stored in a value.
 - `val_number(v)` : retrieve the float or the integer stored in a value.
-- `val_array_ptr(v)` : retrieve the array stored in a value as a value*.
+- `val_array_ptr(v)` : retrieve the array stored in a value as a value pointer.
 - `val_array_size(v)` : retrieve the size of the array stored in a value.
 - `val_fun_nargs(v)` : retrieve the number of arguments of the function stored in a value.
 - `val_data(v)` : retrieve the data stored in an abstract value.
@@ -135,7 +134,7 @@ value print( value v ) {
 DEFINE_PRIM(print,1);
 ```
 
-Please note that it's pretty inefficient since you are are doing a test for each type, when you could simply dispatch using `val_type` result :
+Please note that it's pretty inefficient since you are are doing a test for each type when you could simply dispatch using `val_type` result :
 
 ```c
 #include <stdio.h>
@@ -184,7 +183,7 @@ The `default` case is not supposed to happen unless there is some bug in a C fun
 
 ## Buffers
 
-The printing of a value is a little more complex than that. In the case of objects in particular, you must call the `%%__string%%()` method to retrieve a representation of the object if available.
+The printing of a value is a little more complex than that. In the case of objects, in particular, you must call the `%%__string%%()` method to retrieve a representation of the object if available.
 
 In order to easily construct strings of mixed constant C strings and values converted to strings, Neko API has `buffer`. A buffer is NOT a value, so you cannot return it outside of a C primitive, but it's garbage collected so you don't have to free them after usage.
 
@@ -272,7 +271,7 @@ Let's see a little bit of what is done here :
 
 In `make_point` we are setting the field `%%__string%%` of the object `o` to a value function allocated with `alloc_function`, which takes three parameters : the address of the C function, the number of parameters, and a name for the function that will help for debugging and error locations.
 
-In `point_to_string` we are first retreiving `val_this()`, which is the current `this` value. Since it might not be an object, we test it first before accessing the `x` and `y` fields. Then we want to construct the string `Point : x , y` with the values of `x` and `y`, we're using a `buffer` for this (see Buffers).
+In `point_to_string` we are first retrieving `val_this()`, which is the current `this` value. Since it might not be an object, we test it first before accessing the `x` and `y` fields. Then we want to construct the string `Point : x , y` with the values of `x` and `y`, we're using a `buffer` for this (see Buffers).
 
 ### Objects Misc
 
@@ -294,7 +293,7 @@ Often when you're writing primitives, you're expecting the value arguments to be
 - `val_check_function(v,nargs)` will check that the value is a function that can be called with the specified number of arguments and call `neko_error()` if not.
 - `neko_error()` will simply return the C `NULL` value. This special value will be caught by the virtual machine and will raise an exception. Please use the macro instead of `return NULL` so your library will stay compatible if the implementation changes.
 
-Type checking is actualy very easy to do, simply add the `val_check*` statements at the beginning of your primitive :
+Type checking is actually very easy to do, simply add the `val_check*` statements at the beginning of your primitive :
 
 ```c
 value myprim( value s, value n ) {
@@ -320,11 +319,11 @@ The API function `val_callEx` is the most general callback function. All other c
 - `int nargs` : the number of arguments stored into `args`.
 - `value *exc` : a value pointer to store an exception if it's raised in a subcall. If `NULL`, exceptions will not be caught and will go through your C function, which is calling `val_callEx`.
 
-The function `f` must have either a variable number of arguments (`VAR_ARGS`) or the exact `nargs` number of arguments, or an exception will be raised.
+The function `f` must have either a variable number of arguments (`VAR_ARGS`) or the exact `nargs` number of arguments or an exception will be raised.
 
 If the call is successful, the value returned by `f` is returned by `val_callEx`.
 
-Here are other way of doing callbacks :
+Here is another way of doing callbacks :
 
 - `val_call0(value f)` : call the function `f` with 0 arguments.
 - `val_call1(value f, value arg)` : call the function `f` with 1 argument.
@@ -341,9 +340,9 @@ In the following functions, `f` is a field, so it's not the value of the method 
 
 ### C to Neko callback sample
 
-This is a small example that enable the C code to callback a Neko function.
+This is a small example that enables the C code to callback a Neko function.
 
-First we define a primitive so that we can register our callback :
+First, we define a primitive so that we can register our callback :
 
 ```c
 #include <neko.h>
@@ -361,7 +360,7 @@ static value set_handler( value f ) {
 DEFINE_PRIM(set_handler,1);
 ```
 
-Since the function is a `value`, it's needs to be store in a place that can be accessed by the Neko garbage collector. This is why we allocate a `function_storage` with the `alloc_root` Neko FFI function. The `alloc_root` parameter is the number of values that can be stored in the allocated pointer.
+Since the function is a `value`, it needs to be store in a place that can be accessed by the Neko garbage collector. This is why we allocate a `function_storage` with the `alloc_root` Neko FFI function. The `alloc_root` parameter is the number of values that can be stored in the allocated pointer.
 
 Once the callback is set, we can call it from the C code by using the following code :
 
@@ -378,7 +377,7 @@ Most of the time when you have to write an interface from Neko to a C library, y
 - it's not a `value` so it doesn't match the NekoVM memory model.
 - it might crash the program when accessed inappropriately.
 - even if it was a value, it would have to be freed explicitly.
-- you cannot distinguish the types between two C pointers.
+- you cannot distinguish the types of two C pointers.
 
 For all of these reasons, you need to be able to store a C pointer in an abstract Neko `value` and mark it with some type information called *kind*. The *kind* of an abstract value is its type, and the *data* of an abstract value is the corresponding C pointer.
 
@@ -400,7 +399,7 @@ value create() {
 }
 ```
 
-It's possible to store another `value` in the `data` part of an abstract, since it will still be checked by the garbage collector.
+It's possible to store another `value` in the `data` part of an abstract since it will still be checked by the garbage collector.
 
 When one of your primitives gets a value back, you can check if it's an abstract value using `val_is_abstract`, check its kind using the `val_is_kind` API function, and then access its data using the `val_data` API function :
 
@@ -453,7 +452,7 @@ You can remove the finalizer function from an abstract value by calling `val_gc(
 
 ## Variable arguments function
 
-If you want to pass more than five arguments, or a variable number of arguments, in a single neko-to-C function call, you can use the DEFINE_PRIM_MULT() macro:
+If you want to pass more than five arguments, or a variable number of arguments, in a single Neko-to-C function call, you can use the DEFINE_PRIM_MULT() macro :
 
 ```
 value myprim( value *args, int nargs ) {
@@ -476,17 +475,17 @@ In the case that most of your integers are using only 31 bits but you still want
 
 ## Managing Memory
 
-When you're working with abstracts, you might want to allocate garbage-collected memory so you don't have to add finalizers for your datas (finalizers are more expensive than garbage-collected memory). The Neko VM API is provides several allocation functions :
+When you're working with abstracts, you might want to allocate garbage-collected memory so you don't have to add finalizers for your data (finalizers are more expensive than garbage-collected memory). The NekoVM API provides several allocation functions :
 
-Calling `alloc(n)` will return a pointer capable of storing up to `n` *bytes*. So it's equivalent to `malloc(n)`, but the memory will be automaticaly collected when unreachable from the VM. Please note that C *static* values are not reachable by the VM.
+Calling `alloc(n)` will return a pointer capable of storing up to `n` *bytes*. So it's equivalent to `malloc(n)`, but the memory will be automatically collected when unreachable from the VM. Please note that C *static* values are not reachable by the VM.
 
 The memory allocated with `alloc` will be scanned by the garbage collector so you can store values and other `alloc`'ated pointers into it. As long as your pointer is reachable, these values will also be reachable so they won't be collected.
 
-If you want to allocate big chuncks of memory and you're sure they will not contain any value (strings for example), you can use `alloc_private(n)` which will return `n` *bytes* of memory and won't be scanned by the garbage collector. Please remember not to store any value in it.
+If you want to allocate big chunks of memory and you're sure they will not contain any value (strings for example), you can use `alloc_private(n)` which will return `n` *bytes* of memory and won't be scanned by the garbage collector. Please remember not to store any value in it.
 
-In some cases, you might need to store some value into a *static* variable. First, you have to be sure of what you're doing, since the Neko VM can run in several threads; you need to protect the accesses to this value to ensure that your library will work when used simultaneously by multiple threads. Second, since the statics are not reachable by the garbage collector, you have to allocate a *root* value.
+In some cases, you might need to store some value into a *static* variable. First, you have to be sure of what you're doing, since the NekoVM can run in several threads; you need to protect the accesses to this value to ensure that your library will work when used simultaneously by multiple threads. Second, since the statics are not reachable by the garbage collector, you have to allocate a *root* value.
 
-A *root* value is a pointer that can store several values that will always be scanned by the GC. Since it will never be garbage-collected, you can store it anywhere. However you'll have to free it explicitly. To allocate a root, you can use the `alloc_root(v)` function which will return a value pointer capable of storing up to `v` values. Once you don't need it anymore, you have to free the root using the `free_root` function. Try to avoid the use of roots and static values as much as possible, and always store your datas in abstract values if you can.
+A *root* value is a pointer that can store several values that will always be scanned by the GC. Since it will never be garbage-collected, you can store it anywhere. However, you'll have to free it explicitly. To allocate a root, you can use the `alloc_root(v)` function which will return a value pointer capable of storing up to `v` values. Once you don't need it anymore, you have to free the root using the `free_root` function. Try to avoid the use of roots and static values as much as possible, and always store your data in abstract values if you can.
 
 ## Misc API Functions
 
@@ -500,7 +499,7 @@ Before ending this document, here are several functions that do not belong in an
 
 - `val_throw(v)` and `val_rethrow(v)` : throw the value `v` as an exception.
 
-- `failure(msg)` : throw a *failure* exception using a constant C string as error message. This is a convenient way of handling errors in your primitives, since the exception will contain your error message as well as the C filename and the line where the error occured.
+- `failure(msg)` : throw a *failure* exception using a constant C string as the error message. This is a convenient way of handling errors in your primitives since the exception will contain your error message as well as the C filename and the line where the error occurred.
 
 - `bfailure(buf)` : same as `failure`, but uses a *buffer* instead of a constant string.
 

@@ -1,8 +1,8 @@
 # Objects
 
-Objects are a kind of optimized hashtables. All fields names are hashed into an integer value that is used as the key in a lookup table. Insertion of a new field is `O(n)`, access to a field is `O(log n)`. If you're generating from a staticly typed language, you might prefer arrays for storing fields, since they provide `O(1)` access.
+Objects are a kind of optimized hashtables. All fields names are hashed into an integer value that is used as the key in a lookup table. Insertion of a new field is `O(n)`, access to a field is `O(log n)`. If you're generating from a statically typed language, you might prefer arrays for storing fields, since they provide `O(1)` access.
 
-To create an object, you can use the builtin `$new`, that can either returns a copy of an object or a new object :
+To create an object, you can use the builtin `$new`, that can either return a copy of an object or a new object :
 
 ```neko
 o = $new(null); // new empty object
@@ -10,7 +10,7 @@ o2 = $new(o); // makes a copy of o
 o2 = $new(33); // if parameter is not an object, throw an exception
 ```
 
-You can set fields of an object using dot access or using the builtin `$objset` :
+You can set fields of an object using dot access or use the builtin `$objset` :
 
 ```neko
 o.field = value;
@@ -24,11 +24,11 @@ o.field; // returns "field" value of object o
 $objget(o,$hash("field")); // returns "field" value of object o
 ```
 
-Please note that `$objset` and `$objget` second parameter is hashed at runtime, so it's a bit less efficient of an operation than dot access, but enables introspection.
+Please note that the second parameter of `$objset` and `$objget` is hashed at runtime, so it's a bit less efficient of an operation than dot access, but enables introspection.
 
 If a field is not defined when accessed for reading, the `null` value is returned. If a field doesn't exists when a field is accessed for writing, the field is added.
 
-To check for a field existance, you can use the `$objfield` builtin that checks if an object o has a given field, even if that field is set to the `null` value :
+To check for the existence of a field, you can use the `$objfield` builtin that checks if an object o has a given field, even if that field is set to the `null` value :
 
 ```neko
 $objfield(o,$hash("field")); // true if o have "field"
@@ -89,9 +89,9 @@ $print(this); // 1
 
 ## Fields lists
 
-As explained before, fields names are first hashed into integer values for faster access. In order to avoid collisions in the hashing functions, they are then stored in a global table than will check that hash(x) = hash(y) implies that x = y. The other utilities of this library is to be able to reverse the hashing function at runtime. For example, this can be useful to print the field names of an object for debugging purposes.
+As explained before, fields names are first hashed into integer values for faster access. In order to avoid collisions in the hashing functions, they are then stored in a global table then checked that hash(x) = hash(y) implies x = y. The other utilities of this library are to be able to reverse the hashing function at runtime. For example, this can be useful to print the field names of an object for debugging purposes.
 
-You can use the following builtins : `$hash` returns the integer hashing value of a string, or raise an exception in case of collision. `$field` transforms an integer into a previously hashed string or returns `null`.
+You can use the following builtins : `$hash` returns the integer hashing value of a string, or raise an exception in the case of a collision. `$field` transforms an integer into a previously hashed string or returns `null`.
 
 The builtin `$objfields` returns an array containing all fields identifiers for the given object :
 
@@ -112,7 +112,7 @@ while( i < $asize(a) ) {
 Several operators can be overloaded so when they're applied to objects, they are actually calling methods. Here's a list of overloadable operators and corresponding methods names :
 
 - **string conversion** : call the `%%__string%%` method on the object with no arguments. A string should be returned.
-- **object comparison** : for any comparison between two different objects, the `%%__compare%%` method is called on the first object with the second object as parameter.
+- **object comparison** : for any comparison between two different objects, the `%%__compare%%` method is called on the first object with the second object as a parameter.
 - **addition** : in the case of `a + b`, if `a` is an object, `a.%%__add%%(b)` is called, otherwise if `b` is an object, `b.%%__radd%%(a)` is called.
 - **subtraction** : same as addition but with `%%__sub%%` and `%%__rsub%%`.
 - **multiplication** : same as addition but with `%%__mult%%` and `%%__rmult%%`.
@@ -121,7 +121,7 @@ Several operators can be overloaded so when they're applied to objects, they are
 - **array reading** : when an object is accessed as an array for reading, using `a[i]` actually calls `a.%%__get%%(i)`.
 - **array writing** : when an object is accessed as an array for writing, using `a[i] = v` actually calls `a.%%__set%%(i,v)`.
 
-If the overloaded field is not defined when an operation occured, an exception is raised.
+If the overloaded field is not defined when an operation occurs, an exception is raised.
 
 ## Prototypes
 

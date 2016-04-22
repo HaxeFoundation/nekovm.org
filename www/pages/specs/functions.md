@@ -8,7 +8,7 @@ var foo = function() {
 }
 ```
 
-Functions are called by-value, this means that `foo(1)` calls the function which is the value of the variable foo. Calling a value that is not a function or does not accept this number of arguments will raise an exception.
+Functions are called by value, this means that `foo(1)` calls the function which is the value of the variable foo. Calling a value that is not a function or does not accept this number of arguments will raise an exception.
 
 You can know the number of arguments needed by a function by using the builtin `$nargs`. A function that accepts a variable number of arguments returns -1 when used with `$nargs`. Please also note that builtins can be used as values :
 
@@ -26,7 +26,7 @@ There is one other way of calling a function : builtin `$call` takes an array of
 $call(foo,null,$array(3,4));
 ```
 
-Functional languages require partial application (aka currying) : the ability to creates closures by setting a fixed number of arguments of a function, leaving the rest for later call. The builtin `$closure` enable to create a closure :
+Functional languages require partial application (aka currying) : the ability to creates closures by setting a fixed number of arguments of a function, leaving the rest for a later call. The builtin `$closure` enable to create a closure :
 
 ```neko
 var add = function(x,y) { return x + y };
@@ -42,9 +42,9 @@ f = $closure(f,55);
 f(); // prints 55
 ```
 
-Some languages might want more security about the types of the arguments that are passed to a function, or selecting at runtime different implementations of a function depending on the type of the arguments. There are many ways of doing that in Neko. For example, you might want to add arguments checks at the beginning of the function body using runtime types informations (RTTI) builtins.
+Some languages might want more security about the types of the arguments that are passed to a function, or selecting at runtime different implementations of a function depending on the type of the arguments. There are many ways of doing that in Neko. For example, you might want to add argument checks at the beginning of the function body using runtime type information (RTTI) builtins.
 
-Another useful builtin is `$apply` which is identical to a direct function call except that if the function require extra arguments, then its call is delayed until further arguments are used :
+Another useful builtin is `$apply` which is identical to a direct function call except that if the function requires extra arguments, then its call is delayed until further arguments are used :
 
 ```neko
 var f = function(x,y) { return x + y };

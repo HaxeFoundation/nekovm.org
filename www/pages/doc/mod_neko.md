@@ -1,10 +1,10 @@
 # An Introduction to Mod_neko
 
-Mod_neko is an Apache *module* for Neko. This means it's possible to run Neko programs on the server side in order to serve webpages using Apache. Here's a step-by-step tutorial on how to configure and use Mod_neko.
+Mod_neko is an Apache *module* for Neko. This means it's possible to run Neko programs on the server side in order to serve web pages using Apache. Here's a step-by-step tutorial on how to configure and use Mod_neko.
 
 ## Quick configuration
 
-If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running localy for development purposes only. It mimics the same [API](/doc/view/cgi) as `mod_neko`, so you can use that instead.
+If you don't have `mod_neko` compiled or you don't want to setup Apache, you can use a `mod_neko` emulator by using the Neko Web Server. This is a very small web server that is running locally for development purposes only. It mimics the same [API](/doc/view/cgi) as `mod_neko`, so you can use that instead.
 
 In order to start the server, simply run the following command :
 
@@ -12,7 +12,7 @@ In order to start the server, simply run the following command :
 nekotools server
 ```
 
-This should start the local server, by default, on the `localhost` on port `2000` so you can browse the configuration page by visiting <http://localhost:2000/server:config>. Change the server base path to your website directory and you can start browsing it. If it contains `.n` neko bytecode files, they will be loaded and executed just like Apache `mod_neko` is doing.
+This should start the local server, by default, on the `localhost` on port `2000` so you can browse the configuration page by visiting <http://localhost:2000/server:config>. Change the server base path to your website directory and you can start browsing it. If it contains `.n` Neko bytecode files, they will be loaded and executed just like Apache `mod_neko` is doing.
 
 
 ## Linux Installation
@@ -21,7 +21,7 @@ This should start the local server, by default, on the `localhost` on port `2000
 
 ## Apache configuration
 
-If you want to use Apache with `mod_neko`, once Neko is correctly configured, you can edit your Apache configuration `httpd.conf` in order to add `mod_neko`. Each statement must be added on a single line in the proper place in the Apache configuration file :
+If you want to use Apache with `mod_neko`, once Neko is correctly configured, you can edit your Apache configuration `httpd.conf` in order to add `mod_neko`. Each statement must be added to a single line in the proper place in the Apache configuration file :
 
 
 - add `LoadModule neko_module (your path to mod_neko.ndll)`
@@ -41,7 +41,7 @@ Now you can simply edit a Neko file and print some welcome message :
 $print("Hello Mod_neko !");
 ```
 
-Compile this file (`nekoc hello.neko`) and place the `.n` file into your web directory so it can be accessed by Apache. Browsing it using your [favorite](http://browsehappy.com/) webbrowser should display the message.
+Compile this file (`nekoc hello.neko`) and place the `.n` file into your web directory so it can be accessed by Apache. Browsing it using your [favorite](http://browsehappy.com/) web browser should display the message.
 
 Now let's try to print the HTTP parameters that are passed to the script, using the `mod_neko` API :
 
@@ -51,23 +51,23 @@ get_params = $loader.loadprim("mod_neko@get_params",0);
 $print("PARAMS = "+get_params());
 ```
 
-Don't forget to compile in order to update the `.n` file before browsing your script. You can now set HTTP parameters `(your url)?p1=v1;p2=v2....` and see them displayed on your web page.
+Don't forget to compile in order to update the `.n` file before browsing your script. You can now set HTTP parameters `(your URL)?p1=v1;p2=v2....` and see them displayed on your web page.
 
 
 ## Script versus Application
 
-Since Neko is separated into two different phases: *compile* and *run*, you cannot directly see the modifications you're making to your script since you need to compile first. This have several advantages :
+Since Neko is separated into two different phases: *compile* and *run*, you cannot directly see the modifications you're making to your script since you need to compile first. This has several advantages :
 
 - it runs faster
 
-- syntax is checked at compile-time, before you browse the page
+- the syntax is checked at compile-time before you browse the page
 
-	- you don't need to have *sources* on the server, binaries only is ok
+	- you don't need to have *sources* on the server; having only binaries is ok
 	- you can run your module in *application mode* (see below).
 
-Right now, however, everytime a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).
+Right now, however, every time a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).
 
-The idea of running in *Application Mode* is to have an initialization phase for your script that will create objects, load libraries, initialize global datas, and then setup an *entry point* which will be the function called for every request. Here's a small sample :
+The idea of running in *Application Mode* is to have an initialization phase for your script that will create objects, load libraries, initialize global data, and then setup an *entry point* which will be the function called for every request. Here's a small sample :
 
 ```neko
 $print("Initializing...");

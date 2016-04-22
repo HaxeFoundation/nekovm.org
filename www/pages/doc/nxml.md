@@ -2,7 +2,7 @@
 
 Neko sources syntax is easy to read, though can sometimes be difficult to generate. Also, it does not permit embedding file and line number information. For example, if you generate from a file in your language `MyFile.mylang` to `myfile.neko` you would like to get error traces in terms of position in the original `MyFile.mylang` file.
 
-For these reasons, an extension of the neko syntax is allowed which is called NXML. This is not a different format in the sense that you easily mix NXML and Neko sources together. You can put some NXML expressions in Neko sources and some Neko sources into an NXML document. NXML is based on XML and is representing a Neko Abstract Syntax Tree (AST).
+For these reasons, an extension of the Neko syntax is allowed which is called NXML. This is not a different format in the sense that you easily mix NXML and Neko sources together. You can put some NXML expressions in Neko sources and some Neko sources into an NXML document. NXML is based on XML and is representing a Neko Abstract Syntax Tree (AST).
 
 ## NXML Nodes
 
@@ -38,9 +38,9 @@ Other nodes are the following :
 - `<label v="here"/>` the goto label `here:`
 - `<switch>e0 <case>e1 e2</case> <case>e1 e2</case> <default>edef</default></switch>` a switch with several cases and an optional default
 - `<object><v v="f0"><i v="42"/></v><v v="f1"><s v="foo"/></v></object>` an object literal, equivalent to the neko code `{ f0 => 42, f1 => "foo" }`
-- `<neko>....</neko>` neko source can be embedded into a `%%<!CDATA[[...]]%%>` section.
+- `<neko>....</neko>` neko source can be embedded into a `%%<!CDATA[[...]]%%>` section
 
-For example, if we want to represent the fibonnaci function in NXML :
+For example, if we want to represent the fibonacci function in NXML :
 
 ```neko
 fib = function(n) {
@@ -66,7 +66,7 @@ fib = function(n) {
 
 ## File Position
 
-The additional attribute `p` can be placed on every NXML node in order to specify from which original file and line the expression is generated. For example `<i v="33" p="myfile.l:478"/>` is the integer 33 referenced in `myfile.l` at line 478.
+The additional attribute `p` can be placed on every NXML node in order to specify the original file and line the expression is generated from. For example `<i v="33" p="myfile.l:478"/>` is the integer 33 referenced in `myfile.l` at line 478.
 
 When encountered, such position is stored and remains valid for all NXML nodes. For example, `<nxml><i v="33" p="myfile.l:478"/><i v="34"/></nxml>` is listing two integers from `myfile.l`, both at line 478.
 
@@ -74,6 +74,6 @@ If you don't specify the filename in the `p` attribute, it's considered to be a 
 
 ## NXML to Neko
 
-There is a NXML to Neko generator which is available using the `nekoc` compiler. Simply run `nekoc myfile.neko` containing Neko/NXML syntax and it will create a `myfile2.neko` that will only contain Neko source code.
+There is a NXML-to-Neko generator which is available using the `nekoc` compiler. Simply run `nekoc myfile.neko` containing Neko/NXML syntax and it will create a `myfile2.neko` that will only contain Neko source code.
 
-There is not a Neko to NXML generator right now, although it should be possible to write one very easily.
+There is not a Neko-to-NXML generator right now, although it should be possible to write one very easily.

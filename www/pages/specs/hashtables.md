@@ -13,6 +13,6 @@ There is a set of builtins that are useful for using Hashtables. A hashtable is 
 - `$hcount(h)` : returns the number of bindings in the hashtable.
 - `$hiter(h,f)` : calls `f(k,v)` for each binding found in the hashtable.
 
-The hashtable stores the (key, values) couples in one chained list per slot. Adding a new binding with the same key will mask the previous one. The hash function used internaly is `$hkey(k)`, which will return a positive Neko integer for any Neko value. The hash function cannot be overriden, but the comparison function between keys can be overriden where it is used.
+The hashtable stores the (key, values) couples in one chained list per slot. Adding a new binding with the same key will mask the previous one. The hash function used internally is `$hkey(k)`, which will return a positive Neko integer for any Neko value. The hash function cannot be overridden, but the comparison function between keys can be overridden where it is used.
 
-You can of course write your own hashtable implementation using Neko data structures, but using the standard builtin hashtable is better for languages interoperability.
+You can, of course, write your own hashtable implementation using Neko data structures, but using the standard builtin hashtable is better for languages interoperability.

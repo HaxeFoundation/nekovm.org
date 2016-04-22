@@ -10,7 +10,7 @@ Bytecode files are precompiled Neko sources and have the `.n` extension. They ar
 
 ## Libraries
 
-Each `.ndll` file is neko library. It's just a shared library (`.so` or `.dll`) linked with the Neko Library (`libneko.so` or `neko.lib`). Each Neko Library can contain several primitives that can then be used from a Neko program. Neko libraries are also searched the same way as Modules, using `NEKOPATH`.
+Each `.ndll` file is a Neko library. It's just a shared library (`.so` or `.dll`) linked with the Neko Library (`libneko.so` or `neko.lib`). Each Neko Library can contain several primitives that can then be used from a Neko program. Neko libraries are also searched the same way as Modules, using `NEKOPATH`.
 
 ## Exports
 
@@ -24,14 +24,14 @@ $exports.log = function() { $print("log test") };
 
 Each Neko module has a *loader*, which is an object that can be used to load other Neko modules and C primitives. The loader is accessible using the `$loader` builtin.
 
-In order to load a Module, you can simply call the `loadmodule` method, which takes two parameters. The first parameter is the name of the module and the second parameter is the loader that this module will used. If found, the module is loaded, executed, and then its `$exports` table is returned. An exception is thrown if not found.
+In order to load a Module, you can simply call the `loadmodule` method, which takes two parameters. The first parameter is the name of the module and the second parameter is the loader that this module will use. If found, the module is loaded, executed, and then its `$exports` table is returned. An exception is thrown if not found.
 
 ```neko
 var m = $loader.loadmodule("log",$loader);
 m.log();
 ```
 
-You can also load C *primitives* using the loader. See the [C FFI](/doc/ffi) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an arrowbase, as well as the number of arguments. If succeeded, a Neko function is returned that is used to call the primitive, otherwise an exception is thrown.
+You can also load C *primitives* using the loader. See the [C FFI](/doc/ffi) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an at symbol (@), followed by the number of arguments. If succeeded, a Neko function is returned that is used to call the primitive, otherwise an exception is thrown.
 
 ```neko
 var p = $loader.loadprim("std@test",0);
@@ -47,7 +47,7 @@ It's possible to define your custom loader that will filter or secure the module
 
 The Neko Virtual Machine and its [C FFI](/doc/ffi) are packaged into a single shared library (`libneko.so` on Unix systems and `neko.dll` on Windows). With the garbage collector library (`libgc` on Unix and `gc.dll` on Windows), this is all you need to add to your application in order to be able to run a Neko Program.
 
-Here's a small code snippet that initializes a Neko VM, runs a neko module inside of it, then accesses some data :
+Here's a small code snippet that initializes a NekoVM, runs a Neko module inside of it, then accesses some data :
 
 ```c
 #include <stdio.h>
@@ -108,6 +108,7 @@ int main( int argc, char *argv[] ) {
 ```
 
 You can use it to load the following `mymodule.neko` file after compilation :
+
 ```neko
 $exports.x = 33;
 $exports.f = function(x) { return x * 2 + 1; }
@@ -115,8 +116,8 @@ $exports.f = function(x) { return x * 2 + 1; }
 
 ### NekoVM API
 
-The Neko VM API is declared in the `neko_vm.h` file. It will be fully documented later. There is also the `neko_mod.h` file for low level module access.
+The NekoVM API is declared in the `neko_vm.h` file. It will be fully documented later. There is also the `neko_mod.h` file for low-level module access.
 
 ### Multithreading
 
-Each thread can run several Neko VMs, however the same VM should not run at the same time in different threads. When changing virtual machines or after allocating one, you must call the `neko_vm_select` API function that will select the given virtual machine for the current thread.
+Each thread can run several NekoVMs, however, the same VM should not run at the same time in different threads. When changing virtual machines or after allocating one, you must call the `neko_vm_select` API function that will select the given virtual machine for the current thread.
