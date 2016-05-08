@@ -2,29 +2,26 @@
 
 The following downloads are currently available :
 
-- Neko 2.0.0 [sources TGZ](media/neko-2.0.0.tar.gz)
-- Neko 2.0.0 [Windows binaries](media/neko-2.0.0-win.zip)
-- Neko 2.0.0 [Linux binaries](media/neko-2.0.0-linux.tar.gz)
-- Neko 2.0.0 [Linux 64-bit binaries](media/neko-2.0.0-linux64.tar.gz)
-- Neko 2.0.0 [OS X binaries](media/neko-2.0.0-osx.tar.gz)
-- Neko 2.0.0 [OS X 64-bit binaries](media/neko-2.0.0-osx64.tar.gz)
+- Neko 2.1.0 [sources TGZ](media/neko-2.1.0-src.tar.gz)
+- Neko 2.1.0 [sources ZIP](media/neko-2.1.0-src.zip)
+- Neko 2.1.0 [Windows binaries](media/neko-2.1.0-win.zip)
+- Neko 2.1.0 [Linux binaries](media/neko-2.1.0-linux.tar.gz)
+- Neko 2.1.0 [Linux 64-bit binaries](media/neko-2.1.0-linux64.tar.gz)
+- Neko 2.1.0 [OS X 64-bit binaries](media/neko-2.1.0-osx64.tar.gz)
 
-You can access Neko sources from the [GitHub Repository](https://github.com/HaxeFoundation/neko)
+You can access Neko sources from the [GitHub Repository](https://github.com/HaxeFoundation/neko).
 
 # Snapshot Builds
 
 ## Windows
 
-Compiled binaries can be found in the "artifacts" tab of each AppVeyor build. The most recent one is
-<https://ci.appveyor.com/project/HaxeFoundation/neko/build/artifacts>
-
-> Note: that you may need to install [Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-us/download/details.aspx?id=5555), in case it complains "MSVCR100.dll" is missing.
+Compiled binaries can be found in the "artifacts" tab of each [AppVeyor build](https://ci.appveyor.com/project/HaxeFoundation/neko/history).
 
 ## Mac
 
 Neko snapshot of the latest master branch can be built using [homebrew](http://brew.sh/) in a single command: `brew install neko --HEAD`. It will install required dependencies, build, and install Neko to the system. The binaries can be found at `brew --prefix neko`.
 
-Use `brew reinstall haxe --HEAD` to upgrade in the future.
+Use `brew reinstall neko --HEAD` to upgrade in the future.
 
 ## Linux
 
@@ -35,17 +32,4 @@ sudo apt-get update
 sudo apt-get install neko -y
 ```
 
-Users of other Linux/FreeBSD distributions should build Neko from source using `make`. See [Makefile](https://github.com/HaxeFoundation/neko/blob/master/Makefile) for additional instructions.
-
-## Build dependencies
-
-| library | Debian/Ubuntu package |
-| | |
-| Boehm GC | libgc-dev |
-| OpenSSL | libssl-dev |
-| PCRE | libpcre3-dev |
-| zlib | zlib1g-dev |
-| Apache 2.2 / 2.4, with apr and apr-util | apache2-dev |
-| MariaDB / MySQL (Connector/C) | libmariadb-client-lgpl-dev-compat (or libmysqlclient-dev) |
-| SQLite | libsqlite3-dev |
-| GTK+2 | libgtk2.0-dev |
+Users of other Linux/FreeBSD distributions should build Neko from source. See [README.md](https://github.com/HaxeFoundation/neko/blob/master/README.md#build-instruction) for additional instructions.

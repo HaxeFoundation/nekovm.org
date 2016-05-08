@@ -1,6 +1,12 @@
 Releases
 ====
 
+### Neko 2.1 release
+_Date: May 8 2016_  
+
+See [CHANGES](https://github.com/HaxeFoundation/neko/blob/master/CHANGES)
+
+
 ### The Neko website updated
 _Date: January 10th 2016_  
 
