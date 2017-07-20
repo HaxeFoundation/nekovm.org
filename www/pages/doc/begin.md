@@ -6,17 +6,18 @@
 
 Decompress the archive and put it into the folder you want :
 
-- on Linux systems, `/usr/lib/neko` is recommended
 - on Windows, you can use `c:\neko`
+- on Mac, Linux, and other Unix systems, use a temp folder and we will move the files to appropriate locations in the next step
 
 The archive contains :
 
 - `neko` : the virtual machine boot binary
-- `libneko.so` (`neko.dll + neko.lib` on Windows) : the NekoVM library
-- `nekoc` : the commandline Neko compiler
+- `libneko.so*` (`neko.dll + neko.lib` on Windows) : the NekoVM library
+- `nekoc` : the command-line Neko compiler
+- `nekoml` : the command-line NekoML compiler
+- `nekoml.std` : the NekoML standard library
 - `nekotools` : neko utilities (including dev web server)
 - several `.ndll` files : the Neko standard libraries
-- `test.n` : the test bytecode
 - `gc.dll` (on Windows only) : the garbage collector used by Neko
 - `include/` : this directory contains the .H files needed for embedding and extending the VM
 - `LICENCE` and `CHANGES` : some text documents
@@ -26,26 +27,20 @@ The archive contains :
 
 ## Configuration
 
-Once Neko is installed on your system, you have to setup a few things :
-
-- **On Linux** : Setup your system so it will look for shared libraries in the install path (using `export LD_LIBRARY_PATH=/usr/lib/neko` for example). Put `neko`, `nekoc` and `nekotools` in `/usr/bin` or another directory that you are using. Install the `libgc1` package on your system.
+You have to setup a few things :
 
 - **On Windows** : Add the `c:\neko` directory to your `PATH` environment variable. Here are instructions for [Windows 2000](https://support.microsoft.com/en-us/kb/311843) and [Windows XP](https://support.microsoft.com/en-us/kb/310519).
 
-- **On Mac OS X(10.5 "leopard")** : make a new folder, `/opt/neko/`, for example. Unpack the contents from the download ("OS X Universal binaries") to `/opt/neko/`. Add NEKOPATH to your `.bash_profile`(`NEKOPATH=$NEKOPATH:/opt/neko/:/opt/neko/neko; PATH=$PATH:/usr/bin/:$NEKOPATH; export PATH; export NEKOPATH`)
+- **On Mac, Linux, and other Unix systems** : Put `neko`, `nekoc`, `nekoml`, and `nekotools` in `/usr/local/bin`. Put `libneko.so*` files in `/usr/local/lib`. Put `*.ndll` and `nekoml.std` in `/usr/local/lib/neko`. Put the `include/*.h` files in `/usr/local/include`. On Linux, you may have to run `sudo ldconfig` to refresh the library cache.
 
 
 Once this is done you should be able to run the `neko` command from any directory. Please check that `neko` is working. (On Windows you can you can open a command terminal using `Start / Run..` and entering `cmd` then OK).
 
-On Linux or OSX, if you didn't install neko in `/usr/lib/neko` or `/usr/local/lib/neko` ( `/opt/neko` on OSX ), then you need to setup the `NEKOPATH` environment variable so the runtime can find the Neko libraries. Set it to `/my/path/to/neko:/my/path/to/neko_vm` on Linux.
-
-You should now be able to run the test : execute `neko test` to check that everything is setup correctly. Now you can start using Neko.
+You should now be able to run the test : execute `neko -version` and it should print something like `2.1.0`. Now you can start using Neko.
 
 ## Compiling from Sources
 
-Compiling Neko directly from sources is a little more difficult. First, you need to install [libgc-dev](http://www.hpl.hp.com/personal/Hans_Boehm/gc), Then try to run `make`. All the compiled files should be compiled inside the `bin` subdirectory.
-
-Compiling for Windows from sources is possible using the Visual Studio project files. You need to compile the `neko.sln` project (nekovm and nekovm_dll only) as well as the `libs/libs.sln` project.
+Compiling Neko directly from sources is a little more difficult. See [README.md](https://github.com/HaxeFoundation/neko/blob/master/README.md#build-instruction) for additional instructions.
 
 ## Hello World
 
