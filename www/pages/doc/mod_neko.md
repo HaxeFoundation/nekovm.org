@@ -17,7 +17,7 @@ This should start the local server, by default, on the `localhost` on port `2000
 
 ## Linux Installation
 
-<http://haxe.org/doc/build/neko_linux>
+<http://old.haxe.org/doc/build/neko_linux>
 
 ## Apache configuration
 
