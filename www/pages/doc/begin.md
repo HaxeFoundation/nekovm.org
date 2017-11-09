@@ -31,7 +31,7 @@ You have to setup a few things :
 
 - **On Windows** : Add the `c:\neko` directory to your `PATH` environment variable. Here are instructions for [Windows 2000](https://support.microsoft.com/en-us/kb/311843) and [Windows XP](https://support.microsoft.com/en-us/kb/310519).
 
-- **On Mac, Linux, and other Unix systems** : Put `neko`, `nekoc`, `nekoml`, and `nekotools` in `/usr/local/bin`. Put `libneko.so*` files in `/usr/local/lib`. Put `*.ndll` and `nekoml.std` in `/usr/local/lib/neko`. Put the `include/*.h` files in `/usr/local/include`. On Linux, you may have to run `sudo ldconfig` to refresh the library cache.
+- **On Mac, Linux, and other Unix systems** : Put `neko`, `nekoc`, `nekoml`, and `nekotools` in `/usr/local/bin`. Put `libneko.so*` files in `/usr/local/lib`. Put `*.ndll` and `nekoml.std` in `/usr/local/lib/neko`. Put the `include/*.h` files in `/usr/local/include`. On Linux, you may have to run `sudo ldconfig`  and `sudo ldconfig /usr/local/lib` to refresh the library cache.
 
 
 Once this is done you should be able to run the `neko` command from any directory. Please check that `neko` is working. (On Windows you can you can open a command terminal using `Start / Run..` and entering `cmd` then OK).
