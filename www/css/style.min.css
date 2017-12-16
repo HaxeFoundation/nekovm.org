@@ -1,6 +1,7 @@
 body{margin:0px;padding:0px;background-color:white;font-family:"Open Sans",sans-serif;font-weight:400;font-size:16px;color:#1e1e1e;line-height:1.5;}
 h1,h2,h3,h4,h5,h6{font-family:"Source Sans Pro",sans-serif;font-weight:600;}
 a{color:#F4511E;text-decoration:none;}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{color:#1e1e1e;}
 a:hover{text-decoration:underline;}
 a img{border:0px;}
 .center{text-align:center;}

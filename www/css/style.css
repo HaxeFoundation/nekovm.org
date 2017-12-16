@@ -19,6 +19,9 @@ a {
 	color			: #F4511E;
 	text-decoration	: none;
 }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	color: #1e1e1e;
+}
 
 a:hover {
 	text-decoration	: underline;
