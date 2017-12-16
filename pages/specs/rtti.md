@@ -24,4 +24,4 @@ $typeof($array(1,2)); // 6
 $typeof(null) == $tnull; // true
 ```
 
-You can use the builtins for [Objects](/specs#objects), [Strings](/specs#strings), [Functions](/specs#function_function_calls), and [Arrays](/specs#arrays) to manipulate them at runtime.
+You can use the builtins for [Objects](/specs/objects/), [Strings](/specs/strings/), [Functions](/specs/functions/), and [Arrays](/specs/arrays/) to manipulate them at runtime.

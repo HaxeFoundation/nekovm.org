@@ -31,7 +31,7 @@ var m = $loader.loadmodule("log",$loader);
 m.log();
 ```
 
-You can also load C *primitives* using the loader. See the [C FFI](/doc/ffi) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an at symbol (@), followed by the number of arguments. If succeeded, a Neko function is returned that is used to call the primitive, otherwise an exception is thrown.
+You can also load C *primitives* using the loader. See the [C FFI](/doc/ffi/) API for help on how to write such primitives. A primitive is loaded using the `loadprim` method, using the name of the library and the name of the primitive separated by an at symbol (@), followed by the number of arguments. If succeeded, a Neko function is returned that is used to call the primitive, otherwise an exception is thrown.
 
 ```neko
 var p = $loader.loadprim("std@test",0);
@@ -45,7 +45,7 @@ It's possible to define your custom loader that will filter or secure the module
 
 ## Embedding the VM
 
-The Neko Virtual Machine and its [C FFI](/doc/ffi) are packaged into a single shared library (`libneko.so` on Unix systems and `neko.dll` on Windows). With the garbage collector library (`libgc` on Unix and `gc.dll` on Windows), this is all you need to add to your application in order to be able to run a Neko Program.
+The Neko Virtual Machine and its [C FFI](/doc/ffi/) are packaged into a single shared library (`libneko.so` on Unix systems and `neko.dll` on Windows). With the garbage collector library (`libgc` on Unix and `gc.dll` on Windows), this is all you need to add to your application in order to be able to run a Neko Program.
 
 Here's a small code snippet that initializes a NekoVM, runs a Neko module inside of it, then accesses some data :
 

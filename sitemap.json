@@ -1,0 +1,228 @@
+[
+	{
+		"title": "Home",
+		"url": "/"
+	},
+	{
+		"title": "News",
+		"url": "/news/"
+	},
+	{
+		"title": "Downloads",
+		"url": "/download/"
+	},
+	{
+		"title": "Documentation",
+		"url": "/doc/",
+		"sub": [
+			{
+				"title": "Documentation - Neko Starter's Guide",
+				"url": "/doc/begin/"
+			},
+			{
+				"title": "Documentation - C FFI",
+				"url": "/doc/ffi/"
+			},
+			{
+				"title": "Documentation - Virtual Machine",
+				"url": "/doc/vm/"
+			},
+			{
+				"title": "Documentation - Mod_neko",
+				"url": "/doc/mod_neko/"
+			},
+			{
+				"title": "Documentation - Languages Interoperability",
+				"url": "/doc/misc/multilang/"
+			},
+			{
+				"title": "Documentation - NekoML",
+				"url": "/doc/nekoml/"
+			},
+			{
+				"title": "Documentation - NXML",
+				"url": "/doc/nxml/"
+			},
+			{
+				"title": "Documentation - Neko and  Multithreading",
+				"url": "/doc/mt/"
+			},
+			{
+				"title": "Documentation - A comparison of Neko and Lua",
+				"url": "/doc/lua/"
+			}
+		]
+	},
+	{
+		"title": "Specification",
+		"url": "/specs/",
+		"sub": [
+			{
+				"title": "Specification - Syntax",
+				"url": "/specs/syntax/"
+			},
+			{
+				"title": "Specification - Values",
+				"url": "/specs/values/"
+			},
+			{
+				"title": "Specification - Execution Flow",
+				"url": "/specs/execution-flow/"
+			},
+			{
+				"title": "Specification - Variables",
+				"url": "/specs/variables/"
+			},
+			{
+				"title": "Specification - Operations on Basic Types",
+				"url": "/specs/operations-and-types/"
+			},
+			{
+				"title": "Specification - Runtime Type Information",
+				"url": "/specs/rtti/"
+			},
+			{
+				"title": "Specification - Function & Function Calls",
+				"url": "/specs/functions/"
+			},
+			{
+				"title": "Specification - Objects",
+				"url": "/specs/objects/"
+			},
+			{
+				"title": "Specification - Arrays",
+				"url": "/specs/arrays/"
+			},
+			{
+				"title": "Specification - Strings",
+				"url": "/specs/strings/"
+			},
+			{
+				"title": "Specification - Exceptions",
+				"url": "/specs/exceptions/"
+			},
+			{
+				"title": "Specification - Hashtables",
+				"url": "/specs/hashtables/"
+			},
+			{
+				"title": "Specification - Labels and Gotos",
+				"url": "/specs/labels-and-gotos/"
+			}
+		]
+	},
+	{
+		"title": "API",
+		"url": "/doc/libs/",
+		"sub": [
+			{
+				"title": "API - Builtins",
+				"url": "/doc/view/builtins/"
+			},
+			{
+				"title": "API - Buffer",
+				"url": "/doc/view/buffer/"
+			},
+			{
+				"title": "API - Date",
+				"url": "/doc/view/date/"
+			},
+			{
+				"title": "API - File",
+				"url": "/doc/view/file/"
+			},
+			{
+				"title": "API - Int32",
+				"url": "/doc/view/int32/"
+			},
+			{
+				"title": "API - Math",
+				"url": "/doc/view/math/"
+			},
+			{
+				"title": "API - MD5",
+				"url": "/doc/view/md5/"
+			},
+			{
+				"title": "API - Memory",
+				"url": "/doc/view/memory/"
+			},
+			{
+				"title": "API - Module",
+				"url": "/doc/view/module/"
+			},
+			{
+				"title": "API - Random",
+				"url": "/doc/view/random/"
+			},
+			{
+				"title": "API - Serialize",
+				"url": "/doc/view/serialize/"
+			},
+			{
+				"title": "API - Socket",
+				"url": "/doc/view/socket/"
+			},
+			{
+				"title": "API - String",
+				"url": "/doc/view/string/"
+			},
+			{
+				"title": "API - System",
+				"url": "/doc/view/sys/"
+			},
+			{
+				"title": "API - UTF8",
+				"url": "/doc/view/utf8/"
+			},
+			{
+				"title": "API - Xml",
+				"url": "/doc/view/xml/"
+			},
+			{
+				"title": "API - Thread",
+				"url": "/doc/view/thread/"
+			},
+			{
+				"title": "API - Ui",
+				"url": "/doc/view/ui/"
+			},
+			{
+				"title": "API - Process",
+				"url": "/doc/view/process/"
+			},
+			{
+				"title": "API - Misc",
+				"url": "/doc/view/misc/"
+			},
+			{
+				"title": "API - Regexp",
+				"url": "/doc/view/regexp/"
+			},
+			{
+				"title": "API - Mysql",
+				"url": "/doc/view/mysql/"
+			},
+			{
+				"title": "API - Mod_neko",
+				"url": "/doc/view/cgi/"
+			},
+			{
+				"title": "API - Sqlite",
+				"url": "/doc/view/sqlite/"
+			},
+			{
+				"title": "API - ZLib",
+				"url": "/doc/view/zlib/"
+			}
+		]
+	},
+	{
+		"title": "FAQ",
+		"url": "/faq/"
+	},
+	{
+		"title": "Contact",
+		"url": "/ml/"
+	}
+]

@@ -1,33 +1,53 @@
-<div class="col-3">
-<h1>The Neko Programming Language</h1>
-
-Neko is a high-level dynamically typed programming language. It can be used as an embedded scripting language. It has been designed to provide a common runtime for several different languages. Learning and using Neko is very easy. You can easily extend the language with C libraries. You can also write generators from your own language to Neko and then use the Neko Runtime to compile, run, and access existing libraries.
-
-If you need to add a scripting language to your application, Neko provides the best tradeoff between simplicity, extensibility, and speed.
-
-Neko is also a good way for language designers to focus on design and reuse a fast and well-designed runtime, as well as existing libraries for accessing filesystem, network, databases, XML...
-
-See <a href="/specs">Neko Specifications...</a>
-
-</div><div class="col-3">
-
-<h1>The Neko Virtual Machine</h1>
-
-Neko has a compiler and a virtual machine. The Virtual Machine is both very lightweight and well optimized, so it can run very quickly. The VM can be easily embedded into any application and your libraries can be accessed using the C foreign function interface.
-
-The compiler converts a source .neko file into a bytecode .n file that can be executed using the Virtual Machine. The compiler is written in Neko itself and is still very fast. You can use the compiler as a standalone command line executable separate from the VM, or as a Neko library to perform compile-and-run functions for interactive languages.
-
-See <a href="/doc/vm">NekoVM Documentation...</a>
-
-</div><div class="col-3">
-<h1>Mod_neko</h1>
-
-Neko comes with several libraries. One of these is mod_neko, which embeds the Neko Virtual Machine into an Apache web server, so you can use Neko to generate web pages. This website is actually generated using Neko.
-
-See <a href="/doc/mod_neko">Introduction to mod_neko</a>
-
+<div class="row">
+	<div class="col-4">
+		<h3>The Neko Programming Language</h3>
+		<strong>
+			Neko is a high-level dynamically typed programming language. It can be used as an embedded scripting language. It has been designed to provide a common runtime for several different languages. Learning and using Neko is very easy. You can easily extend the language with C libraries. You can also write generators from your own language to Neko and then use the Neko Runtime to compile, run, and access existing libraries.
+			</strong><p>
+			Neko is also a good way for language designers to focus on design and reuse a fast and well-designed runtime, as well as existing libraries for accessing filesystem, network, databases, xml...
+	 </p>
+		See <a href="/specs/syntax/">Neko Specifications...</a>
+	</div>
+	<div class="col-2">
+		<br/>
+		<br/>
+		<blockquote class="big">
+			&quot;If you need to add a scripting language to your application, Neko provides the best tradeoff between simplicity, extensibility and speed.&quot;
+		</blockquote>
+	</div>
+	<br clear="all"/>
 </div>
 
-<h3>About</h3>
+<div class="row">
+	<div class="col-2">
+		<br/>
+		<br/>
+		<blockquote class="big">
+			The compiler converts a source .neko file into a bytecode .n file that can be executed using the Virtual Machine. The compiler is written in Neko itself, and is still very fast.
+		</blockquote>
+	</div>
+	<div class="col-4">
+		<h3>The Neko Virtual Machine</h3>
+		<strong>
+			Neko has a compiler and a virtual machine. The Virtual Machine is both very lightweight and well optimized, so it can run very quickly. The VM can be easily embedded into any application and your libraries can be accessed using the C foreign function interface.
+			</strong><p>You can use the compiler as standalone command line executable separate from the VM, or as a Neko library to perform compile-and-run funtions for interactive languages.
+		</p>
+		See <a href="/doc/vm/">NekoVM Documentation...</a>
+	</div>
+	<br clear="all"/>
+</div>
 
-Neko is developed as part of the Research and Development effort for better languages at Motion-Twin. You can contact the Neko author Nicolas Cannasse (ncannasse _at_ gmail.com) for more information. Neko is free software and the full source code is available under the MIT License. You're also welcome to join the <a href="/ml">mailing list</a>
+<div class="row">
+	<div class="col-3">
+	<h3>Mod_neko</h3>
+		<p>
+			Neko comes with several libraries. One of these is mod_neko, which embeds the Neko Virtual Machine into an Apache web server, so you can use Neko to generate webpages. This website is actually generated using Neko.
+		</p>
+		See <a href="/doc/mod_neko/">Introduction to mod_neko</a>
+	</div>
+	<div class="col-3">
+		<h3>About</h3>
+		<p>Neko is developed as part of the Research and Development effort for better languages at Motion-Twin. You can contact the Neko author Nicolas Cannasse (ncannasse _at_ gmail.com) for more information. Neko is free software and the full source code is available under the MIT License. <br/>You're also welcome to <a href="/ml/">get in touch</a>.</p>
+	</div>
+	<br clear="all"/>
+</div>

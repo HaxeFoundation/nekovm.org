@@ -22,9 +22,6 @@ The archive contains :
 - `include/` : this directory contains the .H files needed for embedding and extending the VM
 - `LICENCE` and `CHANGES` : some text documents
 
-
-
-
 ## Configuration
 
 You have to setup a few things :
@@ -56,6 +53,6 @@ You can now run this bytecode "module" by calling `neko hello`. This should prin
 
 ## From here...
 
-From here on, you're no longer a beginner so you can start reading the [other documents](/doc).
+From here on, you're no longer a beginner so you can start reading the other documents.
 
 Congratulations!

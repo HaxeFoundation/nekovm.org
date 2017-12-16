@@ -1,7 +1,4 @@
-# FAQ
-
-Frequently Asked Questions about Neko :
-
+# Frequently Asked Questions about Neko :
 
 ## How is Neko different from .NET's CLR or the Java's JVM?
 
@@ -25,14 +22,13 @@ Actually, it is one of the goals of Neko to be able to run these languages on th
 
 ## How is Neko different from Lua?
 
-A complete [comparison](/lua) is available. Neko has better OO support and an easy-to-use C FFI. Neko is also faster for data structures manipulation, but slower for floating-point arithmetics.
-
+A complete [comparison](/doc/lua/) is available. Neko has better OO support and an easy-to-use C FFI. Neko is also faster for data structures manipulation, but slower for floating-point arithmetics.
 
 ## How is Neko different from Parrot?
 
 Targeting Parrot requires you to learn another language, which is more complex that Neko itself, with different possibilities at different levels (low-level PASM, medium-level PIR, high-level NQP).
 
-It is also difficult to differentiate between the *language* and the *standard library* because of the numerous cores apis (PMC), whereas NekoVM has a single [builtins](/doc/view/builtins) core api which a single high-level language with minimal syntax and core types.
+It is also difficult to differentiate between the *language* and the *standard library* because of the numerous cores apis (PMC), whereas NekoVM has a single [builtins](/doc/view/builtins/) core api which a single high-level language with minimal syntax and core types.
 
 Parrot is written in C while Neko compiler is written in... Neko. The language is fully bootstrapped right now. Also, Neko is lightweight and the Virtual Machine is only 68 KB on Linux and 40 KB on Windows while still offering a very good speed.
 
@@ -46,4 +42,4 @@ Neko is known to run on Windows x86, Linux, BSD, OSX, and Linux AMD64 architectu
 
 ## More questions?
 
-You can ask on the [mailing list](/ml).
+You can ask on the [mailing list](/ml/).

@@ -148,7 +148,7 @@ The difference is that whilst user-allocated pointers in Lua allow no runtime ty
 
 Another difference is that whilst the Lua GC ignores user-allocated data, Neko tracks it and calls a *finalizer* method when it's no longer used, which allows the data to be freed. Lua only offers finalizers on GC allocated data; if a finalizer is required on a user-allocated pointer, the pointer must be boxed in a GC allocated pointer, which provides a similar construct to Neko's `abstract` value type.
 
-More information on the Neko `abstract` can be found in the Neko [FFI documentation](/doc/ffi).
+More information on the Neko `abstract` can be found in the Neko [FFI documentation](/doc/ffi/).
 
 
 ### Objects VS Tables
