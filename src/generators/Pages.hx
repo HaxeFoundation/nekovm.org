@@ -43,7 +43,7 @@ class Pages {
 			}
 		}
 
-		Utils.save(Path.join([Config.outputFolder, folder, file]), content, sitepage, editLink);
+		Utils.save(Path.join([folder, file]), content, sitepage, editLink);
 	}
 
 	static function addAnchors (content:String) : String {

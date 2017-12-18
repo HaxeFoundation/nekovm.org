@@ -2,6 +2,7 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 import tink.template.Html;
+import Config.*;
 
 using StringTools;
 
@@ -37,32 +38,39 @@ class Utils {
 	}
 
 	public static function save(outPath:String, content:String, current:SiteMap.SitePage, editLink:String, title:String = null, description:String = null) {
+		var canonical = outPath;
 		switch (Path.extension(outPath)) {
 			case "md":
-				if (outPath == '${Config.outputFolder}/index.md') {
-					outPath = '${Config.outputFolder}/index.html';
+				if (outPath == 'index.md') {
+					outPath = 'index.html';
+					canonical = root;
 				}
 				else {
-					outPath = Path.withoutExtension(outPath) + "/index.html";
+					canonical = Path.withoutExtension(outPath);
+					outPath = canonical + "/index.html";
 				}
 
 			case "xml":
-				outPath = Path.withoutExtension(outPath) + "/index.html";
+				canonical = Path.withoutExtension(outPath);
+				outPath = canonical + "/index.html";
 
 			default:
 		}
+
+		outPath = Path.join([outputFolder, outPath]);
+		canonical = Path.join([root, canonical]);
 
 		var dir = Path.directory(outPath);
 		if (!FileSystem.exists(dir)) {
 			FileSystem.createDirectory(dir);
 		}
-
 		File.saveContent(outPath, Views.Layout(
 			current != null ? current.title : title,
 			description != null ? description : Config.description,
 			new Html(content),
 			Std.string(Date.now().getFullYear()),
-			current != null && current.editLink != null ? current.editLink : editLink
+			current != null && current.editLink != null ? current.editLink : editLink,
+			canonical
 		));
 	}
 

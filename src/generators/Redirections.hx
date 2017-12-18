@@ -17,7 +17,7 @@ class Redirections {
 		for (page in list.keys()) {
 			var content = Views.Redirection(list.get(page));
 
-			Utils.save(Path.join([Config.outputFolder, page]), content, null, null);
+			Utils.save(page, content, null, null);
 		}
 	}
 
