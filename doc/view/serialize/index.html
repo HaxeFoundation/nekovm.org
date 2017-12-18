@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>API - Serialize - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>API</h3>
+		<ul class="toc">
+			<li><a href="/doc/libs/">Neko Standard Library API</a>
+				<ul>
+					<li><a href="/doc/view/builtins/">Builtins</a></li>
+					<li><a href="/doc/view/buffer/">Buffer</a></li>
+					<li><a href="/doc/view/date/">Date</a></li>
+					<li><a href="/doc/view/file/">File</a></li>
+					<li><a href="/doc/view/int32/">Int32</a></li>
+					<li><a href="/doc/view/math/">Math</a></li>
+					<li><a href="/doc/view/md5/">MD5</a></li>
+					<li><a href="/doc/view/memory/">Memory</a></li>
+					<li><a href="/doc/view/module/">Module</a></li>
+					<li><a href="/doc/view/random/">Random</a></li>
+					<li><a href="/doc/view/serialize/">Serialize</a></li>
+					<li><a href="/doc/view/socket/">Socket</a></li>
+					<li><a href="/doc/view/string/">String</a></li>
+					<li><a href="/doc/view/sys/">System</a></li>
+					<li><a href="/doc/view/utf8/">UTF8</a></li>
+					<li><a href="/doc/view/xml/">Xml</a></li>
+					<li><a href="/doc/view/thread/">Thread</a></li>
+					<li><a href="/doc/view/ui/">Ui</a></li>
+					<li><a href="/doc/view/process/">Process</a></li>
+					<li><a href="/doc/view/misc/">Misc</a></li>
+					<li><a href="/doc/view/regexp/">Regexp</a></li>
+					<li><a href="/doc/view/mysql/">Mysql</a></li>
+					<li><a href="/doc/view/cgi/">Mod_neko</a></li>
+					<li><a href="/doc/view/sqlite/">Sqlite</a></li>
+					<li><a href="/doc/view/zlib/">ZLib</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<html>
+
+	<h1>Serialize</h1>
+	<p>
+	Serialization can be used in order to store permanantly some runtime value.
+	Serialization of all values is possible, except Abstracts, with the special
+	cases of <doc_code>'int32</doc_code> and <doc_code>'hash</doc_code> which are handled as specific cases.
+	</p>
+	<p>
+	Serialization of bytecode function is possible, but will result in a runtime
+	exception when deserializing if the function offset in the bytecode has changed.
+	</p>
+	<p>
+	You can define the __serialize method of an object. When this method is found when
+	serializing the object, it is called with no arguments and its return value will be
+	serialized. The name of the module the method is declared in will also be serialized.
+	When unserializing, the module is loaded and its __unserialize exported function is
+	called with the value that was returned by __serialize.
+	</p>
+	
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>serialize</doc_name><doc_type>(any)</doc_type> <doc_doc>Serialize any value recursively</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>any</doc_type> <doc_name>unserialize</doc_name><doc_type>(string, #loader)</doc_type> <doc_doc>Unserialize a stored value.
+	Need a loader to look for modules if some bytecode functions have been serialized.
+	</doc_doc>
+</doc_blk>
+</html>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/view/serialize.xml" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

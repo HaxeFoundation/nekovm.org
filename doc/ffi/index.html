@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Documentation - C FFI - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Documentation</h3>
+		<ul class="toc">
+			<li>Neko Documentation
+				<ul>
+					<li><a href="/doc/begin/">Neko Starter's Guide</a></li>
+					<li><a href="/doc/ffi/">C FFI</a> (Foreign Function Interface)</li>
+					<li><a href="/doc/vm/">Virtual Machine Documentation</a></li>
+					<li><a href="/doc/mod_neko/">Mod_neko</a></li>
+					<li><a href="/doc/multilang/">Languages Interoperability</a></li>
+					<li><a href="/doc/nekoml/">NekoML</a></li>
+					<li><a href="/doc/nxml/">NXML</a></li>
+					<li><a href="/doc/mt/">Neko and  Multithreading</a></li>
+					<li><a href="/doc/lua/">A comparison of Neko and Lua</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Neko C FFI</h1>
+<p>The NekoVM itself have enough operations to compute any value. However, it cannot do everything, like accessing files, connecting to a server, or display and manage a window with menus and buttons. All these features and much more are however accessible from C code that will use operating system libraries. Since the NekoVM cannot call C functions directly, it is needed to write some glue C code that will wrap the OS libraries in order to make them accessible. These glue functions are called "primitives".</p>
+<p>When you're writing primitives, you need to use the Neko C FFI (also called Neko API). To use it, you only need to include the <code>neko.h</code> file which is part of the Neko distribution, and to link with the Neko library (<code>libneko.so</code> on Unix, <code>libneko.dylib</code> on OSX, and <code>neko.lib</code> on Windows).</p>
+<a id="a-small-sample" class="anch"/><h2><a href="#a-small-sample">A small sample</a></h2>
+<p>Here's a Hello World sample on how to write a Neko primitive in C :</p>
+<pre><code class="prettyprint c">#include &lt;neko.h&gt;
+
+value test() {
+	return alloc_string("Hello world");
+}
+
+DEFINE_PRIM(test,0); // function test with 0 arguments</code></pre>
+<p>Now all you have to do is to compile this C file into a shared library named "hello.ndll". In order to test your primitive, it is very easy to use it from a Neko program. Simply call the $loader <code>loadprim</code> method and request the primitive with the declared number of arguments :</p>
+<pre><code class="prettyprint c">var p = $loader.loadprim("hello@test",0);
+$print( p() );</code></pre>
+<p>The format of primitive name is <em>name_of_library</em>@<em>name_of_the_function</em>. You can then define several primitives in the same library.</p>
+<a id="manipulating-values" class="anch"/><h2><a href="#manipulating-values">Manipulating Values</a></h2>
+<p>As we saw in the Language Specification, there are the following types of values available :</p><ul><li>null</li><li>integer</li><li>float</li><li>boolean</li><li>string</li><li>array</li><li>object</li><li>abstract</li></ul>
+<p>Every value given as an argument to a primitive or returned by a primitive must be of the <code>value</code> type. The Neko API is defined in one single include file <code>neko.h</code>. There is several kind of API functions :</p><ul><li><code>val_is_*</code> functions work on any value and return 1 if the value is of the given type, or 0 otherwise.</li><li><code>val_*</code> functions enable you to retrieve the content of a value. Please note that you must first ENSURE that the value is of the given type before using such a function or the program might crash or have unpredictable behavior.</li><li><code>alloc_*</code> functions enable you to convert a C value to a Neko value.</li></ul>
+<p>Please note that most (almost all) of these functions are actually C macros, so there is no call done. You can have a look at <code>neko.h</code> if you're performance-oriented and want to differentiate between macros and real API functions.</p>
+<a id="constant-values" class="anch"/><h3><a href="#constant-values">Constant Values</a></h3><ul><li><code>val_null</code> : the Neko null value.</li><li><code>val_true</code> : the Neko true value.</li><li><code>val_false</code> : the Neko false value.</li></ul>
+<a id="typecheck-functions" class="anch"/><h3><a href="#typecheck-functions">Typecheck Functions</a></h3><ul><li><code>val_is_null(v)</code> : check if a value is null.</li><li><code>val_is_int(v)</code> : check if a value is an integer.</li><li><code>val_is_float(v)</code> : check if a value is a float.</li><li><code>val_is_string(v)</code> : check if a value is a string.</li><li><code>val_is_bool(v)</code> : check if a value is a boolean.</li><li><code>val_is_array(v)</code> : check if a value is an array.</li><li><code>val_is_object(v)</code> : check if a value is an object.</li><li><code>val_is_function(v)</code> : check if a value is a function.</li><li><code>val_is_abstract(v)</code> : check if a value is an abstract.</li><li><code>val_is_kind(v,k)</code> : check if a value is an abstract of the kind <code>k</code>.</li><li><code>val_is_number(v)</code> : check if a value is either an integer or a float.</li></ul>
+<p>For more information, see the <a href="#type_checks">Type checks</a> section.</p>
+<a id="access-functions" class="anch"/><h3><a href="#access-functions">Access Functions</a></h3>
+<p>In order to use the following functions, you must first be sure that the type of the value is correct by using functions above. If you don't, the behavior may be unexpected.</p><ul><li><code>val_int(v)</code> : retrieve the integer stored in a value.</li><li><code>val_bool(v)</code> : retrieve the boolean stored in a value.</li><li><code>val_float(v)</code> : retrieve the float stored in a value.</li><li><code>val_string(v)</code> : retrieve the string stored in a value.</li><li><code>val_strlen(v)</code> : retrieve the length of the string stored in a value.</li><li><code>val_number(v)</code> : retrieve the float or the integer stored in a value.</li><li><code>val_array_ptr(v)</code> : retrieve the array stored in a value as a value pointer.</li><li><code>val_array_size(v)</code> : retrieve the size of the array stored in a value.</li><li><code>val_fun_nargs(v)</code> : retrieve the number of arguments of the function stored in a value.</li><li><code>val_data(v)</code> : retrieve the data stored in an abstract value.</li><li><code>val_kind(v)</code> : retrieve the kind of an abstract value.</li></ul>
+<a id="allocation-functions" class="anch"/><h3><a href="#allocation-functions">Allocation Functions</a></h3>
+<p>All of these functions are returning a value from some C data :</p><ul><li><code>alloc_int(i)</code> : return a value from a C int.</li><li><code>alloc_float(f)</code> : return a value from a C float.</li><li><code>alloc_bool(b)</code> : return a value from a C bool (0 is false, true otherwise).</li><li><code>alloc_array(size)</code> : create a Neko array from the given size.</li><li><code>alloc_string(str)</code> : return a value from a C string (make a copy).</li><li><code>alloc_empty_string(n)</code> : return an unitialized string value capable of storing <code>n</code> bytes.</li><li><code>copy_string(str,size)</code> : return a copy the <code>size</code> first bytes of the string <code>str</code> as a value.</li></ul>
+<a id="printing-a-value" class="anch"/><h2><a href="#printing-a-value">Printing a value</a></h2>
+<p>Using what you have learned from the Neko API, you can now write a function that can print any value :</p>
+<pre><code class="prettyprint c">#include &lt;stdio.h&gt;
+#include &lt;neko.h&gt;
+
+value print( value v ) {
+	if( val_is_null(v) )
+		printf("null");
+	else if( val_is_int(v) )
+		printf("int : %d",val_int(v));
+	else if( val_is_float(v) )
+		printf("float : %f",val_float(v));
+	else if( val_is_bool(v) )
+		printf("bool : %s",val_bool(v)?"true":"false");
+	else if( val_is_array(v) )
+		printf("array : size %d",val_array_size(v));
+	else if( val_is_function(v) )
+		printf("function : %d args",val_fun_nargs(v));
+	else if( val_is_string(v) )
+		printf("string : %s (%d bytes)",val_string(v),val_strlen(v));
+	else if( val_is_object(v) )
+		printf("object");
+	else if( val_is_abstract(v) )
+		printf("abstract of kind %X",val_kind(v));
+	else
+		printf("?????");
+	return val_null;
+}
+
+DEFINE_PRIM(print,1);</code></pre>
+<p>Please note that it's pretty inefficient since you are are doing a test for each type when you could simply dispatch using <code>val_type</code> result :</p>
+<pre><code class="prettyprint c">#include &lt;stdio.h&gt;
+#include &lt;neko.h&gt;
+
+value print( value v ) {
+	switch( val_type(v) ) {
+	case VAL_NULL:
+		printf("null");
+		break;
+	case VAL_INT:
+		printf("int : %d",val_int(v));
+		break;
+	case VAL_FLOAT:
+		printf("float : %f",val_float(v));
+		break;
+	case VAL_BOOL:
+		printf("bool : %s",val_bool(v)?"true":"false");
+		break;
+	case VAL_ARRAY:
+		printf("array : size %d",val_array_size(v));
+		break;
+	case VAL_FUNCTION:
+		printf("function : %d args",val_fun_nargs(v));
+		break;
+	case VAL_STRING:
+		printf("string : %s (%d bytes)",val_string(v),val_strlen(v));
+		break;
+	case VAL_OBJECT:
+		printf("object");
+		break;
+	case VAL_ABSTRACT:
+		printf("abstract of kind %X",val_kind(v));
+		break;
+	default:
+		printf("?????");
+		break;
+	}
+	return val_null;
+}
+
+DEFINE_PRIM(print,1);</code></pre>
+<p>The <code>default</code> case is not supposed to happen unless there is some bug in a C function that doesn't return a correct value (or memory corruption). Since the NekoVM is safe in regard to memory manipulation, such a problem can only arise from a buggy C primitive.</p>
+<a id="buffers" class="anch"/><h2><a href="#buffers">Buffers</a></h2>
+<p>The printing of a value is a little more complex than that. In the case of objects, in particular, you must call the <code>%%__string%%()</code> method to retrieve a representation of the object if available.</p>
+<p>In order to easily construct strings of mixed constant C strings and values converted to strings, Neko API has <code>buffer</code>. A buffer is NOT a value, so you cannot return it outside of a C primitive, but it's garbage collected so you don't have to free them after usage.</p>
+<p>Here's a list of functions for using buffers :</p><ul><li><code>alloc_buffer(str)</code> will allocate a fresh buffer with a string <code>str</code> or no data if <code>str</code> is <code>NULL</code>.</li><li><code>val_buffer(b,v)</code> will add a string representation of the value <code>v</code> to the buffer <code>b</code>.</li><li><code>buffer_append(b,str)</code> will append the C string <code>str</code> at the end of the buffer <code>b</code>.</li><li><code>buffer_append_sub(b,str,n)</code> will append the <code>n</code> first bytes of the C string <code>str</code> at the end of the buffer <code>b</code>.</li><li><code>buffer_to_string(b)</code> allocate and return a string value of the buffer's content.</li></ul>
+<p>Here's a small example of a buffer usage :</p>
+<pre><code class="prettyprint c">value print2( value v1, value v2 ) {
+	buffer b = alloc_buffer("Values");
+	buffer_append(b," = ");
+	val_buffer(b,v1);
+	buffer_append_sub(b,",xxx",1); // only first byte, so ','
+	val_buffer(b,v2);
+	return buffer_to_string(b);
+}</code></pre>
+<a id="working-with-objects" class="anch"/><h2><a href="#working-with-objects">Working with Objects</a></h2>
+<p>Objects in Neko are also values, and there are several functions in the Neko API used to access and modify object fields.</p>
+<a id="objects-api" class="anch"/><h3><a href="#objects-api">Objects API</a></h3><ul><li><code>alloc_object(o)</code> returns a copy of the object <code>o</code>, or an empty object if <code>o</code> is <code>NULL</code> or <code>val_null</code>.</li><li><code>val_is_object(v)</code> check that the value is an object.</li><li><code>val_id("fname")</code> : in the Neko specification, it is said that object tables doesn't contain direct fields names, but a hashed identifier of the field name. <code>val_id</code> returns a <code>field</code> identifier from a field name.</li><li><code>val_field(o,f)</code> access an object field for reading, returns <code>val_null</code> if the field is not found. <code>f</code> is the <code>field</code> identifier as retreived with <code>val_id</code>.</li><li><code>alloc_field(o,f,v)</code> will set or replace the value of the field <code>f</code> of object <code>o</code> by the value <code>v</code>.</li></ul>
+<p>Here's a small example that allocates an object with two fields x and y from two values :</p>
+<pre><code class="prettyprint c">#include&lt;neko.h&gt;
+
+value make_point( value x, value y ) {
+	value o;
+	val_check(x,number);
+	val_check(y,number);
+	o = alloc_object(NULL);
+	alloc_field(o,val_id("x"),x);
+	alloc_field(o,val_id("y"),y);
+	return o;
+}
+
+DEFINE_PRIM(make_point,2);</code></pre>
+<a id="objects-methods" class="anch"/><h3><a href="#objects-methods">Objects Methods</a></h3>
+<p>If we want to add a method <code>%%__string%%</code> to the object in order to display its content when printed, we can do the following :</p>
+<pre><code class="prettyprint c">#include&lt;neko.h&gt;
+
+value point_to_string() {
+	value o = val_this();
+	value x , y;
+	buffer b;
+	val_check(o,object);
+	x = val_field(o,val_id("x"));
+	y = val_field(o,val_id("y"))
+	b = alloc_buffer("Point : ");
+	val_buffer(b,x);
+	buffer_append(b," , ");
+	val_buffer(b,y);
+	return buffer_to_string(b);
+}
+
+value make_point( value x, value y ) {
+	value f = alloc_function(point_to_string,0,"point_to_string");
+	....
+	alloc_field(o,val_id("%%__string%%"),f);
+	return o;
+}</code></pre>
+<p>Let's see a little bit of what is done here :</p>
+<p>In <code>make_point</code> we are setting the field <code>%%__string%%</code> of the object <code>o</code> to a value function allocated with <code>alloc_function</code>, which takes three parameters : the address of the C function, the number of parameters, and a name for the function that will help for debugging and error locations.</p>
+<p>In <code>point_to_string</code> we are first retrieving <code>val_this()</code>, which is the current <code>this</code> value. Since it might not be an object, we test it first before accessing the <code>x</code> and <code>y</code> fields. Then we want to construct the string <code>Point : x , y</code> with the values of <code>x</code> and <code>y</code>, we're using a <code>buffer</code> for this (see Buffers).</p>
+<a id="objects-misc" class="anch"/><h3><a href="#objects-misc">Objects Misc</a></h3>
+<p>It's possible to iterate through all the fields of an object using the following function :</p>
+<pre><code class="prettyprint c">val_iter_fields( value obj, void f( value v, field f, void * ), void *p );</code></pre>
+<p>You can reverse a hashed object field value by calling <code>val_field_name(f)</code>. This will return a string value if the field is found, otherwise <code>val_null</code> is returned.</p>
+<a id="type-checks" class="anch"/><h2><a href="#type-checks">Type checks</a></h2>
+<p>Often when you're writing primitives, you're expecting the value arguments to be of one given type. So the first thing done in primitives is to check that the types are correct and have an exception raised if not. The Neko API provides several functions for that :</p><ul><li><code>val_is_type(v)</code> functions can test if a single value is of the given type.</li><li><code>val_check(v,type)</code> will check <code>val_is_type</code> and call <code>neko_error()</code> if it fails.</li><li><code>val_check_kind(v,kind)</code> will check that the value is an abstract of the given kind and call <code>neko_error()</code> if not.</li><li><code>val_check_function(v,nargs)</code> will check that the value is a function that can be called with the specified number of arguments and call <code>neko_error()</code> if not.</li><li><code>neko_error()</code> will simply return the C <code>NULL</code> value. This special value will be caught by the virtual machine and will raise an exception. Please use the macro instead of <code>return NULL</code> so your library will stay compatible if the implementation changes.</li></ul>
+<p>Type checking is actually very easy to do, simply add the <code>val_check*</code> statements at the beginning of your primitive :</p>
+<pre><code class="prettyprint c">value myprim( value s, value n ) {
+	val_check(s,string);
+	val_check(n,int);
+	...
+}</code></pre>
+<a id="function-callbacks" class="anch"/><h2><a href="#function-callbacks">Function Callbacks</a></h2>
+<p>At some point, you might need to call back a value function or an object method. Callback API is here for you and enables you to call any value function :</p>
+<pre><code class="prettyprint c">value ret = val_callEx(vthis,f,args,nargs,&amp;exc);</code></pre>
+<p>The API function <code>val_callEx</code> is the most general callback function. All other callback functions are only easier ways of making calls. Here's a description of each of the arguments with their types :</p><ul><li><code>value vthis</code> : a value specifying what the <code>this</code> will be inside of the call.</li><li><code>value f</code> : the function you want to call.</li><li><code>value *args</code> : a C array of values storing the arguments, in left-to-right order.</li><li><code>int nargs</code> : the number of arguments stored into <code>args</code>.</li><li><code>value *exc</code> : a value pointer to store an exception if it's raised in a subcall. If <code>NULL</code>, exceptions will not be caught and will go through your C function, which is calling <code>val_callEx</code>.</li></ul>
+<p>The function <code>f</code> must have either a variable number of arguments (<code>VAR_ARGS</code>) or the exact <code>nargs</code> number of arguments or an exception will be raised.</p>
+<p>If the call is successful, the value returned by <code>f</code> is returned by <code>val_callEx</code>.</p>
+<p>Here is another way of doing callbacks :</p><ul><li><code>val_call0(value f)</code> : call the function <code>f</code> with 0 arguments.</li><li><code>val_call1(value f, value arg)</code> : call the function <code>f</code> with 1 argument.</li><li><code>val_call2(value f, value arg1, value arg2)</code> : call the function <code>f</code> with 2 arguments.</li><li><code>val_call3(value f, value arg1, value arg2, value arg3)</code> : call the function <code>f</code> with 3 arguments.</li><li><code>val_callN(value f, value *args, int nargs)</code> : call the function with <code>nargs</code> amount of arguments.</li></ul>
+<p>In the following functions, <code>f</code> is a field, so it's not the value of the method but the hash of the field name. The method is fetched from the object table before the call is performed.</p><ul><li><code>val_ocall0(value o, field f)</code> : call the method <code>f</code> from the object <code>o</code>.</li><li><code>val_ocall1(value o, field f, value arg)</code> : call the method <code>f</code> from the object <code>o</code>.</li><li><code>val_ocall2(value o, field f, value arg1, value arg2)</code> : call the method <code>f</code> from the object <code>o</code>.</li><li><code>val_ocallN(value o, field f, value *args, int nargs)</code> : call the method <code>f</code> from the object <code>o</code>.</li></ul>
+<a id="c-to-neko-callback-sample" class="anch"/><h3><a href="#c-to-neko-callback-sample">C to Neko callback sample</a></h3>
+<p>This is a small example that enables the C code to callback a Neko function.</p>
+<p>First, we define a primitive so that we can register our callback :</p>
+<pre><code class="prettyprint c">#include &lt;neko.h&gt;
+
+value *function_storage = NULL;
+
+static value set_handler( value f ) {
+	val_check_function(f,1); // checks that f has 1 argument
+	if( function_storage == NULL )
+		function_storage = alloc_root(1);
+	*function_storage = f;
+	return val_null;
+}
+
+DEFINE_PRIM(set_handler,1);</code></pre>
+<p>Since the function is a <code>value</code>, it needs to be store in a place that can be accessed by the Neko garbage collector. This is why we allocate a <code>function_storage</code> with the <code>alloc_root</code> Neko FFI function. The <code>alloc_root</code> parameter is the number of values that can be stored in the allocated pointer.</p>
+<p>Once the callback is set, we can call it from the C code by using the following code :</p>
+<pre><code class="prettyprint c">// call the function with the Neko string "Hello"
+value ret = val_call1(*function_storage,alloc_string("Hello"));
+// ... handle the ret value</code></pre>
+<a id="abstracts-and-kinds" class="anch"/><h2><a href="#abstracts-and-kinds">Abstracts and Kinds</a></h2>
+<p>Most of the time when you have to write an interface from Neko to a C library, you get some pointer to some mallocated memory. You can't safely return this value to the Neko program for the following reasons :</p><ul><li>it's not a <code>value</code> so it doesn't match the NekoVM memory model.</li><li>it might crash the program when accessed inappropriately.</li><li>even if it was a value, it would have to be freed explicitly.</li><li>you cannot distinguish the types of two C pointers.</li></ul>
+<p>For all of these reasons, you need to be able to store a C pointer in an abstract Neko <code>value</code> and mark it with some type information called <em>kind</em>. The <em>kind</em> of an abstract value is its type, and the <em>data</em> of an abstract value is the corresponding C pointer.</p>
+<p>Please note that the VM itself cannot access either the kind nor the data of an abstract value. For the VM, an abstract is an opaque value without any structure. It's up to your C primitives to manipulate the abstract. This ensures that if there aren't any mistakes in your C primitives, the whole program will be kept memory-safe.</p>
+<p>First, you need to define a <em>kind</em> somewhere in your C file using the macro <code>DEFINE_KIND</code> from the Neko API. By convention, we often prefix the kind with <code>k_</code>, but it's not mandatory :</p>
+<pre><code class="prettyprint c">#include &lt;neko.h&gt;
+DEFINE_KIND(k_mykind);</code></pre>
+<p>Now that you have a <em>kind</em>, you can create an abstract value of this kind using the <code>alloc_abstract</code> Neko API function :</p>
+<pre><code class="prettyprint c">value create() {
+	void *ptr = ....
+	return alloc_abstract(k_mykind,ptr);
+}</code></pre>
+<p>It's possible to store another <code>value</code> in the <code>data</code> part of an abstract since it will still be checked by the garbage collector.</p>
+<p>When one of your primitives gets a value back, you can check if it's an abstract value using <code>val_is_abstract</code>, check its kind using the <code>val_is_kind</code> API function, and then access its data using the <code>val_data</code> API function :</p>
+<pre><code class="prettyprint c">value dosomething( value v ) {
+	if( !val_is_abstract(v) || !val_is_kind(v,k_mykind) )
+		neko_error();
+	do_something_in_C( val_data(v) );
+	return val_true;
+}</code></pre>
+<p>Instead of writing these checks all the time, you can use more convenient <code>val_check_kind</code> macro :</p>
+<pre><code class="prettyprint c">value dosomething( value v ) {
+	val_check_kind(v,k_mykind);
+	do_something_in_C( val_data(v) );
+	return val_true;
+}</code></pre>
+<p>In some cases, you might want the user to free the pointer stored in an abstract explicitly. At this time, you can set its kind to <code>NULL</code> so it is not accessible anymore :</p>
+<pre><code class="prettyprint c">value destroy( value v ) {
+	val_check_kind(v,k_mykind);
+	free_data( val_data(v) );
+	val_kind(v) = NULL;
+	return val_true;
+}</code></pre>
+<p>In other cases, you might want the pointer data to be freed when the abstract value gets garbage-collected. In that case, you have to bind a <em>finalizer</em> function on it. Please note that it might take some time between when the value becomes unreachable and the finalizer is called.</p>
+<pre><code class="prettyprint c">void finalize( value v ) {
+	free_data( val_data(v) );
+}
+
+value create() {
+	void *ptr = ....
+	value v = alloc_abstract(k_mykind,ptr);
+	val_gc(v,finalize);
+	return v;
+}</code></pre>
+<p>You can remove the finalizer function from an abstract value by calling <code>val_gc(v,NULL)</code>.</p>
+<a id="variable-arguments-function" class="anch"/><h2><a href="#variable-arguments-function">Variable arguments function</a></h2>
+<p>If you want to pass more than five arguments, or a variable number of arguments, in a single Neko-to-C function call, you can use the DEFINE_PRIM_MULT() macro :</p>
+<pre><code>value myprim( value *args, int nargs ) {
+ ...
+}
+DEFINE_PRIM_MULT(myprim);</code></pre>
+<p>Then, pass -1 as the number of arguments to $loadprim.</p>
+<a id="using-32-bits-integers" class="anch"/><h2><a href="#using-32-bits-integers">Using 32 bits integers</a></h2>
+<p>As explained before, Neko integers are only signed 31 bits. While this is enough for most of the cases, there are some cases where you want to use the full 32 bits; a common int32 abstract type was then added.</p>
+<p>You can use <code>val_is_int32(i)</code> to check whether the value of <code>i</code> is either an integer or an int32; <code>val_int32(i)</code> will also return the corresponding integer. If you want to check that the value is <em>exactly</em> an int32, then you can use <code>val_is_kind(i,k_in32)</code>.</p>
+<p>To create an int32 value, you can use <code>alloc_int32(i)</code>. Please note that unlike <code>alloc_int</code> which is a fast macro, <code>alloc_int32</code> allocate some memory to store the integer, making it slower.</p>
+<p>In the case that most of your integers are using only 31 bits but you still want to be able to use the full 32 bits, you can use the <code>alloc_best_int(i)</code> macro that will use either <code>alloc_int</code> or <code>alloc_int32</code> depending on the needed bits. Then use the <code>val_check(i,int32)</code> and <code>val_is_int32(v)</code> macros in order to accept both kind of integers.</p>
+<a id="managing-memory" class="anch"/><h2><a href="#managing-memory">Managing Memory</a></h2>
+<p>When you're working with abstracts, you might want to allocate garbage-collected memory so you don't have to add finalizers for your data (finalizers are more expensive than garbage-collected memory). The NekoVM API provides several allocation functions :</p>
+<p>Calling <code>alloc(n)</code> will return a pointer capable of storing up to <code>n</code> <em>bytes</em>. So it's equivalent to <code>malloc(n)</code>, but the memory will be automatically collected when unreachable from the VM. Please note that C <em>static</em> values are not reachable by the VM.</p>
+<p>The memory allocated with <code>alloc</code> will be scanned by the garbage collector so you can store values and other <code>alloc</code>'ated pointers into it. As long as your pointer is reachable, these values will also be reachable so they won't be collected.</p>
+<p>If you want to allocate big chunks of memory and you're sure they will not contain any value (strings for example), you can use <code>alloc_private(n)</code> which will return <code>n</code> <em>bytes</em> of memory and won't be scanned by the garbage collector. Please remember not to store any value in it.</p>
+<p>In some cases, you might need to store some value into a <em>static</em> variable. First, you have to be sure of what you're doing, since the NekoVM can run in several threads; you need to protect the accesses to this value to ensure that your library will work when used simultaneously by multiple threads. Second, since the statics are not reachable by the garbage collector, you have to allocate a <em>root</em> value.</p>
+<p>A <em>root</em> value is a pointer that can store several values that will always be scanned by the GC. Since it will never be garbage-collected, you can store it anywhere. However, you'll have to free it explicitly. To allocate a root, you can use the <code>alloc_root(v)</code> function which will return a value pointer capable of storing up to <code>v</code> values. Once you don't need it anymore, you have to free the root using the <code>free_root</code> function. Try to avoid the use of roots and static values as much as possible, and always store your data in abstract values if you can.</p>
+<a id="misc-api-functions" class="anch"/><h2><a href="#misc-api-functions">Misc API Functions</a></h2>
+<p>Before ending this document, here are several functions that do not belong in any particular place. Feel free to use them when you need it :</p><ul><li>
+<p><code>val_compare(a,b)</code> : compare two values according to the Neko specification. Returns an integer that will be 0 if <code>a = b</code>, -1 if <code>a &lt; b</code>, 1 if <code>a &gt; b</code>, or <code>invalid_comparison</code> if <code>a</code> and <code>b</code> can't be compared.</p></li><li>
+<p><code>val_print(v)</code> : print the value to the defined output of the virtual machine.</p></li><li>
+<p><code>val_hash(v)</code> : hash any value into a positive integer.</p></li><li>
+<p><code>val_throw(v)</code> and <code>val_rethrow(v)</code> : throw the value <code>v</code> as an exception.</p></li><li>
+<p><code>failure(msg)</code> : throw a <em>failure</em> exception using a constant C string as the error message. This is a convenient way of handling errors in your primitives since the exception will contain your error message as well as the C filename and the line where the error occurred.</p></li><li>
+<p><code>bfailure(buf)</code> : same as <code>failure</code>, but uses a <em>buffer</em> instead of a constant string.</p></li></ul>
+<a id="more-samples" class="anch"/><h2><a href="#more-samples">More Samples</a></h2>
+<p>If you want to have a look at samples using this API, you can simply browse the Neko standard library's source code, which should be perfectly understandable if you read this document.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/ffi.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

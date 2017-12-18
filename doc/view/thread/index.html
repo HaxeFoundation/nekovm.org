@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>API - Thread - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>API</h3>
+		<ul class="toc">
+			<li><a href="/doc/libs/">Neko Standard Library API</a>
+				<ul>
+					<li><a href="/doc/view/builtins/">Builtins</a></li>
+					<li><a href="/doc/view/buffer/">Buffer</a></li>
+					<li><a href="/doc/view/date/">Date</a></li>
+					<li><a href="/doc/view/file/">File</a></li>
+					<li><a href="/doc/view/int32/">Int32</a></li>
+					<li><a href="/doc/view/math/">Math</a></li>
+					<li><a href="/doc/view/md5/">MD5</a></li>
+					<li><a href="/doc/view/memory/">Memory</a></li>
+					<li><a href="/doc/view/module/">Module</a></li>
+					<li><a href="/doc/view/random/">Random</a></li>
+					<li><a href="/doc/view/serialize/">Serialize</a></li>
+					<li><a href="/doc/view/socket/">Socket</a></li>
+					<li><a href="/doc/view/string/">String</a></li>
+					<li><a href="/doc/view/sys/">System</a></li>
+					<li><a href="/doc/view/utf8/">UTF8</a></li>
+					<li><a href="/doc/view/xml/">Xml</a></li>
+					<li><a href="/doc/view/thread/">Thread</a></li>
+					<li><a href="/doc/view/ui/">Ui</a></li>
+					<li><a href="/doc/view/process/">Process</a></li>
+					<li><a href="/doc/view/misc/">Misc</a></li>
+					<li><a href="/doc/view/regexp/">Regexp</a></li>
+					<li><a href="/doc/view/mysql/">Mysql</a></li>
+					<li><a href="/doc/view/cgi/">Mod_neko</a></li>
+					<li><a href="/doc/view/sqlite/">Sqlite</a></li>
+					<li><a href="/doc/view/zlib/">ZLib</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<html>
+		<h1>Threads</h1>
+		<p>
+An Api to create and manage system threads.
+		</p>
+
+<doc_blk>
+  <doc_type>'thread</doc_type> <doc_name>thread_create</doc_name><doc_type>(f : function:1, p : any)</doc_type> <doc_doc>Creates a thread that will be running the function <doc_code>f(p)</doc_code></doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'thread</doc_type> <doc_name>thread_current</doc_name><doc_type>()</doc_type> <doc_doc>Returns the current thread</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>thread_send</doc_name><doc_type>('thread, msg : any)</doc_type> <doc_doc>Send a message into the target thread message queue</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>any</doc_type> <doc_name>thread_read_message</doc_name><doc_type>(block : bool)</doc_type> <doc_doc>
+	Reads a message from the message queue. If <doc_code>block</doc_code> is true, the
+	function only returns when a message is available. If <doc_code>block</doc_code> is
+	false and no message is available in the queue, the function will
+	return immediatly <doc_code>null</doc_code>.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'lock</doc_type> <doc_name>lock_create</doc_name><doc_type>()</doc_type> <doc_doc>Creates a lock which is initially locked</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>lock_release</doc_name><doc_type>('lock)</doc_type> <doc_doc>
+	Release a lock. The thread does not need to own the lock to be
+	able to release it. If a lock is released several times, it can be
+	acquired as many times
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>bool</doc_type> <doc_name>lock_wait</doc_name><doc_type>('lock, timeout : number?)</doc_type> <doc_doc>
+	Waits for a lock to be released and acquire it.
+	If <doc_code>timeout</doc_code> (in seconds) is not null and expires then
+	the returned value is false
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'tls</doc_type> <doc_name>tls_create</doc_name><doc_type>()</doc_type> <doc_doc>
+	Creates thread local storage. This is placeholder that can store a value that will
+	be different depending on the local thread. You must set the tls value to <doc_code>null</doc_code>
+	before exiting the thread or the memory will never be collected.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>any</doc_type> <doc_name>tls_get</doc_name><doc_type>('tls)</doc_type> <doc_doc>
+	Returns the value set by <doc_code>tls_set</doc_code> for the local thread.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>tls_set</doc_name><doc_type>('tls, any)</doc_type> <doc_doc>
+	Set the value of the TLS for the local thread.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'mutex</doc_type> <doc_name>mutex_create</doc_name><doc_type>()</doc_type> <doc_doc>
+	Creates a mutex, which can be used to acquire a temporary lock to access some ressource.
+	The main difference with a lock is that a mutex must always be released by the owner thread.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>mutex_acquire</doc_name><doc_type>('mutex)</doc_type> <doc_doc>
+	The current thread acquire the mutex or wait if not available. The same thread can acquire
+	several times the same mutex but must release it as many times it has been acquired.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>bool</doc_type> <doc_name>mutex_try</doc_name><doc_type>('mutex)</doc_type> <doc_doc>
+	Try to acquire the mutex, returns true if acquire or false if it's already locked by another
+	thread.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>mutex_release</doc_name><doc_type>('mutex)</doc_type> <doc_doc>
+	Release a mutex that has been acquired by the current thread. The behavior is undefined if the
+	current thread does not own the mutex.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'deque</doc_type> <doc_name>deque_create</doc_name><doc_type>()</doc_type> <doc_doc>create a message queue for multithread access</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>deque_add</doc_name><doc_type>('deque, any)</doc_type> <doc_doc>add a message at the end of the queue</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>deque_push</doc_name><doc_type>('deque, any)</doc_type> <doc_doc>add a message at the head of the queue</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>any?</doc_type> <doc_name>deque_pop</doc_name><doc_type>('deque, bool)</doc_type> <doc_doc>pop a message from the queue head. Either block until a message is available or return immedialtly with null.</doc_doc>
+</doc_blk>
+
+</html>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/view/thread.xml" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

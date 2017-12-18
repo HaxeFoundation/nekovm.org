@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>API - Socket - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>API</h3>
+		<ul class="toc">
+			<li><a href="/doc/libs/">Neko Standard Library API</a>
+				<ul>
+					<li><a href="/doc/view/builtins/">Builtins</a></li>
+					<li><a href="/doc/view/buffer/">Buffer</a></li>
+					<li><a href="/doc/view/date/">Date</a></li>
+					<li><a href="/doc/view/file/">File</a></li>
+					<li><a href="/doc/view/int32/">Int32</a></li>
+					<li><a href="/doc/view/math/">Math</a></li>
+					<li><a href="/doc/view/md5/">MD5</a></li>
+					<li><a href="/doc/view/memory/">Memory</a></li>
+					<li><a href="/doc/view/module/">Module</a></li>
+					<li><a href="/doc/view/random/">Random</a></li>
+					<li><a href="/doc/view/serialize/">Serialize</a></li>
+					<li><a href="/doc/view/socket/">Socket</a></li>
+					<li><a href="/doc/view/string/">String</a></li>
+					<li><a href="/doc/view/sys/">System</a></li>
+					<li><a href="/doc/view/utf8/">UTF8</a></li>
+					<li><a href="/doc/view/xml/">Xml</a></li>
+					<li><a href="/doc/view/thread/">Thread</a></li>
+					<li><a href="/doc/view/ui/">Ui</a></li>
+					<li><a href="/doc/view/process/">Process</a></li>
+					<li><a href="/doc/view/misc/">Misc</a></li>
+					<li><a href="/doc/view/regexp/">Regexp</a></li>
+					<li><a href="/doc/view/mysql/">Mysql</a></li>
+					<li><a href="/doc/view/cgi/">Mod_neko</a></li>
+					<li><a href="/doc/view/sqlite/">Sqlite</a></li>
+					<li><a href="/doc/view/zlib/">ZLib</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<html>
+	<h1>Socket</h1>
+	<p>
+	TCP and UDP sockets
+	</p>
+	
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_init</doc_name><doc_type>()</doc_type> <doc_doc>
+	Initialize the socket API. Must be called at least once per process
+	before using any socket or host function.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'socket</doc_type> <doc_name>socket_new</doc_name><doc_type>(udp : bool)</doc_type> <doc_doc>Create a new socket, TCP or UDP</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_close</doc_name><doc_type>('socket)</doc_type> <doc_doc>Close a socket. Any subsequent operation on this socket will fail</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_send_char</doc_name><doc_type>('socket, int)</doc_type> <doc_doc>Send a character over a connected socket. Must be in the range 0..255</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>socket_send</doc_name><doc_type>('socket, buf : string, pos : int, len : int)</doc_type> <doc_doc>Send up to <doc_code>len</doc_code> bytes from <doc_code>buf</doc_code> starting at <doc_code>pos</doc_code> over a connected socket.
+	Return the number of bytes sent.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>socket_recv</doc_name><doc_type>('socket, buf : string, pos : int, len : int)</doc_type> <doc_doc>Read up to <doc_code>len</doc_code> bytes from <doc_code>buf</doc_code> starting at <doc_code>pos</doc_code> from a connected socket.
+	Return the number of bytes readed.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>socket_recv_char</doc_name><doc_type>('socket)</doc_type> <doc_doc>Read a single char from a connected socket.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_write</doc_name><doc_type>('socket, string)</doc_type> <doc_doc>Send the whole content of a string over a connected socket.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>socket_read</doc_name><doc_type>('socket)</doc_type> <doc_doc>Read the whole content of a the data available from a socket until the connection close.
+	If the socket hasn't been close by the other side, the function might block.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'int32</doc_type> <doc_name>host_resolve</doc_name><doc_type>(string)</doc_type> <doc_doc>Resolve the given host string into an IP address.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>host_to_string</doc_name><doc_type>('int32)</doc_type> <doc_doc>Return a string representation of the IP address.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>host_reverse</doc_name><doc_type>('int32)</doc_type> <doc_doc>Reverse the DNS of the given IP address.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>host_local</doc_name><doc_type>()</doc_type> <doc_doc>Return the local host name.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_connect</doc_name><doc_type>('socket, host : 'int32, port : int)</doc_type> <doc_doc>Connect the socket the given <doc_code>host</doc_code> and <doc_code>port</doc_code></doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_listen</doc_name><doc_type>('socket, int)</doc_type> <doc_doc>Listen for a number of connections</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'socket array array</doc_type> <doc_name>socket_select</doc_name><doc_type>(read : 'socket array, write : 'socket array, others : 'socket array, timeout : number?)</doc_type> <doc_doc>Perform the <doc_code>select</doc_code> operation. Timeout is in seconds or <doc_code>null</doc_code> if infinite</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_bind</doc_name><doc_type>('socket, host : 'int32, port : int)</doc_type> <doc_doc>Bind the socket for server usage on the given host and port</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'socket</doc_type> <doc_name>socket_accept</doc_name><doc_type>('socket)</doc_type> <doc_doc>Accept an incoming connection request</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>#address</doc_type> <doc_name>socket_peer</doc_name><doc_type>('socket)</doc_type> <doc_doc>Return the socket connected peer address composed of an (host,port) array</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>#address</doc_type> <doc_name>socket_host</doc_name><doc_type>('socket)</doc_type> <doc_doc>Return the socket local address composed of an (host,port) array</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_set_timeout</doc_name><doc_type>('socket, timout : number?)</doc_type> <doc_doc>Set the socket send and recv timeout in seconds to the given value (or null for blocking)</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_shutdown</doc_name><doc_type>('socket, read : bool, write : bool)</doc_type> <doc_doc>Prevent the socket from further reading or writing or both.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>socket_set_blocking</doc_name><doc_type>('socket, bool)</doc_type> <doc_doc>Turn on/off the socket blocking mode.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'poll</doc_type> <doc_name>socket_poll_alloc</doc_name><doc_type>(int)</doc_type> <doc_doc>Allocate memory to perform polling on a given number of sockets</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'socket array</doc_type> <doc_name>socket_poll</doc_name><doc_type>('socket array, 'pool, timeout : float)</doc_type> <doc_doc>
+	Perform a polling for data available over a given set of sockets. This is similar to <doc_code>socket_select</doc_code>
+	except that <doc_code>socket_select</doc_code> is limited to a given number of simultaneous sockets to check.
+	</doc_doc>
+</doc_blk>
+
+</html>
+
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/view/socket.xml" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

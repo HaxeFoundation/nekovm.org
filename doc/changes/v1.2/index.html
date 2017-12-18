@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<h1>Changes in Neko 1.2</h1>
+<p>This release include several major changes : </p><ul><li>
+<p>runtime exceptions : several operations that were returning <code>null</code>before are now raising an exception. This is the case for invalid function calls (not a function or invalid number of arguments), object field access (for example null.x) , array access (still null if outside of bounds) and numerical operations.</p></li><li>
+<p>linker : using <code>nekoc -link</code> you can now link a lot of .n bytecode files together into a single standalone .n file</p></li><li>
+<p>nekoboot : this utility enable you to create standalone executables from a single bytecode file</p></li><li>
+<p>renaming : the neko virtual machine is now named <code>neko</code> (instead of nekovm) and both neko and nekoml compilers are named <code>nekoc</code> and <code>nekoml</code>. Compilers are built using nekoboot and are then standalon executables (this is more easy to use, simply <code>nekoc myfile.neko</code>).</p></li><li>
+<p>TCO : tail recursion optimizations in Neko</p></li><li>
+<p>Object Prototypes : object can now have chained prototype (see Language Reference Documentation)</p></li><li>
+<p>standard library : added UTF8 support, improved XML parser, and other useful primitives as well</p></li><li>
+<p>licence change : Neko 1.2 is now LGPL while Neko 1.1 was GPL </p></li></ul>
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/changes/v1.2.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

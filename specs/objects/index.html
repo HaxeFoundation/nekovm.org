@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Objects - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Objects</h1>
+<p>Objects are a kind of optimized hashtables. All fields names are hashed into an integer value that is used as the key in a lookup table. Insertion of a new field is <code>O(n)</code>, access to a field is <code>O(log n)</code>. If you're generating from a statically typed language, you might prefer arrays for storing fields, since they provide <code>O(1)</code> access.</p>
+<p>To create an object, you can use the builtin <code>$new</code>, that can either return a copy of an object or a new object :</p>
+<pre><code class="prettyprint neko">o = $new(null); // new empty object
+o2 = $new(o); // makes a copy of o
+o2 = $new(33); // if parameter is not an object, throw an exception</code></pre>
+<p>You can set fields of an object using dot access or use the builtin <code>$objset</code> :</p>
+<pre><code class="prettyprint neko">o.field = value;
+$objset(o,$hash("field"),value);</code></pre>
+<p>You can access object fields for reading using either dot access or builtin <code>$objget</code> :</p>
+<pre><code class="prettyprint neko">o.field; // returns "field" value of object o
+$objget(o,$hash("field")); // returns "field" value of object o</code></pre>
+<p>Please note that the second parameter of <code>$objset</code> and <code>$objget</code> is hashed at runtime, so it's a bit less efficient of an operation than dot access, but enables introspection.</p>
+<p>If a field is not defined when accessed for reading, the <code>null</code> value is returned. If a field doesn't exists when a field is accessed for writing, the field is added.</p>
+<p>To check for the existence of a field, you can use the <code>$objfield</code> builtin that checks if an object o has a given field, even if that field is set to the <code>null</code> value :</p>
+<pre><code class="prettyprint neko">$objfield(o,$hash("field")); // true if o have "field"
+$objfield(null,33); // false</code></pre>
+<p>You can remove an object field with the <code>$objremove</code> builtin :</p>
+<pre><code class="prettyprint neko">$objremove(o,$hash("field")); // remove "field" from o</code></pre>
+<p>One other way to declare objects is to use the following notation, which is more efficient when you want initialize several fields at the same time :</p>
+<pre><code class="prettyprint neko">var o = {
+	x =&gt; 0,
+	y =&gt; -1,
+	msg =&gt; "hello"
+}</code></pre>
+<a id="methods" class="anch"/><h2><a href="#methods">Methods</a></h2>
+<p>When a function is called using the dot access or the builtin <code>$objcall</code>, the function can access a special variable called <code>this</code>, which is the "object context" (the object with which the function was called) :</p>
+<pre><code class="prettyprint neko">o = $new(null);
+o.x = 1;
+o.add = function(y) { return this.x + y; }
+$print(o.add(2)); // prints 3
+$print( $objcall(o,$hash("add"),$array(2)) ); // prints 3</code></pre>
+<p>The context is set when an object function is called and can be accessed from any sub-function :</p>
+<pre><code class="prettyprint neko">foo = function() {
+	$print(this.x);
+}
+o = $new(null);
+o.x = 3;
+o.bar = function() { foo(); };
+o.bar(); // prints 3</code></pre>
+<p>You can modify the value of <code>this</code> at runtime by simply assigning it to another value; it can be set to any value, not just objects. When returning from an object call, the context is restored, so any modifications are lost :</p>
+<pre><code class="prettyprint neko">this = 1;
+o.foo = function() {
+	// here , we have this = o;
+	this = 2; // modify
+};
+o.foo();
+$print(this); // 1</code></pre>
+<a id="fields-lists" class="anch"/><h2><a href="#fields-lists">Fields lists</a></h2>
+<p>As explained before, fields names are first hashed into integer values for faster access. In order to avoid collisions in the hashing functions, they are then stored in a global table then checked that hash(x) = hash(y) implies x = y. The other utilities of this library are to be able to reverse the hashing function at runtime. For example, this can be useful to print the field names of an object for debugging purposes.</p>
+<p>You can use the following builtins : <code>$hash</code> returns the integer hashing value of a string, or raise an exception in the case of a collision. <code>$field</code> transforms an integer into a previously hashed string or returns <code>null</code>.</p>
+<p>The builtin <code>$objfields</code> returns an array containing all fields identifiers for the given object :</p>
+<pre><code class="prettyprint neko">var a = $objfields(o);
+var i = 0;
+while( i &lt; $asize(a) ) {
+	var fname = $field(a[i]);
+	var fval = $objget(o,a[i]);
+	$print( fname + " = " + fval + "\n" );
+	i = i + 1;
+}</code></pre>
+<a id="operators-overloading" class="anch"/><h2><a href="#operators-overloading">Operators Overloading</a></h2>
+<p>Several operators can be overloaded so when they're applied to objects, they are actually calling methods. Here's a list of overloadable operators and corresponding methods names :</p><ul><li><strong>string conversion</strong> : call the <code>%%__string%%</code> method on the object with no arguments. A string should be returned.</li><li><strong>object comparison</strong> : for any comparison between two different objects, the <code>%%__compare%%</code> method is called on the first object with the second object as a parameter.</li><li><strong>addition</strong> : in the case of <code>a + b</code>, if <code>a</code> is an object, <code>a.%%__add%%(b)</code> is called, otherwise if <code>b</code> is an object, <code>b.%%__radd%%(a)</code> is called.</li><li><strong>subtraction</strong> : same as addition but with <code>%%__sub%%</code> and <code>%%__rsub%%</code>.</li><li><strong>multiplication</strong> : same as addition but with <code>%%__mult%%</code> and <code>%%__rmult%%</code>.</li><li><strong>division</strong> : same a addition but with <code>%%__div%%</code> and <code>%%__rdiv%%</code>.</li><li><strong>modulo</strong> : same as addition but with <code>%%__mod%%</code> and <code>%%__rmod%%</code>.</li><li><strong>array reading</strong> : when an object is accessed as an array for reading, using <code>a[i]</code> actually calls <code>a.%%__get%%(i)</code>.</li><li><strong>array writing</strong> : when an object is accessed as an array for writing, using <code>a[i] = v</code> actually calls <code>a.%%__set%%(i,v)</code>.</li></ul>
+<p>If the overloaded field is not defined when an operation occurs, an exception is raised.</p>
+<a id="prototypes" class="anch"/><h2><a href="#prototypes">Prototypes</a></h2>
+<p>Each object can have a <em>prototype</em> which is also an object. When a field is accessed for reading and is not found in an object, it's searched recursively in its prototype.</p>
+<p>Prototypes can be accessed using <code>$objgetproto</code> and <code>$objsetproto</code> :</p>
+<pre><code class="prettyprint neko">var proto = $new(null);
+proto.foo = function() { $print(this.msg) }
+
+var o = $new(null);
+o.msg = "hello";
+$objsetproto(o,proto);
+o.foo(); // print "hello"
+
+$objsetproto(o,null); // remove proto
+o.foo(); // exception</code></pre>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/objects.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

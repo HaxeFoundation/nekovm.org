@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Runtime Type Information - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Runtime Type Information (RTTI)</h1>
+<p>No matter if your language is statically or dynamically typed, you can always access RTTI in Neko. RTTI is powerful because you can decide which behavior to adopt depending on some value at runtime. The most common application of this is to print some debugging information. Another one is introspection : the ability to look inside an object, read its fields, and call its methods.</p>
+<p>The builtin <code>$typeof</code> returns an integer specifying the type of a value according to the following table :</p><table><thead><th>Type</th><th>Constant</th><th>Value</th></thead><tbody><tr><td>null</td><td><code>$tnull</code></td><td>0</td></tr><tr><td>int</td><td><code>$tint</code></td><td>1</td></tr><tr><td>float</td><td><code>$tfloat</code></td><td>2</td></tr><tr><td>bool</td><td><code>$tbool</code></td><td>3</td></tr><tr><td>string</td><td><code>$tstring</code></td><td>4</td></tr><tr><td>object</td><td><code>$tobject</code></td><td>5</td></tr><tr><td>array</td><td><code>$tarray</code></td><td>6</td></tr><tr><td>function</td><td><code>$tfunction</code></td><td>7</td></tr><tr><td>abstract</td><td><code>$tabstract</code></td><td>8</td></tr></tbody></table>
+<p>Example :</p>
+<pre><code class="prettyprint neko">$typeof(3); // 1
+$typeof($array(1,2)); // 6
+$typeof(null) == $tnull; // true</code></pre>
+<p>You can use the builtins for <a href="/specs/objects/">Objects</a>, <a href="/specs/strings/">Strings</a>, <a href="/specs/functions/">Functions</a>, and <a href="/specs/arrays/">Arrays</a> to manipulate them at runtime.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/rtti.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

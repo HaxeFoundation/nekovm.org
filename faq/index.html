@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>FAQ - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<h1>Frequently Asked Questions about Neko :</h1>
+<a id="how-is-neko-different-from-.net&#039;s-clr-or-the-java&#039;s-jvm?" class="anch"/><h2><a href="#how-is-neko-different-from-.net&#039;s-clr-or-the-java&#039;s-jvm?">How is Neko different from .NET's CLR or the Java's JVM?</a></h2>
+<p>The .NET's CLR and the Java Virtual Machine are both defined by a <em>bytecode</em> language with a <em>static type system</em> based on <em>classes</em>. As a result, you can easily run languages that have a type system compatible with Java or C# on these virtual machines. But if you have a dynamically typed language or no class system, you'll have to trick the virtual machine and find a <em>type mapping</em> from your type system to the JVM or the .NET one.</p>
+<p>Neko is a lot more simple. First, it's not a <em>bytecode</em> language, but a high-level <em>programming</em> language. You then don't have to write a <em>compiler</em> for it; a simple <em>generator</em> that translates your program into the corresponding Neko program is enough. You still have to find a mapping from your values to Neko <em>data structures</em>, but Neko gives you a dynamically typed language with no fixed class system. You have then to find a <em>runtime mapping</em> so that your program <em>executes</em> correctly on Neko, and not a <em>type mapping</em> so that your program <em>types</em> correctly like with .NET / JVM.</p>
+<p>As a result, it's easier to write a new or existing language on the NekoVM than it is for the CLR / JVM since you don't have to deal with a high-level type system. Also, this means that languages can interoperate more easily since they only need to share the same <em>data structures</em> and not always the same <em>types</em>.</p>
+<a id="how-is-neko-different-from-llvm-or-c--?" class="anch"/><h2><a href="#how-is-neko-different-from-llvm-or-c--?">How is Neko different from LLVM or C--?</a></h2>
+<p>These are compiler frameworks with low-level <em>abstract processor instructions</em> and a static type system with low-level <em>memory manipulation functions</em>. For example, it would be possible to use these frameworks to compile Neko, which stands as a higher-level language, although Neko is powered by its own runtime.</p>
+<p>As a result, Neko is perhaps less suitable to optimizations than these <em>abstract processors</em> but is a lot easier to target for language designers that want to reuse a runtime. Since Neko is not a <em>framework</em>, it's very lightweight. For example, you only need <code>libneko.so</code> (which is only 68 KB) in order to embed and run Neko programs in your application.</p>
+<a id="how-is-neko-different-from-php-/-perl-/-python-/-ruby-/-javascript?" class="anch"/><h2><a href="#how-is-neko-different-from-php-/-perl-/-python-/-ruby-/-javascript?">How is Neko different from PHP / Perl / Python / Ruby / Javascript?</a></h2>
+<p>These languages are meant to be used by people. They contain powerful, but sometimes complex features. Often their runtimes are written entirely in C and can thus be difficult to maintain, and their interpreters can be rather slow. Neko runtime could be used to run these languages more efficiently, and help them interact together and share the same libraries.</p>
+<p>Actually, it is one of the goals of Neko to be able to run these languages on the same runtime. Since current implementations are either interpreted or running in a not-so-fast virtual machine, using an intermediate compilable representation such as Neko should be a good improvement, especially when JIT is added.</p>
+<a id="how-is-neko-different-from-lua?" class="anch"/><h2><a href="#how-is-neko-different-from-lua?">How is Neko different from Lua?</a></h2>
+<p>A complete <a href="/doc/lua/">comparison</a> is available. Neko has better OO support and an easy-to-use C FFI. Neko is also faster for data structures manipulation, but slower for floating-point arithmetics.</p>
+<a id="how-is-neko-different-from-parrot?" class="anch"/><h2><a href="#how-is-neko-different-from-parrot?">How is Neko different from Parrot?</a></h2>
+<p>Targeting Parrot requires you to learn another language, which is more complex that Neko itself, with different possibilities at different levels (low-level PASM, medium-level PIR, high-level NQP).</p>
+<p>It is also difficult to differentiate between the <em>language</em> and the <em>standard library</em> because of the numerous cores apis (PMC), whereas NekoVM has a single <a href="/doc/view/builtins/">builtins</a> core api which a single high-level language with minimal syntax and core types.</p>
+<p>Parrot is written in C while Neko compiler is written in... Neko. The language is fully bootstrapped right now. Also, Neko is lightweight and the Virtual Machine is only 68 KB on Linux and 40 KB on Windows while still offering a very good speed.</p>
+<a id="what-garbage-collector-is-neko-using?" class="anch"/><h2><a href="#what-garbage-collector-is-neko-using?">What garbage collector is Neko using?</a></h2>
+<p>Neko is using the <a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/">Boehm GC</a>, which is a conservative multithreaded mark and sweep collector. However, since all calls to the GC are wrapped by the Neko API in <code>vm/alloc.c</code>, it might be possible to easily switch to another garbage collector in the future.</p>
+<a id="on-which-architecture-can-neko-run?" class="anch"/><h2><a href="#on-which-architecture-can-neko-run?">On which architecture can Neko run?</a></h2>
+<p>Neko is known to run on Windows x86, Linux, BSD, OSX, and Linux AMD64 architectures. A lot more architectures should be easily targeted since the NekoVM is written in pure ANSI C with only some differences for specific things such as some standard library functions for system API and dynamic loading.</p>
+<a id="more-questions?" class="anch"/><h2><a href="#more-questions?">More questions?</a></h2>
+<p>You can ask on the <a href="/ml/">mailing list</a>.</p>
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/faq.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

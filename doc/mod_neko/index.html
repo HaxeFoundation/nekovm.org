@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Documentation - Mod_neko - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Documentation</h3>
+		<ul class="toc">
+			<li>Neko Documentation
+				<ul>
+					<li><a href="/doc/begin/">Neko Starter's Guide</a></li>
+					<li><a href="/doc/ffi/">C FFI</a> (Foreign Function Interface)</li>
+					<li><a href="/doc/vm/">Virtual Machine Documentation</a></li>
+					<li><a href="/doc/mod_neko/">Mod_neko</a></li>
+					<li><a href="/doc/multilang/">Languages Interoperability</a></li>
+					<li><a href="/doc/nekoml/">NekoML</a></li>
+					<li><a href="/doc/nxml/">NXML</a></li>
+					<li><a href="/doc/mt/">Neko and  Multithreading</a></li>
+					<li><a href="/doc/lua/">A comparison of Neko and Lua</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>An Introduction to Mod_neko</h1>
+<p>Mod_neko is an Apache <em>module</em> for Neko. This means it's possible to run Neko programs on the server side in order to serve web pages using Apache. Here's a step-by-step tutorial on how to configure and use Mod_neko.</p>
+<a id="quick-configuration" class="anch"/><h2><a href="#quick-configuration">Quick configuration</a></h2>
+<p>If you don't have <code>mod_neko</code> compiled or you don't want to setup Apache, you can use a <code>mod_neko</code> emulator by using the Neko Web Server. This is a very small web server that is running locally for development purposes only. It mimics the same <a href="/doc/view/cgi">API</a> as <code>mod_neko</code>, so you can use that instead.</p>
+<p>In order to start the server, simply run the following command :</p>
+<pre><code class="prettyprint bash">nekotools server</code></pre>
+<p>This should start the local server, by default, on the <code>localhost</code> on port <code>2000</code> so you can browse the configuration page by visiting <a href="http://localhost:2000/server:config">http://localhost:2000/server:config</a>. Change the server base path to your website directory and you can start browsing it. If it contains <code>.n</code> Neko bytecode files, they will be loaded and executed just like Apache <code>mod_neko</code> is doing.</p>
+<a id="linux-installation" class="anch"/><h2><a href="#linux-installation">Linux Installation</a></h2>
+<p><a href="http://old.haxe.org/doc/build/neko_linux">http://old.haxe.org/doc/build/neko_linux</a></p>
+<a id="apache-configuration" class="anch"/><h2><a href="#apache-configuration">Apache configuration</a></h2>
+<p>If you want to use Apache with <code>mod_neko</code>, once Neko is correctly configured, you can edit your Apache configuration <code>httpd.conf</code> in order to add <code>mod_neko</code>. Each statement must be added to a single line in the proper place in the Apache configuration file :</p><ul><li>add <code>LoadModule neko_module (your path to mod_neko.ndll)</code></li><li>add <code>AddModule mod_neko.c</code></li><li>add <code>AddHandler neko-handler .n</code></li><li>add <code>index.n</code> to the list of <code>DirectoryIndex</code></li></ul>
+<p>Now that you're done, you can restart Apache to check that Mod_neko is correctly loaded. If you have some problem, try to check that Neko is correctly configured.</p>
+<a id="some-tests" class="anch"/><h2><a href="#some-tests">Some tests</a></h2>
+<p>Now you can simply edit a Neko file and print some welcome message :</p>
+<pre><code class="prettyprint neko">$print("Hello Mod_neko !");</code></pre>
+<p>Compile this file (<code>nekoc hello.neko</code>) and place the <code>.n</code> file into your web directory so it can be accessed by Apache. Browsing it using your <a href="http://browsehappy.com/">favorite</a> web browser should display the message.</p>
+<p>Now let's try to print the HTTP parameters that are passed to the script, using the <code>mod_neko</code> API :</p>
+<pre><code class="prettyprint neko">get_params = $loader.loadprim("mod_neko@get_params",0);
+// $loader.loadprim("mod_neko2@get_params",0) for mod_neko2.ndll module
+$print("PARAMS = "+get_params());</code></pre>
+<p>Don't forget to compile in order to update the <code>.n</code> file before browsing your script. You can now set HTTP parameters <code>(your URL)?p1=v1;p2=v2....</code> and see them displayed on your web page.</p>
+<a id="script-versus-application" class="anch"/><h2><a href="#script-versus-application">Script versus Application</a></h2>
+<p>Since Neko is separated into two different phases: <em>compile</em> and <em>run</em>, you cannot directly see the modifications you're making to your script since you need to compile first. This has several advantages :</p><ul><li>
+<p>it runs faster</p></li><li>
+<p>the syntax is checked at compile-time before you browse the page</p><ul><li>you don't need to have <em>sources</em> on the server; having only binaries is ok</li><li>you can run your module in <em>application mode</em> (see below).</li></ul></li></ul>
+<p>Right now, however, every time a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).</p>
+<p>The idea of running in <em>Application Mode</em> is to have an initialization phase for your script that will create objects, load libraries, initialize global data, and then setup an <em>entry point</em> which will be the function called for every request. Here's a small sample :</p>
+<pre><code class="prettyprint neko">$print("Initializing...");
+
+// this is the entry point
+entry = function() {
+	$print("Main...");
+}
+
+// setup the entry point
+set_main = $loader.loadprim("mod_neko@cgi_set_main",1);
+set_main(entry);
+
+// call it the first time as well
+entry();</code></pre>
+<p>Now after compiling, if you browse this page, it should display <code>Initializing... Main...</code> the first time and then <code>Main...</code> for every refresh. It means that you can initialize a lot of things at loading time and store values into globals that will be persistent between calls.</p>
+<p>If you recompile, this will change the timestamp of the <code>.n</code> file so it will reload and initialize it again. This means that you should be able to reload everything you need at loading time.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/mod_neko.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<h1>Changes in Neko 1.3</h1><ul><li>
+<p>neko : fixed endianness bug needed to boot, exported neko_is_big_endian</p></li><li>
+<p>neko : fixed bug on Linux x86 gcc with object operators (eax get overwritten)</p></li><li>
+<p>neko : fixed bug : error when <strong>string or </strong>compare does not exist</p></li><li>
+<p>neko : allowed runtime printer redirection (+ added std@print_redirect)</p></li><li>
+<p>neko : defined a default NEKOPATH when not specified (less configuration)</p></li><li>
+<p>neko : fixed int32 calculus bug (need_32_bits macro)</p></li><li>
+<p>neko : fixed calls with a lot of arguments (some cases were failing)</p></li><li>
+<p>neko : fixed preservation of 'this' through tailcall, if changed inside the call</p></li><li>
+<p>neko : added unary operator minus parsing</p></li><li>
+<p>neko : fixed error reporting of unclosed parenthesis</p></li><li>
+<p>nekoml : added Net core module for sockets</p></li><li>
+<p>nekoml : when catching Neko errors, wrap them using Neko_error constructor</p></li><li>
+<p>std : supported serialization of C primitives and <strong>serialize/</strong>unserialize overrides</p></li><li>
+<p>added nekotools (merged nekoboot and neko webserver)</p></li><li>
+<p>std : fixed math_round, fixed math docs</p></li><li>
+<p>std : fixed bug in utf8_resize, utf8_get and utf8_iter.</p></li><li>
+<p>regexp : added regexp_new_options for matching options and regexp_replace_fun</p></li><li>
+<p>regexp : fixed invalid matched length when not index 0</p></li><li>
+<p>added some benchmarks in src/benchs</p></li><li>
+<p>neko : fixed $ablit and $sblit (when used with same array/string)</p></li><li>
+<p>neko : fixed multithread win32 support</p></li><li>
+<p>mod_neko : changed Content-Type handling for POST data</p></li><li>
+<p>std : added blocking sockets support</p></li><li>
+<p>std : changed sys_time to sys_cpu_time, added sys_time (local time).</p></li><li>
+<p>std : fixed put_env on Linux (GC issue)</p></li><li>
+<p>cleanup of some stuff needed by experimental JIT</p></li><li>
+<p>std : added memory module</p></li></ul>
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/changes/v1.3.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

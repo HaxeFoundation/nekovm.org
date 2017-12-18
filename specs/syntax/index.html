@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Syntax - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<a id="syntax" class="anch"/><h2><a href="#syntax">Syntax</a></h2>
+<p>The syntax of the Neko language was designed to both be easy to parse and easy to generate. It is not specifically designed to be written by a programmer, but rather to be generated from a higher level language. For example, one could easily write a PHP-to-Neko or a Java-to-Neko converter, that would generate the equivalent Neko code.</p>
+<p>In particular, there are not multiple levels of expression, as in C. Every statement is also an expression, thus enabling some constructs that are not possible in other languages (for example : <code>return if(x) { ... } else { ... }</code>). This makes the generation of Neko from functional languages easier.</p>
+<p>The syntax is parsed using a left-to-right LL(1) parser. This means that after reading a token, we have enough information to know which expression it will produce. This allows for a very lightweight parser which is easy to improve without creating ambiguities. Here's an Abstract Syntax Tree description of the language syntax, with the additional constraint that a program must be terminated by an EOF :</p>
+<pre><code>program :=
+	| expr program
+	| SEMICOLON program
+	| _
+
+ident :=
+	| [a-zA-Z_@] [a-zA-Z0-9_@]*
+
+binop :=
+	| [!=*/&lt;&gt;&amp;|^%+:-]+
+
+value :=
+	| [0-9]+
+	| 0x[0-9A-Fa-f]+
+	| [0-9]+ DOT [0-9]*
+	| DOT [0-9]+
+	| DOUBLEQUOTE characters DOUBLEQUOTE
+	| DOLLAR ident
+	| true
+	| false
+	| null
+	| this
+	| ident
+
+expr :=
+	| value
+	| { program }
+	| { ident1 =&gt; expr1 , ident2 =&gt; expr2 ... }
+	| expr DOT ident
+	| expr ( parameters )
+	| expr [ expr ]
+	| expr binop expr
+	| ( expr )
+	| var variables
+	| while expr expr
+	| do expr while expr
+	| if expr expr [else expr]
+	| try expr catch ident expr
+	| function ( parameters-names ) expr
+	| return [expr | SEMICOLON]
+	| break [expr | SEMICOLON]
+	| continue
+	| ident :
+	| switch expr { switch-case* }
+	| MINUS expr
+
+variables :=
+	| ident [= expr] variables
+	| COMMA variables
+	| _
+
+parameters :=
+	| expr parameters
+	| COMMA parameters
+	| _
+
+parameters-names :=
+	| ident parameters-names
+	| COMMA parameters-names
+	| _
+
+switch-case :=
+	| default =&gt; expr
+	| expr =&gt; expr</code></pre>
+<p><em>Random notes:</em></p><ul><li>
+<p><code>_</code> signifies an empty expression</p></li><li>
+<p><code>continue</code> and <code>break</code> are not allowed outside of a <code>while</code> loop.</p></li><li>
+<p>There are a few ambiguous cases when two expressions follow each other (as in <code>while</code> and <code>if</code>). If the second expression is inside parenthesis, it will be parsed as a call of the first expression, while
+such a representation e1 (e2) exists in the AST (the semicolons are optional).</p></li><li>
+<p>Arithmetic operations have the following precedences (from least to greatest):</p><ul><li>assignments</li><li><code>++=</code> and <code>%%--=%%</code></li><li><code>&amp;&amp;</code> and <code>||</code></li><li>comparisons</li><li><code>+</code> and <code>-</code></li><li><code>*</code> and <code>/</code></li><li><code>|</code>, <code>&amp;</code> and <code>^</code></li><li><code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code> and <code>%</code></li></ul></li></ul>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/syntax.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Downloads - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<h1>Downloads</h1>
+<p>The following downloads are currently available :</p><ul><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/archive/v2-1-0.tar.gz">sources TGZ</a></li><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/archive/v2-1-0.zip">sources ZIP</a></li><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/releases/download/v2-1-0/neko-2.1.0-win.zip">Windows binaries</a></li><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/releases/download/v2-1-0/neko-2.1.0-linux.tar.gz">Linux binaries</a></li><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/releases/download/v2-1-0/neko-2.1.0-linux64.tar.gz">Linux 64-bit binaries</a></li><li>Neko 2.1.0 <a href="https://github.com/HaxeFoundation/neko/releases/download/v2-1-0/neko-2.1.0-osx64.tar.gz">OS X 64-bit binaries</a></li></ul>
+<p>You can access Neko sources from the <a href="https://github.com/HaxeFoundation/neko">GitHub Repository</a>.</p>
+<h2>Snapshot Builds</h2>
+<h3>Windows</h3>
+<p>Compiled binaries can be found in the "artifacts" tab of each <a href="https://ci.appveyor.com/project/HaxeFoundation/neko/history">AppVeyor build</a>.</p>
+<h3>Mac</h3>
+<p>Neko snapshot of the latest master branch can be built using <a href="http://brew.sh/">homebrew</a> in a single command: <code>brew install neko --HEAD</code>. It will install required dependencies, build, and install Neko to the system. The binaries can be found at <code>brew --prefix neko</code>.</p>
+<p>Use <code>brew reinstall neko --HEAD</code> to upgrade in the future.</p>
+<h3>Linux</h3>
+<p>Ubuntu users can use the <a href="https://launchpad.net/~haxe/+archive/ubuntu/snapshots">Haxe Foundation snapshots PPA</a> to install a Neko package built from the latest master branch. To do so, run the commands as follows:</p>
+<pre><code>sudo add-apt-repository ppa:haxe/snapshots -y
+sudo apt-get update
+sudo apt-get install neko -y</code></pre>
+<p>Users of other Linux/FreeBSD distributions should build Neko from source. See <a href="https://github.com/HaxeFoundation/neko/blob/master/README.md#build-instruction">README.md</a> for additional instructions.</p>
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/download.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

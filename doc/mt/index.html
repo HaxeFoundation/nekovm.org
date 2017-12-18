@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Documentation - Neko and  Multithreading - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Documentation</h3>
+		<ul class="toc">
+			<li>Neko Documentation
+				<ul>
+					<li><a href="/doc/begin/">Neko Starter's Guide</a></li>
+					<li><a href="/doc/ffi/">C FFI</a> (Foreign Function Interface)</li>
+					<li><a href="/doc/vm/">Virtual Machine Documentation</a></li>
+					<li><a href="/doc/mod_neko/">Mod_neko</a></li>
+					<li><a href="/doc/multilang/">Languages Interoperability</a></li>
+					<li><a href="/doc/nekoml/">NekoML</a></li>
+					<li><a href="/doc/nxml/">NXML</a></li>
+					<li><a href="/doc/mt/">Neko and  Multithreading</a></li>
+					<li><a href="/doc/lua/">A comparison of Neko and Lua</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Neko Multithreading</h1>
+<p>NekoVM supports multithreading and multiple VM instances. It means that you can run some Neko code in a multithreaded program, as long as you respect the following guidelines.</p><ul><li>you can allocate a VM with <code>neko_vm_alloc</code>. The VM holds the Neko stack and registers.</li><li>a given thread can allocate several VM.</li><li>you can choose the local thread current VM by calling <code>neko_vm_select(neko_vm *vm)</code>.</li><li>you can retrieve the selected VM for the current thread by calling <code>neko_vm_current()</code>.</li><li>a single VM shouldn't be used to execute code on several threads at the same time.</li><li>a Neko Module can be used by several VM/Threads at the same time.</li></ul>
+<p>Using some non-basic data structures such as loaders, hashtables or abstracts values (files, regular expressions...) from multiple threads can results in crashes. Try to always keep these data structures in the thread that originally allocated them.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/mt.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

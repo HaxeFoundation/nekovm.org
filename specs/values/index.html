@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Values - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Values</h1>
+<p>A value in Neko can be one of the following :</p><ul><li><strong>Null:</strong> the special value <code>null</code> is used for uninitialized variables as well as programmer/language specific coding techniques.</li><li><strong>Integer:</strong> integers can be represented in either decimal form (such as <code>12345</code> or <code>-12</code>), or hexadecimal (<code>0x1A2B3C4D</code>).</li><li><strong>Floats:</strong> floating-point numbers are represented using a period (such as <code>12.345</code> or <code>-0.123</code>).</li><li><strong>Boolean:</strong> booleans are represented by the following two lowercase identifiers: <code>true</code> and <code>false</code>.</li><li><a href="/specs/strings/">Strings</a>: strings are surrounded by double quotes (for example: <code>"foo"</code>, or <code>"hello,\nworld !"</code>, or <code>"My name is \"Bond\\James Bond\"."</code>). Neko strings are mutable, which means that you can modify them.</li><li><a href="/specs/arrays/">Arrays</a>: arrays are an integer-indexed table of values, with the index starting at 0. They provide fast random access to their elements.</li><li><a href="/specs/objects/">Objects</a>: an object is a table, which associates an identifier or a string to a value. How objects are created and managed is explained later.</li><li><a href="/specs/functions/">Functions</a>: a function is also a value in Neko, and thus can be stored in any variable.</li><li><strong>Abstract:</strong> an abstract value is C data that cannot be accessed from a Neko program.</li></ul>
+<p>Some Notes:</p><ul><li>Integers have 31 bits for virtual machine performance reasons. An API for full <a href="/doc/view/int32/">32-bit integers</a> is available through a standard library.</li><li>Floating-point numbers are 64-bit double-precision floating points values.</li><li>Strings are sequences of 8-bit bytes. A string can contain <code>\0</code> characters. The length of a string is determined by the number of bytes in it, and not by the number of characters before the first \0.</li></ul>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/values.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

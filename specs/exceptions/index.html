@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Exceptions - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Exceptions</h1>
+<p>Exceptions are often referred to as "nonlocal jumps". It's a very good way for handling errors than can happen at several calls between the function that yield an error and the handler that will take care of it. Raising an exception is done using the <code>$throw</code> builtin, and catching it is done using the <code>try...catch</code> syntax. Please note that any value can be an exception, it's up to you to decide which structure you want to use :</p>
+<pre><code class="prettyprint neko">var foo = function() {
+	$throw("failure");
+}
+try
+	foo()
+catch e {
+	$print(e); // prints "failure"
+}</code></pre>
+<p>Every time an exception is caught, the <em>exception stack</em> is stored and can be retrieved using the builtin <code>$excstack()</code>. It contains the filenames and positions of the different calls between the <code>try</code> and the place the exception was raised.</p>
+<pre><code class="prettyprint neko">try
+	foo()
+catch e {
+	$print(e," raised from : ",$excstack());
+}</code></pre>
+<p>In some cases, you want to filter exceptions and catch only some of them. You then need to catch all the exceptions, check if the exception is filtered, and raise it again if not. However, in order to lose the exception stack by throwing a new exception, you can use the <code>$rethrow</code> builtin which will add the two stacks together (the current one and the one to the next <code>catch</code>).</p>
+<pre><code class="prettyprint neko">try
+	foo()
+catch e {
+	if( $typeof(e) == $tint )
+		$print("catched !")
+	else
+		$rethrow(e);
+}</code></pre>
+<p>Please note that you can <code>rethrow</code> another exception, so it's easier to rewrap some Neko libraries exceptions with your own format.</p>
+<p>It is also possible to get the current call stack at any point of a Neko program using the <code>$callstack()</code> builtin.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/exceptions.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

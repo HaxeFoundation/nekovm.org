@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Function &amp; Function Calls - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Function &amp; Function Calls</h1>
+<p>Defining new functions is easy, since functions are values, and you can simply assign them to a local or a global variable :</p>
+<pre><code class="prettyprint neko">var foo = function() {
+	return 0;
+}</code></pre>
+<p>Functions are called by value, this means that <code>foo(1)</code> calls the function which is the value of the variable foo. Calling a value that is not a function or does not accept this number of arguments will raise an exception.</p>
+<p>You can know the number of arguments needed by a function by using the builtin <code>$nargs</code>. A function that accepts a variable number of arguments returns -1 when used with <code>$nargs</code>. Please also note that builtins can be used as values :</p>
+<pre><code class="prettyprint neko">$print($nargs(function(a,b) { return a + b; }); // prints 2
+$print($nargs($print)); // prints -1
+$print($nargs(0)); // exception</code></pre>
+<p>There is one other way of calling a function : builtin <code>$call</code> takes an array of arguments and an object context (see Objects section) as parameters. This builtin can be useful for introspection :</p>
+<pre><code class="prettyprint neko">// call the foo function with null context
+// and two parameters 3 and 4
+$call(foo,null,$array(3,4));</code></pre>
+<p>Functional languages require partial application (aka currying) : the ability to creates closures by setting a fixed number of arguments of a function, leaving the rest for a later call. The builtin <code>$closure</code> enable to create a closure :</p>
+<pre><code class="prettyprint neko">var add = function(x,y) { return x + y };
+var plus5 = $closure(add,null,5); // null context and 5 as first argument
+$print( plus5(2) ); // 7</code></pre>
+<p>The builtin <code>$closure</code> can also be used to fix the <code>this</code> context of a function :</p>
+<pre><code class="prettyprint neko">var f = function() { $print(this) };
+f = $closure(f,55);
+f(); // prints 55</code></pre>
+<p>Some languages might want more security about the types of the arguments that are passed to a function, or selecting at runtime different implementations of a function depending on the type of the arguments. There are many ways of doing that in Neko. For example, you might want to add argument checks at the beginning of the function body using runtime type information (RTTI) builtins.</p>
+<p>Another useful builtin is <code>$apply</code> which is identical to a direct function call except that if the function requires extra arguments, then its call is delayed until further arguments are used :</p>
+<pre><code class="prettyprint neko">var f = function(x,y) { return x + y };
+f(1,2);
+$apply(f,1)(2); // equivalent
+$apply(f,1,2); // equivalent</code></pre>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/functions.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

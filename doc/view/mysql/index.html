@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>API - Mysql - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>API</h3>
+		<ul class="toc">
+			<li><a href="/doc/libs/">Neko Standard Library API</a>
+				<ul>
+					<li><a href="/doc/view/builtins/">Builtins</a></li>
+					<li><a href="/doc/view/buffer/">Buffer</a></li>
+					<li><a href="/doc/view/date/">Date</a></li>
+					<li><a href="/doc/view/file/">File</a></li>
+					<li><a href="/doc/view/int32/">Int32</a></li>
+					<li><a href="/doc/view/math/">Math</a></li>
+					<li><a href="/doc/view/md5/">MD5</a></li>
+					<li><a href="/doc/view/memory/">Memory</a></li>
+					<li><a href="/doc/view/module/">Module</a></li>
+					<li><a href="/doc/view/random/">Random</a></li>
+					<li><a href="/doc/view/serialize/">Serialize</a></li>
+					<li><a href="/doc/view/socket/">Socket</a></li>
+					<li><a href="/doc/view/string/">String</a></li>
+					<li><a href="/doc/view/sys/">System</a></li>
+					<li><a href="/doc/view/utf8/">UTF8</a></li>
+					<li><a href="/doc/view/xml/">Xml</a></li>
+					<li><a href="/doc/view/thread/">Thread</a></li>
+					<li><a href="/doc/view/ui/">Ui</a></li>
+					<li><a href="/doc/view/process/">Process</a></li>
+					<li><a href="/doc/view/misc/">Misc</a></li>
+					<li><a href="/doc/view/regexp/">Regexp</a></li>
+					<li><a href="/doc/view/mysql/">Mysql</a></li>
+					<li><a href="/doc/view/cgi/">Mod_neko</a></li>
+					<li><a href="/doc/view/sqlite/">Sqlite</a></li>
+					<li><a href="/doc/view/zlib/">ZLib</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<html>
+
+	<h1>MySQL</h1>
+	<p>
+	API to connect and use MySQL database
+	</p>
+	
+<h2>Result</h2>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>result_set_conv_date</doc_name><doc_type>('result, function:1)</doc_type> <doc_doc>Set the function that will convert a Date or DateTime string
+	to the corresponding value.</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>result_get_length</doc_name><doc_type>('result)</doc_type> <doc_doc>Return the number of rows returned or affected</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>result_get_nfields</doc_name><doc_type>('result)</doc_type> <doc_doc>Return the number of fields in a result row</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>object?</doc_type> <doc_name>result_next</doc_name><doc_type>('result)</doc_type> <doc_doc>
+	Return the next row if available. A row is represented
+	as an object, which fields have been converted to the
+	corresponding Neko value (int, float or string). For
+	Date and DateTime you can specify your own conversion
+	function using <doc_code>result_set_conv_date</doc_code>. By default they're
+	returned as plain strings. Additionally, the TINYINT(1) will
+	be converted to either true or false if equal to 0.
+	</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>result_get</doc_name><doc_type>('result, n : int)</doc_type> <doc_doc>Return the <doc_code>n</doc_code>th field of the current row</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>int</doc_type> <doc_name>result_get_int</doc_name><doc_type>('result, n : int)</doc_type> <doc_doc>Return the <doc_code>n</doc_code>th field of the current row as an integer (or 0)</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>float</doc_type> <doc_name>result_get_float</doc_name><doc_type>('result, n : int)</doc_type> <doc_doc>Return the <doc_code>n</doc_code>th field of the current row as a float (or 0)</doc_doc>
+</doc_blk>
+<h2>Connection</h2>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>close</doc_name><doc_type>('connection)</doc_type> <doc_doc>Close the connection. Any subsequent operation will fail on it</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>void</doc_type> <doc_name>select_db</doc_name><doc_type>('connection, string)</doc_type> <doc_doc>Select the database</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'result</doc_type> <doc_name>request</doc_name><doc_type>('connection, string)</doc_type> <doc_doc>Execute an SQL request. Exception on error</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>string</doc_type> <doc_name>escape</doc_name><doc_type>('connection, string)</doc_type> <doc_doc>Escape the string for inserting into a SQL request</doc_doc>
+</doc_blk>
+<doc_blk>
+  <doc_type>'connection</doc_type> <doc_name>connect</doc_name><doc_type>({ host => string, port => int, user => string, pass => string, socket => string?})</doc_type> <doc_doc>Connect to a database using the connection informations</doc_doc>
+</doc_blk>
+</html>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/view/mysql.xml" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Strings - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Strings</h1>
+<p>Like arrays, strings are a type and not objects. They are arrays of bytes, so can they be convenient for storing large quantities of small numbers or binary data, that might not be scanned by the Garbage Collector. Please note that unlike C, the size of the string is stored so you can easily put binary data into it without caring about the ending \000 character.</p>
+<p>Neko strings are just byte buffers, they are then independent of any encoding. It then depends on the API you're using to manipulate them. You can either use the builtins which are manipulating bytes (then suitable for ISO) or the UTF8 API (in the standard library) which is manipulating UTF8 charcodes.</p>
+<p>Literal strings can contain any character, including newlines and binary data. However, double quotes and backslashes need to be escaped. A backslash is used for escaping some special characters, here's a list of recognized escape sequences :</p><ul><li><code>\"</code> : doublequote</li><li><code>\\</code> : backslash</li><li><code>\n</code> : newline</li><li><code>\r</code> : carriage return</li><li><code>\t</code> : tab</li><li><code>\xxx</code> : xxx are three digits that represent a decimal binary code between 000 and 255</li></ul>
+<p>Strings can be created using the <code>$smake</code> builtin with a given size. Once allocated, a string can't be resized. The size of a string can be retrieved using the <code>$ssize</code> builtin :</p>
+<pre><code class="prettyprint neko">s = $smake(16);
+s = "hello";
+$print( $ssize(s) ); // 5</code></pre>
+<p>Please note that assigning a constant string does not make a copy of it, so the constant content can be modified. Also, several same constant strings can be merged into the same string, so you might want to be careful about unexpected side effects when modifying a constant string. You might want to use a <code>$scopy</code> or the <code>$ssub</code> builtins (similar to array ones) :</p>
+<pre><code class="prettyprint neko">s = $scopy("hello");
+$print( $ssub(s,1,3) ); // "ell"</code></pre>
+<p>Access to strings bytes can be done using the <code>$sget</code> and <code>$sset</code> builtins. <code>$sget</code> returns an integer between 0 and 255 or <code>null</code> if outside the string's bounds. <code>$sset</code> write the given integer value converted to an unsigned integer and modulo 256 :</p>
+<pre><code class="prettyprint neko">$s = $smake(1);
+$sset(s,0,3684); // set byte 0 to 3624 mod 256
+$print( $sget(s,0) ); // prints 40</code></pre>
+<p>You can copy big chunks of bytes from one string to another using the <code>$sblit</code> builtin. It returns the number of bytes copied or <code>null</code> if the copy failed :</p>
+<pre><code class="prettyprint neko">s = "some string to blit from";
+s2 = $smake(14);
+$sblit(s2,0,s,5,14);
+$print(s2); // "string to blit"</code></pre>
+<p>To find a substring of a string, you can use the <code>$sfind</code> builtin :</p>
+<pre><code class="prettyprint neko">s = "some string to search";
+$print($sfind(s,0,"to")); // 12
+$print($sfind(s,20,"to")); // starting a byte 20 : null</code></pre>
+<p>Strings can contain a maximum of 2 ^ 29 - 1 characters, <code>$smake</code> will raise an exception if this is exceeded.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/strings.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

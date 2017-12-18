@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Operations on Basic Types - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Operations on Basic Types</h1>
+<p>Basic types are numbers (int and float), booleans (bool), the null value, strings, objects, arrays, and functions. There are several operations available to use with them (See the following tables). On the row is the type of the first operand, and on the columns is that of the second operand. The result is either the type of the returned value or "concat" if we use string concatenation (in that case, the two values are converted to strings and then concatenated together). An "X" means that the operation is invalid and will raise an exception.</p>
+<a id="arithmetic-operations" class="anch"/><h2><a href="#arithmetic-operations">Arithmetic operations</a></h2>
+<p>Operation add ( + ) :</p><table><thead><th>+</th><th>null</th><th>int</th><th>float</th><th>string</th><th>bool</th><th>object</th><th>array</th><th>function</th></thead><tbody><tr><td><strong>null</strong></td><td>X</td><td>X</td><td>X</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr><tr><td><strong>int</strong></td><td>X</td><td>int</td><td>float</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr><tr><td><strong>float</strong></td><td>X</td><td>float</td><td>float</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr><tr><td><strong>string</strong></td><td>concat</td><td>concat</td><td>concat</td><td>concat</td><td>concat</td><td>%%__radd%%</td><td>concat</td><td>concat</td></tr><tr><td><strong>bool</strong></td><td>X</td><td>X</td><td>X</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr><tr><td><strong>object</strong></td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td><td>%%__add%%</td></tr><tr><td><strong>array</strong></td><td>X</td><td>X</td><td>X</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr><tr><td><strong>function</strong></td><td>X</td><td>X</td><td>X</td><td>concat</td><td>X</td><td>%%__radd%%</td><td>X</td><td>X</td></tr></tbody></table>
+<p>Addition can be overridden for objects : <code>a + b</code> will call <code>a.%%__add%%(b)</code> if <code>a</code> is an object, or <code>b.%%__radd%%(a)</code> if <code>b</code> is an object.</p>
+<p>Operations substract ( - ) divide ( / ) multiply ( * ) and modulo ( % ) :</p><table><thead><th>- / * %</th><th>int</th><th>float</th></thead><tbody><tr><td>int</td><td>int (float for /)</td><td>float</td></tr><tr><td>float</td><td>float</td><td>float</td></tr></tbody></table>
+<p>Please note that unlike some languages, the divide operation between two integers returns a float. You can use the <code>$idiv</code> builtin to perform integer division.</p>
+<p>Dividing or taking the modulo of one integer by the integer or the float 0 is hardware-dependent, and usually returns the float <code>+infinity</code> for division, and NaN for modulo. You can test it using the builtin <code>$isinfinite</code>. There is also <code>$isnan</code> for testing for NaN :</p>
+<pre><code class="prettyprint neko">$print($isinfinite(1/0)); // prints true
+$print($isnan(0/0)); // prints true</code></pre>
+<p>These operations are can be overridden by objects. See the Objects section.</p>
+<p>Please note also that overflow on integer operations does not convert them to floats, and does not throw an exception. If you want to control overflow, you can define your own functions for operations, use floats everywhere, or use an object with overridden operators.</p>
+<a id="bitwise-operations" class="anch"/><h2><a href="#bitwise-operations">Bitwise operations</a></h2>
+<p>The following operations are available for integers only. Please remember that for performance reasons, Neko integers are signed and only have 31 bits, so the "unsigned" part is only 30 bits of :</p><ul><li><code>%%&lt;&lt;%%</code> left bit shift</li><li><code>%%&gt;&gt;%%</code> right bit shift</li><li><code>%%&gt;&gt;&gt;%%</code> right unsigned bit shift</li><li><code>|</code> or bits</li><li><code>&amp;</code> and bits</li><li><code>^</code> xor bits</li></ul>
+<p>Using these operations with one or more non-integer operands will raise an exception.</p>
+<a id="boolean-operations" class="anch"/><h2><a href="#boolean-operations">Boolean operations</a></h2>
+<p>To convert any value to a boolean, use the builtin <code>$istrue</code> :</p><ul><li>null : false</li><li>int : false if 0, true otherwise</li><li>float : true</li><li>string : true</li><li>bool : itself</li><li>object : true</li><li>array : true</li><li>function : true</li></ul>
+<p>As you can see, only the values <code>null</code>, <code>false</code>, and <code>0</code> (integer) evaluate to false.</p>
+<p><code>$not</code> is the inverse of <code>$istrue</code>. It returns the opposite of the boolean that would be returned by <code>$istrue</code>.</p>
+<p>Operations BooleanAnd ( &amp;&amp; ) and BooleanOr ( || ) :</p>
+<p>Boolean operations are short-circuited. This means that if the first operand of an <code>&amp;&amp;</code> is <code>false</code> or the first operand of an <code>||</code> is <code>true</code>, then the second operand is not evaluated, and the first value is returned. Otherwise, the second value is returned.</p>
+<p>Please note that no automatic conversions to booleans are done. <code>a &amp;&amp; b</code> is equivalent to <code>if( a == false ) b else a</code> and <code>a || b</code> is equivalent to <code>if( a == true ) a else b</code> with <code>a</code> being evaluated only once. You might prefer to call <code>$istrue</code> on each argument before performing the operation.</p>
+<a id="equality-&amp;-comparisons" class="anch"/><h2><a href="#equality-&amp;-comparisons">Equality &amp; Comparisons</a></h2>
+<p>Comparison occurs when the following operations are performed : equality <code>==</code>, inequality<code>!=</code>, greater than <code>&gt;</code>, less than <code>&lt;</code>, greater than or equal to <code>&gt;=</code>, or less than or equal to <code>%%&lt;=%%</code>.</p>
+<p>Comparison method :</p><table><thead><th>$compare</th><th>null</th><th>int</th><th>float</th><th>string</th><th>bool</th><th>object</th><th>array</th><th>function</th></thead><tbody><tr><td>null</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>int</td><td>-</td><td>icmp</td><td>fcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>float</td><td>-</td><td>fcmp</td><td>fcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>string</td><td>-</td><td>strcmp</td><td>strcmp</td><td>strcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td></tr><tr><td>bool</td><td>-</td><td>-</td><td>-</td><td>strcmp</td><td>bcmp</td><td>-</td><td>-</td><td>-</td></tr><tr><td>object</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>ocmp</td><td>-</td><td>-</td></tr><tr><td>array</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>acmp</td><td>-</td></tr><tr><td>function</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>acmp</td></tr></tbody></table>
+<p>Here are the details of each comparison function :</p><ul><li>icmp compares two integers a and b. It returns 0 if they're equal, -1 if b &gt; a, and 1 if a &gt; b.</li><li>fcmp is the same as icmp but compares floats instead of integers.</li><li>strcmp compares strings. It can be seen as a icmp applied to every byte of the two strings.</li><li>acmp compares the addresses of a and b. It returns 0 if they're the same, -1 if b&gt;a, and 1 if a&gt;b</li><li>bcmp returns 0 if a and b are both the same value, 1 if a is true and b is false, -1 if a is false and b is true.</li><li>ocmp does "object comparison". If the two objects' addresses are the same, it returns 0. Otherwise, it calls the method <code>%%__compare%%</code> on the first object, with the second object as an argument. If the returned value is an integer, the integer is returned by <code>$compare</code>, otherwise, null is returned.</li><li><ul><li>means that the comparison is invalid, the returned value is null when using <code>$compare</code> and false when using an operator.</li></ul></li></ul>
+<p>The following table shows how each operation is performing depending on the result of <code>$compare</code> :</p><table><thead><th>op</th><th>null</th><th>-1</th><th>0</th><th>1</th></thead><tbody><tr><td>==</td><td>false</td><td>false</td><td>true</td><td>false</td></tr><tr><td>!=</td><td>true</td><td>true</td><td>false</td><td>true</td></tr><tr><td>%%&lt;=%%</td><td>false</td><td>true</td><td>true</td><td>false</td></tr><tr><td>&lt;</td><td>false</td><td>true</td><td>false</td><td>false</td></tr><tr><td>&gt;=</td><td>false</td><td>false</td><td>true</td><td>true</td></tr><tr><td>&gt;</td><td>false</td><td>false</td><td>true</td><td>true</td></tr></tbody></table>
+<p>Physical comparison :</p>
+<p>The builtin <code>$pcompare</code> will compare two values physically. It will be the same result as <code>$compare</code> for integers, and other values will be compared using their memory address. You can use <code>$pcompare</code> instead of <code>$compare</code> if you want to optimize your integer comparisons.</p>
+<a id="assignments" class="anch"/><h2><a href="#assignments">Assignments</a></h2>
+<p>The following operations are also available in order to modify the value of a variable, object field, array content...</p>
+<p>The standard assignment operator is <code>=</code>. There are also the following augmented assignment operators which perform an operation at the same time. The returned value is always the assigned value :</p>
+<pre><code class="prettyprint neko">+= -= *= /= %= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;= |= &amp;= ^=</code></pre>
+<p>There are two additional operators, <code>++=</code> and <code>--=</code>, which do the same thing as <code>+=</code> and <code>-=</code>, except that the returned value is the value of the variable before it was modified :</p>
+<pre><code class="prettyprint neko">a = 0;
+$print(a ++= 1); // 0
+$print(a ++= 1); // 1
+$print(a); // 2</code></pre>
+<a id="conversions" class="anch"/><h2><a href="#conversions">Conversions</a></h2>
+<p>To convert any value to a Boolean, you can use the <code>$istrue</code> builtin as specified in <a href="/specs#boolean_operations">Boolean operations</a>.</p>
+<pre><code class="prettyprint neko">$istrue(null); // false
+$istrue(1); // true</code></pre>
+<p>To convert a string or a float to an integer, you can use the <code>$int</code> builtin :</p>
+<pre><code class="prettyprint neko">$int(45.67); // 45
+$int("67.87"); // 67
+$int($array(4)); // null</code></pre>
+<p>To convert a string to a float, you can use the <code>$float</code> builtin :</p>
+<pre><code class="prettyprint neko">$float("1.345"); // 1.345
+$float(12345); // 12345.0000
+$float($array()); // null</code></pre>
+<p>Any value can be converted to a string using <code>$string</code>, this operation is used in particular in the <code>$print</code> builtin :</p>
+<pre><code class="prettyprint neko">$string(null); // "null"
+$string(123); // "123"
+$string($array(1,2,3)); // "[1,2,3]"</code></pre>
+<p>On objects, <code>$string</code> calls the <code>%%__string%%</code> method on the object if it exists. If the returned value is a string, the string is returned, otherwise the string <code>#object</code> is returned.</p>
+<p>On functions, <code>#function:n</code> is returned where <code>n</code> is the number of arguments of the function (or -1 if multiple arguments).</p>
+<a id="optimized-operations" class="anch"/><h2><a href="#optimized-operations">Optimized Operations</a></h2>
+<p>There are several optimized builtins for integers : <code>$iadd, $isub, $imult, $idiv</code>. They all skip some type checks, so they're faster. Their results will always be a valid integer, but their value is unspecified when one or more of the two values is not an integer. <code>$idiv</code> raises an exception when division by 0 is attempted :</p>
+<pre><code class="prettyprint neko">$print( $iadd(1,3) ); // 4
+$print( $idiv(5,2) ); // 2
+$print( $idiv(1,0) ); // exception</code></pre>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/operations-and-types.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

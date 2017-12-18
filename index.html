@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="row">
+	<div class="col-4">
+		<h3>The Neko Programming Language</h3>
+		<strong>
+			Neko is a high-level dynamically typed programming language. It can be used as an embedded scripting language. It has been designed to provide a common runtime for several different languages. Learning and using Neko is very easy. You can easily extend the language with C libraries. You can also write generators from your own language to Neko and then use the Neko Runtime to compile, run, and access existing libraries.
+			</strong><p>
+			Neko is also a good way for language designers to focus on design and reuse a fast and well-designed runtime, as well as existing libraries for accessing filesystem, network, databases, xml...
+	 </p>
+		See <a href="/specs/syntax/">Neko Specifications...</a>
+	</div>
+	<div class="col-2">
+		<br/>
+		<br/>
+		<blockquote class="big">
+			&quot;If you need to add a scripting language to your application, Neko provides the best tradeoff between simplicity, extensibility and speed.&quot;
+		</blockquote>
+	</div>
+	<br clear="all"/>
+</div><div class="row">
+	<div class="col-2">
+		<br/>
+		<br/>
+		<blockquote class="big">
+			The compiler converts a source .neko file into a bytecode .n file that can be executed using the Virtual Machine. The compiler is written in Neko itself, and is still very fast.
+		</blockquote>
+	</div>
+	<div class="col-4">
+		<h3>The Neko Virtual Machine</h3>
+		<strong>
+			Neko has a compiler and a virtual machine. The Virtual Machine is both very lightweight and well optimized, so it can run very quickly. The VM can be easily embedded into any application and your libraries can be accessed using the C foreign function interface.
+			</strong><p>You can use the compiler as standalone command line executable separate from the VM, or as a Neko library to perform compile-and-run funtions for interactive languages.
+		</p>
+		See <a href="/doc/vm/">NekoVM Documentation...</a>
+	</div>
+	<br clear="all"/>
+</div><div class="row">
+	<div class="col-3">
+	<h3>Mod_neko</h3>
+		<p>
+			Neko comes with several libraries. One of these is mod_neko, which embeds the Neko Virtual Machine into an Apache web server, so you can use Neko to generate webpages. This website is actually generated using Neko.
+		</p>
+		See <a href="/doc/mod_neko/">Introduction to mod_neko</a>
+	</div>
+	<div class="col-3">
+		<h3>About</h3>
+		<p>Neko is developed as part of the Research and Development effort for better languages at Motion-Twin. You can contact the Neko author Nicolas Cannasse (ncannasse _at_ gmail.com) for more information. Neko is free software and the full source code is available under the MIT License. <br/>You're also welcome to <a href="/ml/">get in touch</a>.</p>
+	</div>
+	<br clear="all"/>
+</div>
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/index.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

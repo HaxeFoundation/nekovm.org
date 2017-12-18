@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Documentation - A comparison of Neko and Lua - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Documentation</h3>
+		<ul class="toc">
+			<li>Neko Documentation
+				<ul>
+					<li><a href="/doc/begin/">Neko Starter's Guide</a></li>
+					<li><a href="/doc/ffi/">C FFI</a> (Foreign Function Interface)</li>
+					<li><a href="/doc/vm/">Virtual Machine Documentation</a></li>
+					<li><a href="/doc/mod_neko/">Mod_neko</a></li>
+					<li><a href="/doc/multilang/">Languages Interoperability</a></li>
+					<li><a href="/doc/nekoml/">NekoML</a></li>
+					<li><a href="/doc/nxml/">NXML</a></li>
+					<li><a href="/doc/mt/">Neko and  Multithreading</a></li>
+					<li><a href="/doc/lua/">A comparison of Neko and Lua</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>A comparison of Neko and Lua</h1>
+<p>Since <a href="http://www.lua.org">Lua</a> is probably the most similar to Neko in terms of goals, architecture, and performances. It is interesting to compare the choices that the two VMs are doing.</p>
+<p>This comparison is established on the base of information available in the paper <em>The Implementation of Lua 5.0</em>, which explains the global design of the virtual machine.</p>
+<p>This document can also be a good start for someone interested in the implementation of the Neko Virtual Machine.</p>
+<a id="values" class="anch"/><h2><a href="#values">Values</a></h2>
+<p>The representation of values in a dynamically typed language is very important since it can lead to big differences in terms of performances. Such representation has several constraints :</p><ul><li>fast accesses</li><li>must represent several kind of values (bool, integer, objects...)</li><li>be able to cope with the garbage collector</li><li>low memory overhead (when allocating a lot of small values matters)</li></ul>
+<a id="value-types" class="anch"/><h3><a href="#value-types">Value types</a></h3>
+<p>First, let's compare the different Lua/Neko value types :</p><ul><li><code>nil</code> in Lua is similar to <code>null</code> in Neko since there is only one instance shared by all the code.</li><li><code>bool</code> in Lua (<code>true</code> and <code>false</code>) is similar to the Neko <code>bool</code> except that in Neko only one instance of <code>true</code> and one instance of <code>false</code> are allocated and shared by all the code.</li><li><code>number</code> in Lua is similar to Neko <code>float</code>; both are, by default, double-precision IEEE floating point values. And both are customizable to use single precision or even fixed point arithmetics.</li><li>Neko has an additional <code>int</code> type that represents a signed 31-bits integer, as we will explain below when introducing the values runtime structure.</li><li>both languages have a <code>function</code> type that can represent either a Bytecode or a C function. There are some implementation differences (see below).</li><li>both languages have a <code>string</code> type, with implementation differences (see below).</li><li>Lua differentiates between two kinds of user-defined data : <code>light</code> and <code>fat</code> pointers, which are either GC or User allocated. Neko has a single <code>abstract</code> type with a fixed tag that represents its internal type (see below).</li><li>Lua has a <code>thread</code> type for coroutines. Neko does not have coroutines yet, but it might not be introduced as an additional value type.</li></ul>
+<p>The main difference, however, is of the structured value types :</p>
+<p>Lua has a single <code>table</code> associative table that stores <code>(key,value)</code> pairs where <code>key</code> can be any value but <code>nil</code>. It has special optimizations that are explained in the paper presented above.</p>
+<p>Neko has two structured value types :</p><ul><li><code>array</code> which is a not-resizable block capable of storing a fixed number of values using 0-based integer accesses.</li><li><code>object</code> which stores <code>(key,value)</code> pairs, but keys are integer hashcodes obtained from the field string name.</li></ul>
+<p>Except for the structure values, the value types are pretty similar in both Neko and Lua. However their runtime representation and way of manipulating them differ.</p>
+<a id="runtime-representation" class="anch"/><h3><a href="#runtime-representation">Runtime Representation</a></h3>
+<p>Neko and Lua have very different ways of representing their values.</p>
+<p>In Lua, the following definition is used :</p>
+<pre><code class="prettyprint c">typedef struct {
+    int vtype;
+    value_data vdata;
+} value;
+
+typedef union {
+    GCObject *gc_data;
+    void *user_data;
+    double number_data;
+    int int_data;
+} value_data;</code></pre>
+<p>It means the following :</p><ul><li>every value is a structure of exactly 12 bytes.</li><li>passing a value as an argument or storing it involves copying these bytes around. Values are not pointers but structures.</li><li>basic type instances such as <code>nil</code>, <code>bool</code>, and <code>number</code> are not allocated by the Garbage collector.</li><li>others (such as functions, strings, and tables) have GC-allocated data in the <code>gc_data</code> field.</li></ul>
+<p>Neko has a bit more complex representation. The first field is also an integer representing the value type, but the internal structure differs depending on the value type. It can somehow be represented this way :</p>
+<pre><code>typedef struct {
+   int vtype;
+   // type-specific data
+} *value;
+
+typedef struct {
+   int vtype; // = VAL_NULL
+   // NO DATA
+} *vnull;
+
+typedef struct {
+   int vtype; // = VAL_BOOL
+   // NO DATA
+} *vbool;
+
+typedef int vint;
+
+typedef struct {
+   int vtype; // = VAL_FLOAT
+   double vdata;
+} *vfloat;
+
+typedef struct {
+   int vtype; // = VAL_STRING + (character count &lt;&lt; 3)
+   char cfirst;
+   // ... more characters
+} *vstring;
+
+...
+</code></pre>
+<p>The difference with Lua is that Neko has value pointers, so no copying is needed when passing values into the program. This actually means that Neko is more efficient, with the only drawback being the <code>float</code> type as we will see below.</p>
+<p>Neko has an additional 31-bit integer type which is the only non-pointer value. Integers are differentiated from other values by having their last bit set to <code>1</code> while other pointers are guaranteed to be multiple of 2 (for memory-alignment purposes). That has an overhead compared to Lua since when accessing the <code>type</code> of a value, Neko needs to check if the pointer is odd or even first. In the first case it's an integer, in the second case it's a value and the type is stored in the first integer.</p>
+<p>Let's make a type-by-type runtime structure comparison :</p><ul><li><code>null</code> : similar in both Lua and Neko, since there is only one instance shared by all the code. The comparison can be done by physical-equality.</li><li><code>bool</code> : Neko has two unique instances: <code>true</code> and <code>false</code>, so no allocation is performed for these two and comparisons can be made physically. Lua does not have allocation for these values also, but copying occurs.</li><li><code>float</code> : copying values in Lua means that the <code>float</code> type is not allocated by the GC. This is not the case with Neko where the only <em>unboxed</em> type is <code>int</code>. This is not something that can be changed easily since it's the result of Lua's design of copying value-structures instead of passing value-pointers.</li><li><code>string</code> : Neko allocates a block of <code>sizeof(int) + number_of_chars</code> for each string. Lua allocates a similar block with the GC header, length, and a precomputed hash value for each string.</li></ul>
+<p>Some more comments can be done for each value structure more particularly.</p>
+<a id="functions" class="anch"/><h3><a href="#functions">Functions</a></h3>
+<p>Lua does not seem to enforce the number of parameters as part of the type of the function, as it is in Neko. Neko has a special value of <code>-1</code> meaning <em>variable</em> number of parameters.</p>
+<p>Calling a function in Neko with an invalid number of parameters will result in a runtime error. This way of doing it permits a more natural way of extending Neko with C functions, as we will see in the API part of this comparison.</p>
+<a id="strings" class="anch"/><h3><a href="#strings">Strings</a></h3>
+<p>What Neko and Lua strings have in common is that they can store any character, including <code>\0</code>. This means they are more like byte-buffers than C-style-string. Also, the size of the string is stored in the value, preventing out-of-bounds memory violations.</p>
+<p>One large difference is that Neko's strings are mutable, that is, they can be modified at runtime. This makes an operation like reading a file to a string byte by byte a fast, efficient, linear operation. By contrast, if you were to try and do this in Lua (which has immutable strings), the operation would be quadratic and become prohibitively slow for even files of a few kilobytes. Lua offers a facility, table.concat, to alleviate this problem; but it still bites programmers on occasion.</p>
+<p>There are advantages in Lua's approach, however; one is that a string can only exist once in memory, compared to Neko where it is possible for two strings with the same value to exist twice in memory (wasting memory). It also allows comparing strings by their pointer values, where as Neko requires a linear operation. Finally, it allows the hash of the string to be calculated just once, to greatly speed hash table indexing with the key.</p>
+<p>In summary, Lua strings offer faster hash table indexing and equality comparisons at the cost of being unable to modify a string at runtime and slower string creation. Neko on the other hand offers mutable strings, which are faster to create.</p>
+<a id="user-data" class="anch"/><h3><a href="#user-data">User Data</a></h3>
+<p>Lua and Neko both provide means of using user-defined data from within the language, although the implementations differ. In Lua, two data types are provided, one which holds a user-allocated pointer (<code>lightuserdata</code>), and the other is GC allocated (<code>userdata</code>). The user-allocated pointer carries no additional information, with no type security when it is dereferenced in C (although the value can never be modified from within Lua, so this is usually not a problem). The GC allocated pointer carries a <code>metatable</code> which defines operations on the data (such as addition), and can be used to identify what type it is.</p>
+<p>Neko's approach combines the two types into one <code>abstract</code> value type which stores two values:</p><ul><li>the <code>data</code> pointer that can be either User-allocated or GC-allocated. Its content is user-defined.</li><li>the <code>kind</code> is a marker for the internal type of the <code>data</code> pointer.</li></ul>
+<p>The difference is that whilst user-allocated pointers in Lua allow no runtime type checking, the Neko approach does, providing a security advantage.</p>
+<p>Another difference is that whilst the Lua GC ignores user-allocated data, Neko tracks it and calls a <em>finalizer</em> method when it's no longer used, which allows the data to be freed. Lua only offers finalizers on GC allocated data; if a finalizer is required on a user-allocated pointer, the pointer must be boxed in a GC allocated pointer, which provides a similar construct to Neko's <code>abstract</code> value type.</p>
+<p>More information on the Neko <code>abstract</code> can be found in the Neko <a href="/doc/ffi/">FFI documentation</a>.</p>
+<a id="objects-vs-tables" class="anch"/><h3><a href="#objects-vs-tables">Objects VS Tables</a></h3>
+<p>Neko has an <code>object</code> and an <code>array</code> type. Lua has a single <code>table</code> type, which consists of both an array and a hashtable.</p>
+<p>Neko's arrays allow fast access via integer indices. If the index is outside of the array bounds, <code>NULL</code> is returned. Lua tables are slower for integer indexing, though, as Lua possesses no integer datatype. This means that before the array portion of the hashtable can be used, the number has to be checked if it's an integer (requiring two cast operations and a comparison). If the index is outside of the array component bounds, the hashtable is tried.</p>
+<p>Thus, for allocating small blocks that are accessed through integer indexes, Neko arrays are a lot more efficient than Lua tables. That's a design choice, which also comes from different goals :</p><ul><li>Lua is meant to be a full-featured scripting language, easy to pickup and which favors simplicity.</li><li>Neko is meant to be a runtime targetable by language designers. It offers different kinds of value types that can be used for encoding the runtime values of the language. A fast lightweight array is useful in that context.</li></ul>
+<p>The <code>object</code> and the hash table component of a Lua <code>table</code> differ greatly. Lua tables can be indexed with any kind of key, which are hashed for optimized lookup.</p>
+<p>Neko objects are accessed through Neko integers (which are unboxed values, hence with no memory overhead). Field names are computed at compile-time; for example, <code>obj.field</code> would get compiled into the following opcodes:</p>
+<pre><code class="prettyprint neko">  ACCSTACK 0 // the obj value
+  ACCFIELD 0x56BD6 // the hashcode for the string "field"</code></pre>
+<p>All hashed fields are cached into a per-thread hashtable. This way Neko can ensure :</p><ul><li>that two field names with the same hashcode are the same string, or an exception will occur at runtime. In order to avoid this, the hash function is optimized to minimize collisions.</li><li>that a field hash value can always be reversed to the original field name (for debugging/display purposes).</li></ul>
+<p>Object fields are stored into a flat resizable array and are ordered by their field hash. When a new field is inserted, the array size is increased. When a field is searched, a simple dichotomy is used. This offer good performance since all the object table memory is retained into a single block that usually fits into the CPU cache.</p>
+<p>This approach doesn't allow accessing a field with a name generated at runtime. Lua tables allow this, as they are an ordinary hashtable that can be indexed with any Lua type.</p>
+<p>Both Neko and Lua allow a form of inheritance. In Neko, objects may have a <code>prototype</code>, which is another object. When a field is not found in an object, Neko tries its prototype recursively. Lua tables will lookup an index <code>metamethod</code> before returning nil. If this is another table, it is indexed recursively, like Neko. However, it can also be a function, which Lua will call with the table and the field as parameters.</p>
+<p>Both approaches allow easily encoding class-based objects and inheritance without copying the whole object/table for every instance: (in Neko opcodes)</p>
+<pre><code class="prettyprint neko">classA = { foo =&gt; function() { } };
+classB = { foo2 =&gt; function() { } };
+$objsetproto(classB,classA); // B extends A
+instA = $new(null);
+$objsetproto(instA,classA); // creates a new instance of A</code></pre>
+<p>In that example, <code>instA</code> has access to all the fields of <code>classA</code> and <code>classB</code>, but has its own table to store its instance-defined fields. Such a scheme greatly decreases memory usage.</p>
+<p>As a conclusion, it's almost impossible to compare the two approaches. Neko <code>array</code> and <code>object</code> are two optimized domain-specific structured types while Lua tables are more generalist.</p>
+<p>As a side note, Neko also has its own (hash) tables but, although directly supported by the virtual machine, they are not in the base language. Neko's hashtable implementation is quite simple, but may not be as well as Lua's (eg. no precomputed hashes in Neko).</p>
+<a id="virtual-machine" class="anch"/><h2><a href="#virtual-machine">Virtual Machine</a></h2>
+<p>The major difference between Lua and Neko is that Lua is register-based (since 5.0) while Neko is stack-based. Both approaches are very difficult to compare directly since it's also bound to the value encoding. By using a register-based approach, Lua can preallocate the working space for its values. It improves higher performances since less copy occurs when moving values forth-and-back like in Lua 4.</p>
+<p>Instead of trying to run a head-to-head comparison that wouldn't make too much sense, let's have a look at how some specific features are implemented in both VM :</p>
+<a id="opcodes" class="anch"/><h3><a href="#opcodes">Opcodes</a></h3>
+<p>As stated in the Lua 5.0 paper, all Lua opcodes fit into 32 bits, requiring a bit of unpacking to extract the operands and result registers.</p>
+<p>Neko opcodes have one optional parameter so they are stored with either one or two 32-bit values. The bytecode loader ensures that all jumps are performed on valid opcode offsets so an invalid bytecode file cannot corrupt the Virtual Machine, and appropriate optimizations can be done upon bytecode loading, such as inlining the globals addresses.</p>
+<p>A lot of Lua's opcodes allow an operand to be either a register or a constant, depending on a set bit. This requires additional processing but reduces the number of instructions.</p>
+<p>Neko has 63 opcodes, with 11 of them being used only for optimizations purposes and 8 for optimizing different kinds of often-used comparisons. Each binary operation also has its own opcode and some domain-specific opcodes have been added for partial application (currying) and tail-recursive calls.</p>
+<a id="globals" class="anch"/><h3><a href="#globals">Globals</a></h3>
+<p>Globals are stored by name in a regular <code>table</code> in Lua. This means that getting a global variable requires a hash table lookup. This is massively slower compared to Neko, which can inline the address of globals providing much faster read/write access. There is a reason in the madness of the Lua approach, though, namely you can: find a global by a runtime generated string (eg. <code>_G["Button"..i]</code>), provide the global table with metamethods for new default values, etc. Finally, the global table can be resized or even freed.</p>
+<a id="closures" class="anch"/><h3><a href="#closures">Closures</a></h3>
+<p>Neko stores the locals into the function environment, which is a small array that is accessed by integer index by the Virtual Machine :</p>
+<pre><code class="prettyprint neko">   add = function(x) {
+       return function(y) {
+           return x + y;
+       }
+   };
+   add2 = add(2);
+   $print(add2(3));</code></pre>
+<p>This get compiled into the following :</p>
+<pre><code>   // body for add_local_function
+   AccEnv 0 // 'x' in the environment
+   Push
+   AccStack 1 // 'y' on the stack
+   Add
+   Ret
+
+   // body for the add function
+   AccStack 0 // 'x'
+   Push
+   AccGlobal 0 // the add_local_function
+   MakeEnv 1 // creates a closure of size 1 with x
+   Ret</code></pre>
+<p>The main difference between Lua and Neko closures can be seen below:</p>
+<pre><code class="prettyprint neko">var x = 0;
+f = function() { x += 1; };
+f(); // increment the env. variable
+$print(x);</code></pre>
+<p>Will print 0 in Neko (but the functions environment is correctly incremented), but in its equivalent Lua code:</p>
+<pre><code class="prettyprint lua">f = function() x = x + 1 end
+f()
+print(x)</code></pre>
+<p>Will print 1.</p>
+<p>Implementation comparison with Lua is a bit difficult to do since the specification is different. Both provide very fast access to their non-local variables, but Lua's mechanism requires a bit more GC overhead.</p>
+<a id="oo-support" class="anch"/><h3><a href="#oo-support">OO Support</a></h3>
+<p>The NekoVM give access to the <code>this</code> register which stores the current object. This gives proper OO support, but has a side effect that calling <code>o.field(33)</code> is different from calling <code>(o.field)(33)</code> since in the first case, the <code>this</code> value is set to <code>o</code> while in the second case it is unchanged (plain function call). Lua provides <code>self</code>, but requires the user to distinguish between a regular function call, <code>string.sub(strname, 2, 3)</code> and a method call <code>strname:sub(2, 3)</code>.</p>
+<p>While OO can also be encoded using closures capturing the instance, it has a big memory cost since one method closure needs to be allocated per object method and per instance (or lazily every time a method is fetched).</p>
+<p>High-level OO languages that are targeting Neko (such as <a href="http://haxe.org">Haxe</a>) have support for method-closure, but only when an object method is not directly applied, reducing the memory overhead.</p>
+<a id="ffi" class="anch"/><h2><a href="#ffi">FFI</a></h2>
+<p>Foreign Function Interface (FFI) is the VM API that is exported to C for extensibility purposes. It's a set of functions that are used to manipulate values and the internal VM state.</p>
+<a id="macros-vs-functions" class="anch"/><h3><a href="#macros-vs-functions">Macros VS Functions</a></h3>
+<p>Access to values is entirely done through function calls in Lua. That means that accessing the <code>double</code> from a number or checking the value type consists of calling a C function that performs the operation.</p>
+<p>On the other hand, the Neko API directly expresses some common operations in terms of C macros. This way, for instance, the <code>val_float</code> operation to access the <code>double</code> is declared as the following :</p>
+<pre><code class="prettyprint c">#define val_float(v)	((vfloat*)(v))-&gt;f</code></pre>
+<p>And checking the type of a value is the following :</p>
+<pre><code class="prettyprint c">#define val_type(v)	((v &amp; 1) ? VAL_INT : ((*v)&amp;7))</code></pre>
+<p>This enables a lot faster access to the values on the C side. Some functions are also available when needed when allocating a value, for example.</p>
+<a id="vm-stack-manipulation" class="anch"/><h3><a href="#vm-stack-manipulation">VM stack manipulation</a></h3>
+<p>When adding a new C primitive to Lua that adds two floats, one would do the following :</p>
+<pre><code class="prettyprint c">int do_add(lua_State *L) {
+   if( !lua_isnumber(L,1) || !lua_isnumber(L,2) ) {
+       lua_pushstring(L, "incorrect arguments for 'do_add'");
+       lua_error(L);
+   }
+   lua_pushnumber(L, lua_tonumber(L,1) + lua_tonumber(L,2));
+   return 1; // number of results
+}
+
+// Or more commonly, by using the standard Lua auxiliary library:
+int do_add(lua_State *L) {
+  lua_pushnumber(L, luaL_checknumber(L, 1) + luaL_checknumber(L, 2));
+  return 1;
+}</code></pre>
+<p>Here's the equivalent in Neko :</p>
+<pre><code class="prettyprint c">value do_add( value a, value b ) {
+    val_check(a,float);
+    val_check(b,float);
+    return alloc_float( val_float(a) + val_float(b) );
+}</code></pre>
+<p>The differences are the following :</p><ul><li>since the number of arguments is fixed in the function type, the C function gets directly called with its arguments in Neko. It does not need to then extract them from the VM stack like in Lua.</li><li>Lua C functions can have more values passed than required, and although it can be checked at runtime, this is rarely done. This is because providing the same checks inside pure Lua functions is cumbersome, requiring writing them as vararg functions.</li><li>only one value is returned by a C function so the stack does not need to be manipulated.</li><li>since the VM instance is stored in a thread local storage value, it doesn't need to be passed to all FFI functions like in Lua (only the ones that need to access the VM will retrieve them).</li><li>macros are provided to check the type parameters and returns NULL if an error occurs. In that case, an exception containing the name of the function is automatically raised. (The Lua aux library also provides this behaviour with luaL_checknumber.)</li></ul>
+<p>As a result, Neko restricts two things that Lua allows :</p><ul><li>doing arbitrary stack manipulations.</li><li>returning multiple values : they can instead be returned as a newly allocated array.</li></ul>
+<p>Neko's method prevents possible stack corruption by the C programmer, which, in Lua, is possible by passing erroneous values to the stack manipulation functions. (Defining lua_assert will catch such attempts as runtime errors). It can also be considerably easier to understand values as values, rather than having to visualize the state of the stack.</p>
+<a id="conclusion" class="anch"/><h2><a href="#conclusion">Conclusion</a></h2>
+<p>Here are some of the conclusions that can be reached from this comparison :</p><ul><li>the basic value types are similar between Neko and Lua.</li><li>for structured values, Neko provides two optimized types <code>array</code> and <code>object</code>, whereas Lua has only one generic type <code>table</code>.</li><li>the runtime representation of the values differs. Lua is relying on copying while Neko is using pointers and GC-allocated blocks.</li><li>the NekoVM has better support for OO features and a different closure specification that results in a more simple implementation.</li><li>the Neko FFI, by applying some security restrictions compared to Lua, makes it a lot easier for the end-user to implement additional primitives. Using macros also speed up a lot the C primitives that are often called.</li></ul>
+<p>As for the speed, using copying with unboxed floats and a register-based VM gives Lua an advantage over Neko when doing heavy floating point calculus (like the <code>n-bodies</code> shootout benchmark is showing).</p>
+<p>On the other hand, allocating a lot of small arrays and performing recursive integer calculus over them is a lot faster in Neko (like the <code>binary-trees</code> shootout benchmark is showing).</p>
+<p>Lua and Neko have made different choices with different results depending on the application, but both have good quality and are pretty fast VMs compared to other dynamically typed languages implementations.</p>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/lua.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>Specification - Labels and Gotos - NekoVM</title>
+		<meta name="date" content="2016-01-01T12:00:05+0100" />
+		<meta name="robots" content="index,follow" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/style.min.css"/>
+		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
+	</head>
+	<body>
+			<nav>
+				<ul class="siteMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/news/">News</a></li>
+					<li><a href="/download/">Downloads</a></li>
+					<li><a href="/doc/begin/">Documentation</a></li>
+					<li><a href="/specs/syntax/">Specification</a></li>
+					<li><a href="/doc/libs/">API</a></li>
+					<li><a href="/faq/">FAQ</a></li>
+					<li><a href="/ml/">Contact</a></li>
+				</ul>
+			</nav>
+		<div class="center">
+			<div class="siteHeader">
+				<a href="/" title="NekoVM home"><img src="/img/nekovm-logo.png" alt="NekoVM logo"/></a>
+			</div>
+			<div class="container">
+				<div class="navigation">
+	<div id="tocinside">
+		<h3>Specification</h3>
+		<ul class="toc">
+			<li>Programming Language Specifications
+				<ul>
+					<li><a href="/specs/syntax/">Syntax</a></li>
+					<li><a href="/specs/values/">Values</a></li>
+					<li><a href="/specs/execution-flow/">Execution Flow</a></li>
+					<li><a href="/specs/variables/">Variables</a></li>
+					<li><a href="/specs/operations-and-types/">Operations on Basic Types</a></li>
+					<li><a href="/specs/rtti/">Runtime Type Information (RTTI)</a></li>
+					<li><a href="/specs/functions/">Function &amp; Function Calls</a></li>
+					<li><a href="/specs/objects/">Objects</a></li>
+					<li><a href="/specs/arrays/">Arrays</a></li>
+					<li><a href="/specs/strings/">Strings</a></li>
+					<li><a href="/specs/exceptions/">Exceptions</a></li>
+					<li><a href="/specs/hashtables/">Hashtables</a></li>
+					<li><a href="/specs/labels-and-gotos/">Labels and Gotos</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="siteContent">
+	<h1>Labels and Gotos</h1>
+<p>It is sometimes useful to be able to jump directly to some code location. Labels provide a way to <em>mark</em> a location in the code and the builtin <code>$goto</code> can jump to a label :</p>
+<pre><code class="prettyprint neko">$print("enter");
+$goto(next);
+$print("skipping");
+next:
+$print("done");</code></pre>
+<p>Please note that label identifiers are global to the file, but cannot be defined in all expressions. The reason is to simplify the compiler since labels normally require multiple passes for stack preservation (see below). In the case a label cannot be declared, an error is printed at compilation-time. The builtin <code>$goto</code> can only be used with a valid label identifier, in that case only, the identifier is treated as a label and not as a variable.</p>
+<a id="gotos-and-stack-preservation" class="anch"/><h2><a href="#gotos-and-stack-preservation">Gotos and Stack Preservation</a></h2>
+<p>In all cases, gotos going to labels are preserving the stack. For example, in the following case, the variable "x" is popped out of the stack when the goto occurs :</p>
+<pre><code class="prettyprint neko">{
+	var x = 0;
+	$goto(next);
+}
+next:</code></pre>
+<p>If the goto is done <em>inside</em> a block having defined local variables, these variables are also accessible, but their values are unspecified :</p>
+<pre><code class="prettyprint neko">$goto(next);
+{
+	var x = 0;
+	next:
+	$print(x);
+}</code></pre>
+<a id="gotos-and-exceptions" class="anch"/><h2><a href="#gotos-and-exceptions">Gotos and Exceptions</a></h2>
+<p>In the same way gotos are preserving the stack size, they are also preserving the exception handlers, such that the following program is correctly compiled :</p>
+<pre><code class="prettyprint neko">try {
+	$goto(next);
+} catch e {
+	...
+}
+next:</code></pre>
+<p>In the case a goto is done inside a <code>try...catch</code> block, a temporary exception handler will be set that will only reraise the exception. The exception is not handled by the <code>catch</code> block since the <code>try</code> setup have been skipped :</p>
+<pre><code class="prettyprint neko">$goto(next);
+try {
+	next:
+	$throw("error");
+} catch e {
+	...
+}</code></pre>
+</div>
+
+			</div>
+
+			<div class="corpo">
+				<p>&copy; 2017
+				<a href="/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
+				
+				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/labels-and-gotos.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
+				</p>
+			</div>
+		</div>
+
+		<script src="/js/code-highlight.js"></script>
+		<script>hljs.registerLanguage( "neko", function() { return hljs.getLanguage("js"); } );</script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</body>
+</html>
