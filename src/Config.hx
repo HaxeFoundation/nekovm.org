@@ -14,7 +14,21 @@ class Config {
 		if (Compiler.getDefine("out") != null) {
 			Compiler.getDefine("out");
 		} else {
-			"out";
+			env("GHP_HTMLDIR",  "out");
 		}
 	};
+
+	static public var remote   = env("GHP_REMOTE",   null); // should be in the form of https://token@github.com/account/repo.git
+	static public var branch   = env("GHP_BRANCH",   "gh-pages");
+	static public var username = env("GHP_USERNAME", null);
+	static public var email    = env("GHP_EMAIL",    null);
+
+	static public function env(name:String, def:String):String {
+		return switch(Sys.getEnv(name)) {
+			case null:
+				def;
+			case v:
+				v;
+		}
+	}
 }
