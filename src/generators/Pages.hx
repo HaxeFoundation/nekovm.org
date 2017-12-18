@@ -14,11 +14,11 @@ class Pages {
 		for (i in Utils.listDirectoryRecursive(Config.pagesPath)) {
 			var path = i.split("/");
 			path.shift();
-			var folder = path.length > 1 ? path.shift() : "/";
-			var file = path.join("/");
+			var folder = path.length > 1 ? path.shift() : "";
+			var file = Path.join(path);
 
 			var inPath = Path.join([Config.pagesPath, folder, file]);
-			var sitepage = SiteMap.pageForUrl(folder + "/" + file, false, false);
+			var sitepage = SiteMap.pageForUrl(Path.join([folder, file]), false, false);
 			var content = Utils.readContentFile(inPath);
 			var editLink = Config.baseEditLink + inPath;
 
