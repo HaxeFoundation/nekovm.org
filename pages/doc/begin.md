@@ -33,7 +33,7 @@ You have to setup a few things :
 
 Once this is done you should be able to run the `neko` command from any directory. Please check that `neko` is working. (On Windows you can you can open a command terminal using `Start / Run..` and entering `cmd` then OK).
 
-You should now be able to run the test : execute `neko -version` and it should print something like `2.1.0`. Now you can start using Neko.
+You should now be able to run the test : execute `neko -version` and it should print something like `2.2.0`. Now you can start using Neko.
 
 ## Compiling from Sources
 
