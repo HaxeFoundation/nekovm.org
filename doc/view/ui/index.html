@@ -9,9 +9,23 @@
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400">
-		<link rel="canonical" href="http://nekovm.org/doc/view/ui"/>
+		<link rel="canonical" href="http://nekovm.org/doc/view/ui/"/>
 	</head>
 	<body>
+			<!--
+				Force redirect to the right origin.
+				It is needed to redirect `path` to `path/` with the correct domain name.
+				See the "Caveats" section of http://strd6.com/2016/02/github-pages-custom-domain-with-ssltls/.
+			-->
+			<script type="text/javascript">
+				function startsWith(str, searchString){
+					return str.substr(0, searchString.length) === searchString;
+				}
+				if (!startsWith(location.href, "http://nekovm.org/doc/view/ui/")) {
+					window.location.replace("http://nekovm.org/doc/view/ui/");
+				}
+			</script>
+
 			<nav>
 				<ul class="siteMenu">
 					<li><a href="/">Home</a></li>
