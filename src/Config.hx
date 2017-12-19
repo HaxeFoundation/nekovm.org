@@ -22,7 +22,7 @@ class Config {
 	static public var branch   = env("GHP_BRANCH",   "gh-pages");
 	static public var username = env("GHP_USERNAME", null);
 	static public var email    = env("GHP_EMAIL",    null);
-	static public var root     = env("GHP_ROOT",     "http://nekovm.org/");
+	static public var root     = env("GHP_ROOT",     "http://nekovm.org");
 
 	static public function env(name:String, def:String):String {
 		return switch(Sys.getEnv(name)) {

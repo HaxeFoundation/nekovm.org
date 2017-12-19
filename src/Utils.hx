@@ -43,7 +43,7 @@ class Utils {
 			case "md":
 				if (outPath == 'index.md') {
 					outPath = 'index.html';
-					canonical = root;
+					canonical = "";
 				}
 				else {
 					canonical = Path.withoutExtension(outPath);
@@ -59,6 +59,10 @@ class Utils {
 
 		outPath = Path.join([outputFolder, outPath]);
 		canonical = Path.join([root, canonical]);
+
+		if (Path.withoutDirectory(outPath) == "index.html" && canonical != root) {
+			canonical = Path.addTrailingSlash(canonical);
+		}
 
 		var dir = Path.directory(outPath);
 		if (!FileSystem.exists(dir)) {
