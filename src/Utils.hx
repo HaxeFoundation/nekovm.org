@@ -74,7 +74,7 @@ class Utils {
 			new Html(content),
 			Std.string(Date.now().getFullYear()),
 			current != null && current.editLink != null ? current.editLink : editLink,
-			canonical
+			root != null ? canonical : null
 		));
 	}
 
