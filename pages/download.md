@@ -2,13 +2,13 @@
 
 The following downloads are currently available :
 
-- Neko 2.2.0 [sources TGZ](https://github.com/HaxeFoundation/neko/archive/v2-2-0.tar.gz)
-- Neko 2.2.0 [sources ZIP](https://github.com/HaxeFoundation/neko/archive/v2-2-0.zip)
-- Neko 2.2.0 [Windows 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-2-0/neko-2.2.0-win.zip)
-- Neko 2.2.0 [Windows 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-2-0/neko-2.2.0-win64.zip)
-- Neko 2.2.0 [Linux 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-2-0/neko-2.2.0-linux.tar.gz)
-- Neko 2.2.0 [Linux 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-2-0/neko-2.2.0-linux64.tar.gz)
-- Neko 2.2.0 [OS X 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-2-0/neko-2.2.0-osx64.tar.gz)
+- Neko 2.3.0 [sources TGZ](https://github.com/HaxeFoundation/neko/archive/v2-3-0.tar.gz)
+- Neko 2.3.0 [sources ZIP](https://github.com/HaxeFoundation/neko/archive/v2-3-0.zip)
+- Neko 2.3.0 [Windows 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-win.zip)
+- Neko 2.3.0 [Windows 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-win64.zip)
+- Neko 2.3.0 [Linux 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-linux.tar.gz)
+- Neko 2.3.0 [Linux 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-linux64.tar.gz)
+- Neko 2.3.0 [OS X 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-osx64.tar.gz)
 
 You can access Neko sources from the [GitHub Repository](https://github.com/HaxeFoundation/neko).
 
