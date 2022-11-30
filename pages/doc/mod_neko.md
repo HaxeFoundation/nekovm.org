@@ -114,11 +114,13 @@ You'll have to make an modification to neko/src/tools/install.neko (this is the 
 **Apache 1.3.x**
 If you instead installed Apache2 DON’T FOLLOW THIS.
 
-```Compiling mod_neko...
+```
+Compiling mod_neko...
 The file httpd.h provided when installing Apache 1.3.x was not found
 Please enter a valid include path to look for it
 Or 's' to skip this library
->/usr/include/apache-1.3```
+>/usr/include/apache-1.3
+```
 
 **Apache 2.2.x**
 ```Compiling mod_neko...
@@ -126,7 +128,8 @@ The file httpd.h provided when installing Apache 1.3.x was not found
 Please enter a valid include path to look for it
 Or 's' to skip this library
 > s
-Compiling mod_neko2...```
+Compiling mod_neko2...
+```
 
 Now let's install it and run ldconfig for good measure.
 `$ sudo make install`
