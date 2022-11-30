@@ -168,7 +168,7 @@ sudo test -f dir.conf.tmp && rm dir.conf.tmp
 
 ### Neko from backports.org
 
-Download and install neko from [Debian Backports](http://backports.org/Instructions/)
+Download and install neko from [Debian Backports](https://backports.debian.org/Instructions/)
 
 
 ## Apache configuration
