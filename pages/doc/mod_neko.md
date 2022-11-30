@@ -132,9 +132,10 @@ Compiling mod_neko2...
 ```
 
 Now let's install it and run ldconfig for good measure.
-`$ sudo make install`
-`$ sudo ldconfig`
-
+```
+$ sudo make install
+$ sudo ldconfig
+```
 #### Apache 1.3 Configuration
 
 Possibly inaccurate:
