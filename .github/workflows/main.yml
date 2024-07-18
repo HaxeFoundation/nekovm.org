@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  deploy-website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.4
+
+      # we are using this version in order to build vscode-textmate
+      - name: Setup AWS CLI
+        run: |
+          pip install --user awscli
+          aws --version
+
+      - name: Install
+        run: |
+          haxelib install all --always
+          haxelib list
+
+      - name: Generate website
+        run: |
+          haxe generate.hxml
+
+      - name: Deploy
+        if: github.repository_owner == 'HaxeFoundation' && github.ref == 'refs/heads/master'
+        run: haxe deploy.hxml
+        env:
+          GHP_EMAIL: haxe-ci@onthewings.net
+          GHP_USERNAME: Haxe CI Bot
+          GHP_ROOT: https://nekovm.org
+          GHP_REMOTE: ${{ secrets.GHP_REMOTE }}
