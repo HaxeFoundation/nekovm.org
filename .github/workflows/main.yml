@@ -21,7 +21,7 @@ jobs:
 
       - name: Install
         run: |
-          haxelib install all --always
+          haxelib install all --always --quiet
           haxelib list
 
       - name: Setup Pages
