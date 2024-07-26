@@ -13,7 +13,6 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      # we are using this version in order to build vscode-textmate
       - name: Install
         run: |
           haxelib install all --always --quiet
