@@ -1,6 +1,6 @@
 # nekovm.org
 
-[![Build Status](https://travis-ci.org/HaxeFoundation/nekovm.org.svg?branch=master)](https://travis-ci.org/HaxeFoundation/nekovm.org)
+[![CI](https://github.com/HaxeFoundation/nekovm.org/actions/workflows/main.yml/badge.svg)](https://github.com/HaxeFoundation/nekovm.org/actions/workflows/main.yml)
 
 This is the code base for the <http://nekovm.org> website.
 
@@ -32,4 +32,4 @@ The website is now available in the `out/` folder, you can launch it any webserv
 
 ## Deploying updates
 
-Any push or merge to the `master` branch will trigger [TravisCI](https://travis-ci.org/HaxeFoundation/nekovm.org) to build and deploy to "nekovm.org".
+Any push or merge to the `master` branch will trigger a github actions workflow to build and deploy to "nekovm.org".
