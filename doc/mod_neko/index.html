@@ -9,22 +9,8 @@
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400" />
-		<link rel="canonical" href="https://nekovm.org/doc/mod_neko/"/></head>
+		</head>
 	<body>
-		
-		<!--
-			Force redirect to the right origin.
-			It is needed to redirect `path` to `path/` with the correct domain name.
-			See the "Caveats" section of http://strd6.com/2016/02/github-pages-custom-domain-with-ssltls/.
-		-->
-		<script type="text/javascript">
-			function startsWith(str, searchString){
-				return str.substr(0, searchString.length) === searchString;
-			}
-			if (!startsWith(location.href, "https://nekovm.org/doc/mod_neko/")) {
-				window.location.replace("https://nekovm.org/doc/mod_neko/");
-			}
-		</script>
 		<nav>
 			<ul class="siteMenu">
 				<li><a href="/">Home</a></li>
@@ -72,46 +58,201 @@
 <pre><code class="prettyprint bash">nekotools server</code></pre>
 <p>This should start the local server, by default, on the <code>localhost</code> on port <code>2000</code> so you can browse the configuration page by visiting <a href="http://localhost:2000/server:config">http://localhost:2000/server:config</a>. Change the server base path to your website directory and you can start browsing it. If it contains <code>.n</code> Neko bytecode files, they will be loaded and executed just like Apache <code>mod_neko</code> is doing.</p>
 <a id="linux-installation" class="anch"/><h2><a href="#linux-installation">Linux Installation</a></h2>
-<p><a href="http://old.haxe.org/doc/build/neko_linux">http://old.haxe.org/doc/build/neko_linux</a></p>
-<a id="apache-configuration" class="anch"/><h2><a href="#apache-configuration">Apache configuration</a></h2>
-<p>If you want to use Apache with <code>mod_neko</code>, once Neko is correctly configured, you can edit your Apache configuration <code>httpd.conf</code> in order to add <code>mod_neko</code>. Each statement must be added to a single line in the proper place in the Apache configuration file :</p><ul><li>add <code>LoadModule neko_module (your path to mod_neko.ndll)</code></li><li>add <code>AddModule mod_neko.c</code></li><li>add <code>AddHandler neko-handler .n</code></li><li>add <code>index.n</code> to the list of <code>DirectoryIndex</code></li></ul>
-<p>Now that you're done, you can restart Apache to check that Mod_neko is correctly loaded. If you have some problem, try to check that Neko is correctly configured.</p>
-<a id="some-tests" class="anch"/><h2><a href="#some-tests">Some tests</a></h2>
-<p>Now you can simply edit a Neko file and print some welcome message :</p>
-<pre><code class="prettyprint neko">$print("Hello Mod_neko !");</code></pre>
-<p>Compile this file (<code>nekoc hello.neko</code>) and place the <code>.n</code> file into your web directory so it can be accessed by Apache. Browsing it using your <a href="http://browsehappy.com/">favorite</a> web browser should display the message.</p>
-<p>Now let's try to print the HTTP parameters that are passed to the script, using the <code>mod_neko</code> API :</p>
-<pre><code class="prettyprint neko">get_params = $loader.loadprim("mod_neko@get_params",0);
+<a id="debian-/-ubuntu" class="anch"/><h3><a href="#debian-/-ubuntu">Debian / Ubuntu</a></h3>
+<p>It's recommended to first setup the prerequisites in order to build the neko vm and its extensions. The following packages are needed:
+<em> apache2-threaded-dev: For Apache module libraries such as mod_neko and mod_tora
+</em> libmysqlclient15-dev: For building the Mysql client library
+<em> libpcre3-dev: For building the regular expression library
+</em> libgc-dev: For the garbage collector of the neko vm
+* libgtk2.0-dev: For the GTK bindings</p>
+<a id="install-requirements" class="anch"/><h4><a href="#install-requirements">Install Requirements</a></h4>
+<p>Download all the needed system packages</p>
+<p><code>$ sudo apt-get install apache2 apache2-threaded-dev libmysqlclient15-dev libpcre3-dev libgc-dev libgtk2.0-dev</code></p>
+<a id="install-nekovm-and-apache-extensions" class="anch"/><h4><a href="#install-nekovm-and-apache-extensions">Install nekovm and apache extensions</a></h4>
+<p>The following script downloads the official NekoVM release, compiles the C sources and installs it on your system. Alternatively, if you want to work with the latest features you can checkout the sources from CVS.</p>
+<p><strong>Install script</strong></p>
+<p>Shellscript for the complete build and install process. 
+1. Copy the contents into a shell script, like "installneko.sh"
+2. Decide if you want to download the release or checkout from CVS
+3. make it executable: sudo chmod 0755 installneko.sh
+3. run it: sudo ./installneko.sh (It's important that you run the script as root with sudo)</p>
+<pre><code>#!/bin/sh
+
+# Build the neko VM
+# =================
+# Important: run the script as root with "sudo ./installneko.sh"
+
+# ------- User Configuration BEGIN -----------
+
+# $RELEASE: release or cvs?
+# 
+# - If you want to build neko with a official release you have to define the
+# release version 
+# - If you want to build neko from CVS you have to comment out the following
+# line
+
+RELEASE="neko-1.8.2"
+
+# -------- User Configuration END ------------
+
+
+
+mkdir -p /usr/local/src &amp;&amp; cd /usr/local/src
+rm -rf /usr/local/src/neko*
+rm -rf /usr/local/neko
+rm -rf /usr/local/bin/neko*
+
+if [ $RELEASE ]; then
+    wget "http://nekovm.org/_media/$RELEASE.tar.gz"
+    tar xfvz $RELEASE.tar.gz
+    cd $RELEASE
+else
+    #cvs -d:pserver:anonymous@cvs.motion-twin.com:/cvsroot login
+    #cvs -d:pserver:anonymous@cvs.motion-twin.com:/cvsroot co neko
+    svn co http://nekovm.googlecode.com/svn/trunk neko
+    cd neko
+fi
+
+# build neko
+make
+
+# install neko
+mkdir /usr/local/neko
+cp bin/* /usr/local/neko
+ln -s /usr/local/neko/neko* /usr/local/bin/
+ln -s /usr/local/neko/libneko.so /usr/local/lib
+
+
+# may be required if /usr/local/lib is not in your library search path
+grep "/usr/local/lib" /etc/ld.so.conf || echo "/usr/local/lib" &gt;&gt; /etc/ld.so.conf
+ldconfig
+
+# setup environment variables for neko
+grep "NEKOPATH" /etc/environment || echo "export NEKOPATH=/usr/local/neko" &gt;&gt; /etc/environment</code></pre>
+<p>Quick notes about building Neko:
+<em> The build script will also build mod_neko (and mod_tora) so you will be prompted to choose to target apache 1.3 or apache 2. Please read the following section for more information.
+</em> Since subshell () is used in the Neko Makefile, you may get a segfault from bash because of insufficient stack. To avoid this problem, you can increase the stack size by 'ulimit -s 20000'.
+* If you are not using gcc or an earlier gcc version, the option -fno-stack-protector may not be recognized. All you need to do is to removed it from the Neko Makefile. (Also comment it out in src/tools/neko.install, line 82 and 83).</p>
+<a id="mod_neko" class="anch"/><h3><a href="#mod_neko">mod_neko</a></h3>
+<p>Compiling mod_neko is currently only compatible with Apache 2.2.x or Apache 1.3.</p>
+<a id="deapi-workaround-(apache-1.3.x-only?)**" class="anch"/><h4><a href="#deapi-workaround-(apache-1.3.x-only?)**">DEAPI Workaround (Apache 1.3.x only?)**</a></h4>
+<p>If you are using 1.3.34 you may need to do this.
+You'll have to make an modification to neko/src/tools/install.neko (this is the workaround): Add -DEAPI to the list of cflags around line 75.</p>
+<p><strong>Apache 1.3.x</strong>
+If you instead installed Apache2 DON’T FOLLOW THIS.</p>
+<pre><code>Compiling mod_neko...
+The file httpd.h provided when installing Apache 1.3.x was not found
+Please enter a valid include path to look for it
+Or 's' to skip this library
+&gt;/usr/include/apache-1.3</code></pre>
+<p><strong>Apache 2.2.x</strong>
+<code></code>`Compiling mod_neko...
+The file httpd.h provided when installing Apache 1.3.x was not found
+Please enter a valid include path to look for it
+Or 's' to skip this library</p>
+<blockquote>
+<p>s</p></blockquote>
+<p>Compiling mod_neko2...</p>
+<pre><code>
+Now let's install it and run ldconfig for good measure.</code></pre>
+<p>$ sudo make install
+$ sudo ldconfig</p>
+<pre><code>#### Apache 1.3 Configuration
+
+Possibly inaccurate:
+* add LoadModule neko_module /usr/local/lib/neko/mod_neko.ndll
+* add AddModule mod_neko.c
+* add AddHandler neko-handler .n
+* add index.n to the list of DirectoryIndex
+	
+#### Apache 2 Configuration</code></pre>
+<p># add NEKOPATH variable to apache2 environment vars
+sudo grep "NEKOPATH" /etc/apache2/envvars || echo "export NEKOPATH=/usr/local/neko" &gt;&gt; /etc/apache2/envvars</p>
+<p># create a neko.conf in available modules
+sudo test -f /etc/apache2/mods-available/neko.conf || echo "AddHandler neko-handler .n" &gt;&gt; /etc/apache2/mods-available/neko.conf</p>
+<p># create a neko.load in available modules
+sudo test -f /etc/apache2/mods-available/neko.load || echo "LoadModule neko_module /usr/local/neko/mod_neko2.ndll" &gt;&gt; /etc/apache2/mods-available/neko.load</p>
+<p># enable neko module
+sudo ln -s /etc/apache2/mods-available/neko.* /etc/apache2/mods-enabled</p>
+<p># add index.n to DirectoryIndex in dir.conf
+sudo grep "index.n" /etc/apache2/mods-available/dir.conf || cat /etc/apache2/mods-available/dir.conf | sed -r 's/DirectoryIndex (.*?)/DirectoryIndex index.n \1/' &gt; dir.conf.tmp &amp;&amp; cp dir.conf.tmp /etc/apache2/mods-available/dir.conf 
+sudo test -f dir.conf.tmp &amp;&amp; rm dir.conf.tmp</p>
+<p># restart apache2
+/etc/init.d/apache2 restart</p>
+<pre><code>
+### Neko from backports.org
+
+Download and install neko from [Debian Backports](https://backports.debian.org/Instructions/)
+
+
+## Apache configuration
+
+If you want to use Apache with `mod_neko`, once Neko is correctly configured, you can edit your Apache configuration `httpd.conf` in order to add `mod_neko`. Each statement must be added to a single line in the proper place in the Apache configuration file :
+
+
+- add `LoadModule neko_module (your path to mod_neko.ndll)`
+- add `AddModule mod_neko.c`
+- add `AddHandler neko-handler .n`
+- add `index.n` to the list of `DirectoryIndex`
+
+Now that you're done, you can restart Apache to check that Mod_neko is correctly loaded. If you have some problem, try to check that Neko is correctly configured.
+
+
+
+## Some tests
+
+Now you can simply edit a Neko file and print some welcome message :
+</code></pre>
+<p>$print("Hello Mod_neko !");</p>
+<pre><code>
+Compile this file (`nekoc hello.neko`) and place the `.n` file into your web directory so it can be accessed by Apache. Browsing it using your [favorite](http://browsehappy.com/) web browser should display the message.
+
+Now let's try to print the HTTP parameters that are passed to the script, using the `mod_neko` API :
+</code></pre>
+<p>get_params = $loader.loadprim("mod_neko@get_params",0);
 // $loader.loadprim("mod_neko2@get_params",0) for mod_neko2.ndll module
-$print("PARAMS = "+get_params());</code></pre>
-<p>Don't forget to compile in order to update the <code>.n</code> file before browsing your script. You can now set HTTP parameters <code>(your URL)?p1=v1;p2=v2....</code> and see them displayed on your web page.</p>
-<a id="script-versus-application" class="anch"/><h2><a href="#script-versus-application">Script versus Application</a></h2>
-<p>Since Neko is separated into two different phases: <em>compile</em> and <em>run</em>, you cannot directly see the modifications you're making to your script since you need to compile first. This has several advantages :</p><ul><li>
-<p>it runs faster</p></li><li>
-<p>the syntax is checked at compile-time before you browse the page</p><ul><li>you don't need to have <em>sources</em> on the server; having only binaries is ok</li><li>you can run your module in <em>application mode</em> (see below).</li></ul></li></ul>
-<p>Right now, however, every time a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).</p>
-<p>The idea of running in <em>Application Mode</em> is to have an initialization phase for your script that will create objects, load libraries, initialize global data, and then setup an <em>entry point</em> which will be the function called for every request. Here's a small sample :</p>
-<pre><code class="prettyprint neko">$print("Initializing...");
+$print("PARAMS = "+get_params());</p>
+<pre><code>
+Don't forget to compile in order to update the `.n` file before browsing your script. You can now set HTTP parameters `(your URL)?p1=v1;p2=v2....` and see them displayed on your web page.
 
-// this is the entry point
-entry = function() {
-	$print("Main...");
-}
 
-// setup the entry point
+## Script versus Application
+
+Since Neko is separated into two different phases: *compile* and *run*, you cannot directly see the modifications you're making to your script since you need to compile first. This has several advantages :
+
+- it runs faster
+
+- the syntax is checked at compile-time before you browse the page
+
+	- you don't need to have *sources* on the server; having only binaries is ok
+	- you can run your module in *application mode* (see below).
+
+Right now, however, every time a request is made by the browser, Mod_neko is loading the module and executing it. If you have a very big script it might take some time (although it's already faster than other web scripting languages).
+
+The idea of running in *Application Mode* is to have an initialization phase for your script that will create objects, load libraries, initialize global data, and then setup an *entry point* which will be the function called for every request. Here's a small sample :
+</code></pre>
+<p>$print("Initializing...");</p>
+<p>// this is the entry point
+entry = function() {</p>
+<pre><code>$print("Main...");
+</code></pre>
+<p>}</p>
+<p>// setup the entry point
 set_main = $loader.loadprim("mod_neko@cgi_set_main",1);
-set_main(entry);
+set_main(entry);</p>
+<p>// call it the first time as well
+entry();</p>
+<pre><code>
+Now after compiling, if you browse this page, it should display `Initializing... Main...` the first time and then `Main...` for every refresh. It means that you can initialize a lot of things at loading time and store values into globals that will be persistent between calls.
 
-// call it the first time as well
-entry();</code></pre>
-<p>Now after compiling, if you browse this page, it should display <code>Initializing... Main...</code> the first time and then <code>Main...</code> for every refresh. It means that you can initialize a lot of things at loading time and store values into globals that will be persistent between calls.</p>
-<p>If you recompile, this will change the timestamp of the <code>.n</code> file so it will reload and initialize it again. This means that you should be able to reload everything you need at loading time.</p>
+If you recompile, this will change the timestamp of the `.n` file so it will reload and initialize it again. This means that you should be able to reload everything you need at loading time.
+</code></pre>
 </div>
 
 			</div>
 
 			<div class="corpo">
-				<p>&copy; 2019
+				<p>&copy; 
 				<a href="https://haxe.org/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
 				
 				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/doc/mod_neko.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>

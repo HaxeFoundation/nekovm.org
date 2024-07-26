@@ -9,22 +9,8 @@
 		<link rel="stylesheet" media="screen" type="text/css" href="/css/code-highlight.css"/>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" />
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,600italic,400" />
-		<link rel="canonical" href="https://nekovm.org/specs/operations-and-types/"/></head>
+		</head>
 	<body>
-		
-		<!--
-			Force redirect to the right origin.
-			It is needed to redirect `path` to `path/` with the correct domain name.
-			See the "Caveats" section of http://strd6.com/2016/02/github-pages-custom-domain-with-ssltls/.
-		-->
-		<script type="text/javascript">
-			function startsWith(str, searchString){
-				return str.substr(0, searchString.length) === searchString;
-			}
-			if (!startsWith(location.href, "https://nekovm.org/specs/operations-and-types/")) {
-				window.location.replace("https://nekovm.org/specs/operations-and-types/");
-			}
-		</script>
 		<nav>
 			<ul class="siteMenu">
 				<li><a href="/">Home</a></li>
@@ -86,10 +72,7 @@ $print($isnan(0/0)); // prints true</code></pre>
 <a id="boolean-operations" class="anch"/><h2><a href="#boolean-operations">Boolean operations</a></h2>
 <p>To convert any value to a boolean, use the builtin <code>$istrue</code> :</p><ul><li>null : false</li><li>int : false if 0, true otherwise</li><li>float : true</li><li>string : true</li><li>bool : itself</li><li>object : true</li><li>array : true</li><li>function : true</li></ul>
 <p>As you can see, only the values <code>null</code>, <code>false</code>, and <code>0</code> (integer) evaluate to false.</p>
-<p><code>$not</code> is the inverse of <code>$istrue</code>. It returns the opposite of the boolean that would be returned by <code>$istrue</code>.</p>
-<p>Operations BooleanAnd ( &amp;&amp; ) and BooleanOr ( || ) :</p>
-<p>Boolean operations are short-circuited. This means that if the first operand of an <code>&amp;&amp;</code> is <code>false</code> or the first operand of an <code>||</code> is <code>true</code>, then the second operand is not evaluated, and the first value is returned. Otherwise, the second value is returned.</p>
-<p>Please note that no automatic conversions to booleans are done. <code>a &amp;&amp; b</code> is equivalent to <code>if( a == false ) b else a</code> and <code>a || b</code> is equivalent to <code>if( a == true ) a else b</code> with <code>a</code> being evaluated only once. You might prefer to call <code>$istrue</code> on each argument before performing the operation.</p>
+<p><code>$not</code> is the inverse of <code>$istrue</code>. It returns the opposite of the boolean that would be returned by <code>$istrue</code>.</p><table><thead><th align="null">Operations BooleanAnd ( &amp;&amp; ) and BooleanOr (</th><th align="null">) :</th></thead><tbody></tbody></table><table><thead><th align="null">Boolean operations are short-circuited. This means that if the first operand of an <code>&amp;&amp;</code> is <code>false</code> or the first operand of an `</th><th align="null"><code> is </code>true`, then the second operand is not evaluated, and the first value is returned. Otherwise, the second value is returned.</th></thead><tbody></tbody></table><table><thead><th align="null">Please note that no automatic conversions to booleans are done. <code>a &amp;&amp; b</code> is equivalent to <code>if( a == false ) b else a</code> and `a</th><th align="null">b<code> is equivalent to </code>if( a == true ) a else b<code> with </code>a<code> being evaluated only once. You might prefer to call </code>$istrue` on each argument before performing the operation.</th></thead><tbody></tbody></table>
 <a id="equality-&amp;-comparisons" class="anch"/><h2><a href="#equality-&amp;-comparisons">Equality &amp; Comparisons</a></h2>
 <p>Comparison occurs when the following operations are performed : equality <code>==</code>, inequality<code>!=</code>, greater than <code>&gt;</code>, less than <code>&lt;</code>, greater than or equal to <code>&gt;=</code>, or less than or equal to <code>%%&lt;=%%</code>.</p>
 <p>Comparison method :</p><table><thead><th>$compare</th><th>null</th><th>int</th><th>float</th><th>string</th><th>bool</th><th>object</th><th>array</th><th>function</th></thead><tbody><tr><td>null</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>int</td><td>-</td><td>icmp</td><td>fcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>float</td><td>-</td><td>fcmp</td><td>fcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>string</td><td>-</td><td>strcmp</td><td>strcmp</td><td>strcmp</td><td>strcmp</td><td>-</td><td>-</td><td>-</td></tr><tr><td>bool</td><td>-</td><td>-</td><td>-</td><td>strcmp</td><td>bcmp</td><td>-</td><td>-</td><td>-</td></tr><tr><td>object</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>ocmp</td><td>-</td><td>-</td></tr><tr><td>array</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>acmp</td><td>-</td></tr><tr><td>function</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>acmp</td></tr></tbody></table>
@@ -134,7 +117,7 @@ $print( $idiv(1,0) ); // exception</code></pre>
 			</div>
 
 			<div class="corpo">
-				<p>&copy; 2019
+				<p>&copy; 
 				<a href="https://haxe.org/foundation/" title="Haxe Foundation Website" class="hf-link">Haxe Foundation</a>
 				
 				| <a href="https://github.com/HaxeFoundation/nekovm.org/tree/master/pages/specs/operations-and-types.md" target="_blank" rel="external" class="edit-link" title="Use Github to suggest an edit to this page">Contribute to this page</a>
