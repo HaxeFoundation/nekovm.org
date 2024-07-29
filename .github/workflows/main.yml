@@ -13,12 +13,6 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      # we are using this version in order to build vscode-textmate
-      - name: Setup AWS CLI
-        run: |
-          pip install --user awscli
-          aws --version
-
       - name: Install
         run: |
           haxelib install all --always --quiet
