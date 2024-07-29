@@ -25,6 +25,8 @@ jobs:
       - name: Generate website
         run: |
           haxe generate.hxml
+        env:
+          GHP_ROOT: https://nekovm.org
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
