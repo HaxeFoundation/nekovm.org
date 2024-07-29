@@ -32,7 +32,7 @@ jobs:
         run: |
           haxe generate.hxml
         env:
-          GHP_ROOT: ${{steps.pages_config.outputs.base_url}}
+          GHP_ROOT: nekovm.org
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
