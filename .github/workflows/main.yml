@@ -25,9 +25,6 @@ jobs:
       - name: Generate website
         run: |
           haxe generate.hxml
-        env:
-          GHP_ROOT: nekovm.org
-          # GHP_ROOT: ${{steps.pages_config.outputs.base_url}}
 
       - name: Publish on GitHub Pages
         if: github.ref == 'refs/heads/master'
