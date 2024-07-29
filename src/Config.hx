@@ -18,7 +18,7 @@ class Config {
 		}
 	};
 
-	static public var root = env("GHP_ROOT", null);
+	static public var root = null;
 
 	static public function env(name:String, def:String):String {
 		return switch(Sys.getEnv(name)) {
