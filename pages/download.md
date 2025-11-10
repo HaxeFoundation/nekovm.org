@@ -18,7 +18,7 @@ You can access Neko sources from the [GitHub Repository](https://github.com/Haxe
 
 ### Windows
 
-Compiled binaries can be found in the "artifacts" tab of each [AppVeyor build](https://ci.appveyor.com/project/HaxeFoundation/neko/history).
+Compiled binaries can be found in the "artifacts" tab of each [GitHub Actions build](https://github.com/HaxeFoundation/neko/actions/workflows/main.yml).
 
 ### Mac
 
