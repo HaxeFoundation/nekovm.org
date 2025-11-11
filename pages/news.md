@@ -1,5 +1,29 @@
 # Releases
 
+## Neko 2.4.1 release
+
+_Date: April 15 2025_
+
+See [CHANGES](https://github.com/HaxeFoundation/neko/blob/master/CHANGES)
+
+## Neko 2.4 release
+
+_Date: July 18 2024_
+
+See [CHANGES](https://github.com/HaxeFoundation/neko/blob/master/CHANGES)
+
+## Neko 2.3 release
+
+_Date: September 19 2019_
+
+See [CHANGES](https://github.com/HaxeFoundation/neko/blob/master/CHANGES)
+
+## Neko 2.2 release
+
+_Date: December 19 2017_
+
+See [CHANGES](https://github.com/HaxeFoundation/neko/blob/master/CHANGES)
+
 ## Neko 2.1 release
 
 _Date: May 8 2016_

@@ -2,13 +2,15 @@
 
 The following downloads are currently available :
 
-- Neko 2.3.0 [sources TGZ](https://github.com/HaxeFoundation/neko/archive/v2-3-0.tar.gz)
-- Neko 2.3.0 [sources ZIP](https://github.com/HaxeFoundation/neko/archive/v2-3-0.zip)
-- Neko 2.3.0 [Windows 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-win.zip)
-- Neko 2.3.0 [Windows 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-win64.zip)
-- Neko 2.3.0 [Linux 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-linux.tar.gz)
-- Neko 2.3.0 [Linux 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-linux64.tar.gz)
-- Neko 2.3.0 [OS X 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-3-0/neko-2.3.0-osx64.tar.gz)
+- Neko 2.4.1 [sources TGZ](https://github.com/HaxeFoundation/neko/archive/v2-4-1.tar.gz)
+- Neko 2.4.1 [sources ZIP](https://github.com/HaxeFoundation/neko/archive/v2-4-1.zip)
+- Neko 2.4.1 [Windows x86 32-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-win.zip)
+- Neko 2.4.1 [Windows x86 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-win64.zip)
+- Neko 2.4.1 [Linux x86 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-linux64.tar.gz)
+- Neko 2.4.1 [Linux Arm 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-linux-arm64.tar.gz)
+- Neko 2.4.1 [OS X x86 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-osx64.tar.gz)
+- Neko 2.4.1 [OS X Arm 64-bit binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-osx-arm64.tar.gz)
+- Neko 2.4.1 [OS X Universal binaries](https://github.com/HaxeFoundation/neko/releases/download/v2-4-1/neko-2.4.1-osx-universal.tar.gz)
 
 You can access Neko sources from the [GitHub Repository](https://github.com/HaxeFoundation/neko).
 
@@ -16,7 +18,7 @@ You can access Neko sources from the [GitHub Repository](https://github.com/Haxe
 
 ### Windows
 
-Compiled binaries can be found in the "artifacts" tab of each [AppVeyor build](https://ci.appveyor.com/project/HaxeFoundation/neko/history).
+Compiled binaries can be found in the "artifacts" tab of each [GitHub Actions build](https://github.com/HaxeFoundation/neko/actions/workflows/main.yml).
 
 ### Mac
 
